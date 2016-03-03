@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{3c88dd67-33e3-4863-82b3-eaab6f7ee50a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{cf8ad953-b3a9-4402-a4f0-c44c1b173186}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBX Importer">
+      <UniqueIdentifier>{d841f003-1eaf-40e0-a2f6-ec6a74786fad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Header Files">
+      <UniqueIdentifier>{fcde7b20-b999-44cd-af53-2537a19be302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Source Files">
+      <UniqueIdentifier>{b971f3fb-3524-4445-8254-102bab3d7738}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBX Importer\Header Files">
+      <UniqueIdentifier>{eabc1f1b-c454-4969-929c-850240709388}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FBX Importer\Source Files">
+      <UniqueIdentifier>{9cb278e7-0149-4a0f-a44c-3770d58787f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Header Files">
+      <UniqueIdentifier>{695d9958-84b8-4bd8-82df-6205cfe29a5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Source Files">
+      <UniqueIdentifier>{54197218-cd39-4b79-a3a9-9b683a97b761}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{1ecdd3cc-de0a-424a-90e6-0cfae6885c09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Pixel Shaders">
+      <UniqueIdentifier>{53d27061-e6ea-4a52-aa13-310bef91cd6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Vertex Shaders">
+      <UniqueIdentifier>{97dd05c4-b2f0-4b5e-bb16-fefc5ae011a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{d10ea8b4-cae8-4499-b467-3357aed4ad88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\Header Files">
+      <UniqueIdentifier>{7a345274-62b6-4337-b0c4-ca2d2f73dc5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers\Source Files">
+      <UniqueIdentifier>{dc24bf70-bcf5-4851-b69b-c27c5480cfd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities">
+      <UniqueIdentifier>{5b2ed803-bcd9-42a0-9740-d91094ae3b21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities\Header Files">
+      <UniqueIdentifier>{f72ea647-f2d5-4a73-8e40-3431df891d8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utilities\Source Files">
+      <UniqueIdentifier>{04cd626c-601f-4489-a3ce-2e3cf2bc7797}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Application.cpp">
+      <Filter>Framework\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Framework\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXConverter.cpp">
+      <Filter>FBX Importer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlendStateManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexFormats.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Utilities\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Utilities\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RasterizerStateManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderContext.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderMaterial.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderNode.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSet.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderShape.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SortedRenderSet.cpp">
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderResourceManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleStateManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h">
+      <Filter>Framework\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXConverter.h">
+      <Filter>FBX Importer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BlendStateManager.h">
+      <Filter>Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexFormats.h">
+      <Filter>Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexTypes.h">
+      <Filter>Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Utilities\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Utilities\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Utilities\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RasterizerStateManager.h">
+      <Filter>Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderContext.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderMaterial.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderNode.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSet.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderShape.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SortedRenderSet.h">
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderResourceManager.h">
+      <Filter>Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshManager.h">
+      <Filter>Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleStateManager.h">
+      <Filter>Managers\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="DefaultPixel.hlsl">
+      <Filter>Shaders\Pixel Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="DefaultVertex.hlsl">
+      <Filter>Shaders\Vertex Shaders</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="chest.epic.fbx">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="chest.epic.mesh">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Cube.fbx">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>
