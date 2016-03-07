@@ -89,7 +89,7 @@ public:
 	ID3D11VertexShader*   GetVertexShaders  ( const int _enumValue );
 
 	// Singleton
-	ShaderManager* GetInstance( void );
+	static ShaderManager* GetInstance( void );
 	void DeleteInstance( void );
 };
 

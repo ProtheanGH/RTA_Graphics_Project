@@ -2,10 +2,17 @@
 #include "Renderer.h"
 
 #include "BlendStateManager.h"
+#include "ConstantBufferManager.h"
+#include "FBXConverter.h"
 #include "RasterizerStateManager.h"
 #include "Renderer.h"
 #include "SampleStateManager.h"
 #include "ShaderResourceManager.h"
+
+// ==== TEMP
+#include "RenderContext.h"
+#include "RenderMaterial.h"
+#include "RenderShape.h"
 
 #define DEFAULT_WIDTH 1024
 #define DEFAULT_HEIGHT 780
@@ -42,12 +49,15 @@ Application::Application(HINSTANCE _hinst, WNDPROC _proc)
 	BlendStateManager::GetInstance();
 	RasterizerStateManager::GetInstance();
 	SampleStateManager::GetInstance();
+	ShaderManager::GetInstance();
 	ShaderResourceManager::GetInstance();
+	ConstantBufferManager::GetInstance();
 }
 
 Application::~Application()
 {
 	// === Shut everything down
+	ConstantBufferManager::GetInstance()->Terminate();
 	ShaderResourceManager::GetInstance()->Terminate();
 	SampleStateManager::GetInstance()->Terminate();
 	RasterizerStateManager::GetInstance()->Terminate();
@@ -67,6 +77,15 @@ bool Application::Run()
 // ===== Private Interface ===== //
 void SetupScene()
 {
+	Object* object = Object::Create();
+	FBXConverter converter;
+	converter.LoadFBX("Cube.fbx", object);
+	
+	RenderContext* context = new RenderContext();
+	RenderMaterial* material = new RenderMaterial();
+	RenderShape* shape = new RenderShape();
+	shape->SetObject(object);
 
+	Renderer::GetInstance()->AddForRendering(context, material, shape);
 }
 // ============================= //

@@ -4,6 +4,9 @@
 // Last Updated:	3.7.2016
 //////////////////////////////////////////////////////////////////////////////////
 #include "RenderSet.h"
+#include "RenderContext.h"
+#include "RenderMaterial.h"
+#include "RenderShape.h"
 
 #include <DirectXMath.h>
 #include <d3d11.h>
@@ -59,6 +62,7 @@ public:
 
 	// === Interface === //
 	void Render();
+	void AddForRendering(RenderContext* _rContext, RenderMaterial* _rMaterial, RenderShape* _rShape);
 	// ================= //
 
 	// === Accessors === //

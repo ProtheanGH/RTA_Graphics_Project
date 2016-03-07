@@ -3,6 +3,7 @@
 #include "RenderNode.h"
 #include "RenderSet.h"
 #include "RasterizerStateManager.h"
+#include "ShaderManager.h"
 
 #include <d3d11.h>
 
@@ -12,8 +13,8 @@ class RenderContext : public RenderNode
 {
 private: 
 	// === Members
-	ID3D11VertexShader*			m_pVertexShader;
-	ID3D11PixelShader*			m_pPixelShader;
+	VertexShaderEnum			m_VertexShader;
+	PixelShaderEnum				m_PixelShader;
 	BlendStates					m_BlendState;
 	RasterizerStates			m_RasterizerStateType;
 	RenderSet					m_RMaterialSet;
@@ -35,17 +36,17 @@ public:
 	// ================= //
 
 	// === Mutators === //
-	inline void SetSetting(ID3D11VertexShader* _vertexShader = nullptr, ID3D11PixelShader* _pixelShader = nullptr, BlendStates _blendState = BlendStates::BlendState_Default, RasterizerStates _rasterizerState = RasterizerStates::RasterizerState_Default) {
-		m_pVertexShader = _vertexShader;
-		m_pPixelShader = _pixelShader;
+	inline void SetSetting(VertexShaderEnum _vertexShader = VertexShaderEnum::Vertex_Default, PixelShaderEnum _pixelShader = PixelShaderEnum::Pixel_Default, BlendStates _blendState = BlendStates::BlendState_Default, RasterizerStates _rasterizerState = RasterizerStates::RasterizerState_Default) {
+		m_VertexShader = _vertexShader;
+		m_PixelShader = _pixelShader;
 		m_BlendState = _blendState;
 		m_RasterizerStateType = _rasterizerState;
 	}
-	inline void SetVertexShader(ID3D11VertexShader* _vertexShader) {
-		m_pVertexShader = _vertexShader;
+	inline void SetVertexShader(VertexShaderEnum _vertexShader) {
+		m_VertexShader = _vertexShader;
 	}
-	inline void SetPixelShader(ID3D11PixelShader* _pixelShader) {
-		m_pPixelShader = _pixelShader;
+	inline void SetPixelShader(PixelShaderEnum _pixelShader) {
+		m_PixelShader = _pixelShader;
 	}
 	inline void SetBlendState(BlendStates _blendState) {
 		m_BlendState = _blendState;

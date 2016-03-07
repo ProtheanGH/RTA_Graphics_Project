@@ -172,6 +172,19 @@ void Renderer::Render()
 	swapChain->Present(0, 0);
 }
 
+void Renderer::AddForRendering(RenderContext* _rContext, RenderMaterial* _rMaterial, RenderShape* _rShape)
+{
+	// === Does it Already Contain the Context?
+	RenderNode* contextNode = m_RenderSet.Find(_rContext);
+	if (contextNode != nullptr) {
+		contextNode->Add(_rMaterial, _rShape);
+	}
+	else {
+		m_RenderSet.Add(_rContext);
+		_rContext->Add(_rMaterial, _rShape);
+	}
+}
+
 void Renderer::SetViewMatrix(const XMMATRIX& _mat)
 {
 	m_viewMatrix = _mat;

@@ -5,17 +5,15 @@
 RenderContext::RenderContext() : RenderNode()
 {
 	// === Set Everything to Null
-	m_pVertexShader = nullptr;
-	m_pPixelShader = nullptr;
+	m_VertexShader = VertexShaderEnum::Vertex_Default;
+	m_PixelShader = PixelShaderEnum::Pixel_Default;
 	m_BlendState = BlendStates::BlendState_Default;
 	m_RasterizerStateType = RasterizerStates::RasterizerState_Default;
 }
 
 RenderContext::~RenderContext()
 {
-	// === Release all objects
-	SAFE_RELEASE(m_pVertexShader);
-	SAFE_RELEASE(m_pPixelShader);
+
 }
 // ==================================== //
 
@@ -36,13 +34,8 @@ void RenderContext::Add(RenderNode* _rMaterial, RenderNode* _rShape)
 // ===== Private Interface ===== //
 void RenderContext::Apply()
 {
-	ID3D11DeviceContext* deviceContext = Renderer::GetInstance()->GetDeviceContext();
-
-	if (m_pVertexShader != nullptr)
-		deviceContext->VSSetShader(m_pVertexShader, NULL, 0);
-	if (m_pPixelShader != nullptr)
-		deviceContext->PSSetShader(m_pPixelShader, NULL, 0);
-
+	ShaderManager::GetInstance()->Apply(ShaderTypeEnum::Vertex_Shader, m_VertexShader);
+	ShaderManager::GetInstance()->Apply(ShaderTypeEnum::Pixel_Shader, m_PixelShader);
 	BlendStateManager::GetInstance()->Apply(m_BlendState);
 	RasterizerStateManager::GetInstance()->Apply(m_RasterizerStateType);
 }
