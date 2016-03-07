@@ -1,6 +1,8 @@
 #include "RasterizerStateManager.h"
 #include "Renderer.h"
 
+#define SAFE_RELEASE(p) { if(p) { p->Release(); p = nullptr; } }
+
 RasterizerStateManager* RasterizerStateManager::s_Instance = nullptr;
 
 // ===== Destructor ===== //
@@ -32,12 +34,16 @@ void RasterizerStateManager::Apply(RasterizerStates _rasterizerState)
 
 void RasterizerStateManager::Revert()
 {
-	Renderer::GetInstance()->GetDeviceContext()->RSSetState(m_RasterizerStates[RasterizerStates::Default]);
+	Renderer::GetInstance()->GetDeviceContext()->RSSetState(m_RasterizerStates[RasterizerStates::RasterizerState_Default]);
 }
 
 void RasterizerStateManager::Terminate()
 {
+	for (int i = 0; i < RasterizerStates::MAX_RASTERIZER_STATES; ++i) {
+		SAFE_RELEASE(m_RasterizerStates[i]);
+	}
 
+	delete s_Instance;
 }
 // ===================== //
 
@@ -59,7 +65,7 @@ void RasterizerStateManager::Initialize()
 
 	// === Default
 	rasterDesc.CullMode = D3D11_CULL_BACK;
-	Renderer::GetInstance()->GetDevice()->CreateRasterizerState(&rasterDesc, &m_RasterizerStates[Default]);
+	Renderer::GetInstance()->GetDevice()->CreateRasterizerState(&rasterDesc, &m_RasterizerStates[RasterizerState_Default]);
 
 	// === Front Culling
 	rasterDesc.CullMode = D3D11_CULL_FRONT;

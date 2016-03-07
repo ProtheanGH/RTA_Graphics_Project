@@ -1,5 +1,8 @@
 #pragma once
 #include <d3d11.h>
+#include <DirectXMath.h>
+
+using namespace DirectX;
 
 #define VERTEX_FORMATS_MAX 1
 
@@ -46,5 +49,15 @@ public:
 		return m_InputLayouts[_index];
 	}
 	// ================= //
+};
+
+// === ToShaderObjects
+struct ToShaderObject {
+	XMFLOAT4X4 ObjectWorldMatrix;
+};
+
+struct ToShaderScene {
+	XMFLOAT4X4 SceneViewMatrix;
+	XMFLOAT4X4 SceneProjectionMatrix;
 };
 

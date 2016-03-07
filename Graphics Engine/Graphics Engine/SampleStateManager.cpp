@@ -35,7 +35,7 @@ void SampleStateManager::Apply(SampleStates _sampleState)
 
 void SampleStateManager::Revert()
 {
-	Renderer::GetInstance()->GetDeviceContext()->PSSetSamplers(0, 1, &m_SampleStates[Default]);
+	Renderer::GetInstance()->GetDeviceContext()->PSSetSamplers(0, 1, &m_SampleStates[SampleState_Default]);
 }
 
 void SampleStateManager::Terminate()
@@ -44,6 +44,8 @@ void SampleStateManager::Terminate()
 	for (int i = 0; i < MAX_SAMPLE_STATES; ++i) {
 		SAFE_RELEASE(m_SampleStates[i]);
 	}
+
+	delete s_Instance;
 }
 // ===================== //
 
@@ -62,6 +64,7 @@ void SampleStateManager::Initialize()
 	samplerDesc.MipLODBias = 0.0f;
 	samplerDesc.MaxAnisotropy = 1;
 	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
-	Renderer::GetInstance()->GetDevice()->CreateSamplerState(&samplerDesc, &m_SampleStates[Default]);
+
+	Renderer::GetInstance()->GetDevice()->CreateSamplerState(&samplerDesc, &m_SampleStates[SampleState_Default]);
 }
 // ============================= //

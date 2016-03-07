@@ -5,7 +5,7 @@
 // ===== Constructor / Destructor ===== //
 RenderMaterial::RenderMaterial() : RenderNode()
 {
-	m_SampleState = SampleStates::Default;
+	m_SampleState = SampleStates::SampleState_Default;
 }
 
 RenderMaterial::~RenderMaterial()

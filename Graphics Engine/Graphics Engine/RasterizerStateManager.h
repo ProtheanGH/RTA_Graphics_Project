@@ -2,7 +2,7 @@
 #include <d3d11.h>
 
 // === Enums
-enum RasterizerStates { Default = 0, Front_Culling = 1, No_Culling = 2, MAX_RASTERIZER_STATES };
+enum RasterizerStates { RasterizerState_Default = 0, Front_Culling = 1, No_Culling = 2, MAX_RASTERIZER_STATES };
 
 class RasterizerStateManager
 {

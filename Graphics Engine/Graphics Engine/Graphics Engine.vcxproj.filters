@@ -115,7 +115,10 @@
     <ClCompile Include="SampleStateManager.cpp">
       <Filter>Managers\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderManager.cpp">
+    <ClCompile Include="Color.cpp">
+      <Filter>Utilities\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBufferManager.cpp">
       <Filter>Managers\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -177,7 +180,10 @@
     <ClInclude Include="SampleStateManager.h">
       <Filter>Managers\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderManager.h">
+    <ClInclude Include="Color.h">
+      <Filter>Utilities\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBufferManager.h">
       <Filter>Managers\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

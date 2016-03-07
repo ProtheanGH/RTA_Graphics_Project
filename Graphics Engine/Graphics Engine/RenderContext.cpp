@@ -7,8 +7,8 @@ RenderContext::RenderContext() : RenderNode()
 	// === Set Everything to Null
 	m_pVertexShader = nullptr;
 	m_pPixelShader = nullptr;
-	m_BlendState = BlendStates::Default;
-	m_RasterizerStateType = RasterizerStates::Default;
+	m_BlendState = BlendStates::BlendState_Default;
+	m_RasterizerStateType = RasterizerStates::RasterizerState_Default;
 }
 
 RenderContext::~RenderContext()

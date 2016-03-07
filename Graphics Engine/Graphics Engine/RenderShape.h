@@ -9,7 +9,8 @@
 class RenderShape : public RenderNode
 {
 	// === Members
-	Object* m_Object;
+	Object*						m_pObject;
+	D3D11_PRIMITIVE_TOPOLOGY	m_TopologyType;
 
 	// === Private Interface === //
 	void DefaultShape_RenderProcess(RenderNode& _node);
@@ -19,5 +20,14 @@ public:
 	RenderShape();
 	virtual ~RenderShape();
 	// ================================ //
+
+	// === Mutators === //
+	inline void SetObject(Object* _object) {
+		m_pObject = _object;
+	}
+	inline void SetTopology(D3D11_PRIMITIVE_TOPOLOGY _topology) {
+		m_TopologyType = _topology;
+	}
+	// ================ //
 };
 

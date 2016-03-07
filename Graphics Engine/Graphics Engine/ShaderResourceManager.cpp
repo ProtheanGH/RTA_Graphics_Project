@@ -31,6 +31,7 @@ void ShaderResourceManager::Terminate()
 		SAFE_RELEASE(iter->second);
 	}
 
+	delete s_Instance;
 }
 // ===================== //
 
