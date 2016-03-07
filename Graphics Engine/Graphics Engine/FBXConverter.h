@@ -19,8 +19,6 @@ private:
 	void FBXConverter::SaveObject(std::fstream* file, Object& _object);
 	void LoadObject(std::fstream* _file, Object& _object);
 
-	void Destroy();
-
 public:
 
 	FBXConverter() = default;
@@ -33,5 +31,7 @@ public:
 
 	void LoadObject(const char* fileName, Object& object);
 
-	static FBXConverter* Create();
+	void SaveMesh(const char* fileName, Mesh& mesh);
+
+	void LoadMesh(const char* fileName, Mesh& mesh);
 };

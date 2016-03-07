@@ -4,7 +4,7 @@
 void RemoveExtension(std::string& name);
 
 FBXConverter::~FBXConverter(){
-	Destroy();
+	fbxManager->Destroy();
 }
 
 void FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
@@ -121,6 +121,8 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 		object_mesh->GetIndices().push_back(index);
 	}
 
+	SaveMesh(_object->GetName().c_str(), *object_mesh);
+
 }
 
 void FBXConverter::LoadNormal(FbxMesh* _mesh, int _controlPointIndex, int _vertexCounter, DirectX::XMFLOAT3& _outNormal){
@@ -179,6 +181,11 @@ void FBXConverter::LoadUV(FbxMesh* _mesh, int _controlPointIndex, int _textureUV
 		if (vertex_uv->GetReferenceMode() == FbxGeometryElement::eIndexToDirect){
 			_outUV.x = (float)vertex_uv->GetDirectArray().GetAt(_textureUVIndex).mData[0];
 			_outUV.y = (float)vertex_uv->GetDirectArray().GetAt(_textureUVIndex).mData[1];
+		}
+		else if (vertex_uv->GetReferenceMode() == FbxGeometryElement::eIndexToDirect){
+			int index = vertex_uv->GetIndexArray().GetAt(_textureUVIndex);
+			_outUV.x = (float)vertex_uv->GetDirectArray().GetAt(index).mData[0];
+			_outUV.y = (float)vertex_uv->GetDirectArray().GetAt(index).mData[1];
 		}
 	}
 }
@@ -311,12 +318,64 @@ void FBXConverter::LoadObject(std::fstream* file, Object& _object){
 	}
 }
 
-FBXConverter* FBXConverter::Create(){
-	return new FBXConverter();
+void FBXConverter::SaveMesh(const char* _fileName, Mesh& _mesh){
+	std::string file_name(_fileName);
+	file_name += ".meshfilter";
+
+	std::fstream file;
+	file.open(file_name.c_str(), std::ios_base::out | std::ios_base::binary);
+
+	if (file.is_open() == false) return;
+
+	//write out the amount of vertices
+	unsigned int vertCount = _mesh.GetVerts().size();
+	file.write((char*)&vertCount, sizeof(vertCount));
+
+	//write out the amount of vertices
+	unsigned int indexCount = _mesh.GetVerts().size();
+	file.write((char*)&indexCount, sizeof(indexCount));
+
+	//write out all of the vertices
+	file.write((char*)_mesh.GetVerts().data(), sizeof(Vertex_POSNORMUV)* vertCount);
+
+	//write out all of the indices
+	file.write((char*)_mesh.GetIndices().data(), sizeof(unsigned int)* indexCount);
+
+	file.close();
 }
 
-void FBXConverter::Destroy(){
-	fbxManager->Destroy();
+void FBXConverter::LoadMesh(const char* _fileName, Mesh& _mesh){
+	std::string file_name(_fileName);
+	file_name += ".meshfilter";
+
+	std::fstream file;
+	file.open(file_name.c_str(), std::ios_base::in | std::ios_base::binary);
+
+	if (file.is_open() == false) return;
+
+	//read in the amount of verts
+	unsigned int vertCount = 0;
+	file.read((char*)&vertCount, sizeof(vertCount));
+
+	//read in the amount of indices
+	unsigned int indexCount = 0;
+	file.read((char*)&indexCount, sizeof(indexCount));
+
+	//read in all of the vertices
+	Vertex_POSNORMUV vertex;
+	for (unsigned int i = 0; i < vertCount; ++i){
+		file.read((char*)&vertex, sizeof(vertex));
+		_mesh.GetVerts().push_back(vertex);
+	}
+
+	//read in all of the indices
+	unsigned int index = 0;
+	for (unsigned int i = 0; i < indexCount; ++i){
+		file.read((char*)&index, sizeof(index));
+		_mesh.GetIndices().push_back(index);
+	}
+
+	file.close();
 }
 
 
