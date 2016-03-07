@@ -168,3 +168,13 @@ void Renderer::Render()
 	swapChain->Present(0, 0);
 }
 
+void Renderer::SetViewMatrix(const XMMATRIX& _mat)
+{
+	m_viewMatrix = _mat;
+}
+
+void Renderer::SetProjectionMatrix(const XMMATRIX& _mat)
+{
+	m_projectionMatrix = _mat;
+}
+

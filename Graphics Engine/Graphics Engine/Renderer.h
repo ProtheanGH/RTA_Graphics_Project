@@ -1,7 +1,7 @@
 #pragma once
 //////////////////////////////////////////////////////////////////////////////////
 // Created By:		Doug Berg
-// Last Updated:	3.2.2016
+// Last Updated:	3.7.2016
 //////////////////////////////////////////////////////////////////////////////////
 #include "RenderSet.h"
 
@@ -24,6 +24,8 @@ private:
 	ID3D11SamplerState       *samplerState;
 	D3D11_VIEWPORT            viewport;
 	D3D11_INPUT_ELEMENT_DESC  inputElementDesc;
+	XMMATRIX                  m_viewMatrix;
+	XMMATRIX                  m_projectionMatrix;
 
 	// === Members
 	RenderSet m_RenderSet;
@@ -84,7 +86,20 @@ public:
 	inline D3D11_VIEWPORT GetViewport() {
 		return viewport;
 	}
+	inline XMMATRIX GetViewMatrix() const {
+		return m_viewMatrix;
+	}
+	inline XMMATRIX GetProjectionMatrix() const {
+		return m_projectionMatrix;
+	}
 	// ================= //
+
+
+
+	// === Mutators === //
+	void SetViewMatrix      ( const XMMATRIX& _mat );
+	void SetProjectionMatrix( const XMMATRIX& _mat );
+	// ================ //
 
 };
 
