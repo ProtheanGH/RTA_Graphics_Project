@@ -16,7 +16,7 @@ private:
 	void LoadUV(FbxMesh* _mesh, int _controlPointIndex, int _textureUVIndex, DirectX::XMFLOAT2& _outUV);
 
 	void FBXConverter::SaveObject(std::fstream* file, Object& _object);
-	void LoadObject(std::fstream* _file, Object& _object);
+	bool LoadObject(std::fstream* _file, Object& _object);
 
 public:
 
@@ -28,7 +28,7 @@ public:
 	//Saves the object as a binary file 
 	void SaveObject(const char* fileName, Object& object);
 
-	void LoadObject(const char* fileName, Object& object);
+	bool LoadObject(const char* fileName, Object& object);
 
 	void SaveMesh(const char* fileName, Mesh& mesh);
 

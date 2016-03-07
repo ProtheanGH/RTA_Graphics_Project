@@ -37,16 +37,12 @@ Application::Application(HINSTANCE _hinst, WNDPROC _proc)
 
 	ShowWindow(m_Window, SW_SHOW);
 
-<<<<<<< HEAD
 	// === Initialize the Managers
 	Renderer::GetInstance()->Initialize(m_Window, 1, DEFAULT_HEIGHT, DEFAULT_WIDTH);
 	BlendStateManager::GetInstance();
 	RasterizerStateManager::GetInstance();
 	SampleStateManager::GetInstance();
 	ShaderResourceManager::GetInstance();
-=======
-	Renderer::GetInstance()->Initialize(m_Window, 1, DEFAULT_WIDTH, DEFAULT_HEIGHT);
->>>>>>> Features/FBX-Conversion
 }
 
 Application::~Application()

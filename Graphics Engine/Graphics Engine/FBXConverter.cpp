@@ -10,6 +10,8 @@ FBXConverter::~FBXConverter(){
 
 void FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
 
+	if (LoadObject(_fileName, *_rootObject) == true) return;
+
 	if (fbxManager == nullptr){
 		fbxManager = FbxManager::Create();
 		FbxIOSettings* ioSettings = FbxIOSettings::Create(fbxManager, IOSROOT);
@@ -274,21 +276,23 @@ void FBXConverter::SaveObject(std::fstream* file, Object& _object){
 	}
 }
 
-void FBXConverter::LoadObject(const char* _fileName, Object& _object){
+bool FBXConverter::LoadObject(const char* _fileName, Object& _object){
 	std::fstream file;
 	std::string file_name("Assets/");
 	file_name.append(_fileName);
 	file_name.append(".object");
 	file.open(file_name.c_str(), std::ios_base::binary | std::ios_base::in);
 
-	if (!file.is_open()) return;
+	if (!file.is_open()) return false;
 
 	LoadObject(&file, _object);
 
 	file.close();
+
+	return true;
 }
 
-void FBXConverter::LoadObject(std::fstream* file, Object& _object){
+bool FBXConverter::LoadObject(std::fstream* file, Object& _object){
 
 	unsigned int nameSize = 0;
 	//read the size of the objects name
@@ -346,6 +350,8 @@ void FBXConverter::LoadObject(std::fstream* file, Object& _object){
 
 		LoadObject(file, *child_object);
 	}
+
+	return true;
 }
 
 void FBXConverter::SaveMesh(const char* _fileName, Mesh& _mesh){
