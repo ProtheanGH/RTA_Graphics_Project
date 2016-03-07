@@ -20,12 +20,15 @@ private:
 	unsigned int m_VertexSize;
 
 	Object();
-	~Object();
 
 	void SetBuffers();
 	void ReleaseBuffers();
+	void Destroy();
 
 public:
+
+	static Object* Create();
+	~Object();
 
 	inline Transform& GetTransform()  { return transform; }
 	inline std::vector<Object*>& GetChildren() { return children; }
@@ -41,8 +44,4 @@ public:
 
 	inline ID3D11Buffer* GetVertexBuffer() { return vertexBuffer; }
 	inline ID3D11Buffer* GetIndexBuffer(){ return indexBuffer; }
-
-	static Object* Create();
-
-	void Destroy();
 };

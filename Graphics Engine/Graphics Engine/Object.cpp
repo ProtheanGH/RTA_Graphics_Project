@@ -70,9 +70,8 @@ void Object::Destroy(){
 
 	for (unsigned int i = 0; i < children.size(); ++i){
 		children[i]->Destroy();
+		delete children[i];
 	}
 
 	delete mesh;
-
-	delete this;
 }
