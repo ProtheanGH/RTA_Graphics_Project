@@ -96,11 +96,14 @@ bool ShaderManager::Apply(ShaderTypeEnum _shader, const int _index)
 ShaderManager* ShaderManager::GetInstance()
 {
 	if (m_instance == nullptr)
+	{
 		m_instance = new ShaderManager;
+		Init();
+	}
 	return m_instance;
 }
 
-void ShaderManager::DeleteInstance()
+void ShaderManager::Terminate()
 {
 	for (int i = 0; i < COMPUTE_MAX; ++i)
 		computeShaders[i]->Release();
@@ -124,5 +127,45 @@ void ShaderManager::DeleteInstance()
 
 	delete m_instance;
 	m_instance = nullptr;
+}
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////
+// SINGLETON
+///////////////////////////////////////////////////////////////////////////
+void ShaderManager::Init()
+{
+	// === Compute Shaders === //
+	// Renderer::GetInstance()->GetDevice()->CreateComputeShader(compiledShader, sizeof(compiledShader), nullptr, &computeShaders[0]);
+	// ===
+
+
+	// === Domain Shaders === //
+	// Renderer::GetInstance()->GetDevice()->CreateDomainShader(compiledShader, sizeof(compiledShader), nullptr, &domainShaders[0]);
+	// ===
+
+
+	// === Geometry Shaders === //
+	// Renderer::GetInstance()->GetDevice()->CreateGeometryShader(compiledShader, sizeof(compiledShader), nullptr, &geometryShaders[0]);
+	// ===
+
+
+	// === Hull Shaders === //
+	// Renderer::GetInstance()->GetDevice()->CreateHullShader(compiledShader, sizeof(compiledShader), nullptr, &hullShaders[0]);
+	// ===
+
+
+	// === Pixel Shaders === //
+	Renderer::GetInstance()->GetDevice()->CreatePixelShader(DefaultPixel, sizeof(DefaultPixel), nullptr, &pixelShaders[0]);
+	// ===
+
+
+	// === Vertex Shaders === //
+	Renderer::GetInstance()->GetDevice()->CreateVertexShader(DefaultVertex, sizeof(DefaultVertex), nullptr, &vertexShaders[0]);
+	// ===
 }
 

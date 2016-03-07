@@ -211,5 +211,11 @@
     <None Include="Cube.fbx">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="DefaultPixel.csh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="DefaultVertex.csh">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
