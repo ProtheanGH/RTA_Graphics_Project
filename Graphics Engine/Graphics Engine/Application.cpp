@@ -1,5 +1,11 @@
 #include "Application.h"
 
+#include "BlendStateManager.h"
+#include "RasterizerStateManager.h"
+#include "Renderer.h"
+#include "SampleStateManager.h"
+#include "ShaderResourceManager.h"
+
 #define DEFAULT_WIDTH 1024
 #define DEFAULT_HEIGHT 780
 
@@ -29,17 +35,30 @@ Application::Application(HINSTANCE _hinst, WNDPROC _proc)
 							NULL, NULL, m_Instance, this);
 
 	ShowWindow(m_Window, SW_SHOW);
+
+	// === Initialize the Managers
+	Renderer::GetInstance()->Initialize(m_Window, 1, DEFAULT_HEIGHT, DEFAULT_WIDTH);
+	BlendStateManager::GetInstance();
+	RasterizerStateManager::GetInstance();
+	SampleStateManager::GetInstance();
+	ShaderResourceManager::GetInstance();
 }
 
 Application::~Application()
 {
-
+	// === Shut everything down
+	ShaderResourceManager::GetInstance()->Terminate();
+	SampleStateManager::GetInstance()->Terminate();
+	RasterizerStateManager::GetInstance()->Terminate();
+	BlendStateManager::GetInstance()->Terminate();
+	Renderer::GetInstance()->Terminate();
 }
 // ==================================== //
 
 // ===== Interface ===== //
 bool Application::Run() 
 {
+	Renderer::GetInstance()->Render();
 	return true;
 }
 // ===================== //

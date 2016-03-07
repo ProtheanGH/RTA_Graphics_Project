@@ -34,11 +34,39 @@ void RasterizerStateManager::Revert()
 {
 	Renderer::GetInstance()->GetDeviceContext()->RSSetState(m_RasterizerStates[RasterizerStates::Default]);
 }
+
+void RasterizerStateManager::Terminate()
+{
+
+}
 // ===================== //
 
 // === Private Interface === //
 void RasterizerStateManager::Initialize()
 {
-	// *** Add all the Rasterizer States
+	D3D11_RASTERIZER_DESC rasterDesc;
+
+	ZeroMemory(&rasterDesc, sizeof(rasterDesc));
+	rasterDesc.AntialiasedLineEnable = false; // true;
+	rasterDesc.DepthBias = 0;
+	rasterDesc.DepthBiasClamp = 0.0f;
+	rasterDesc.DepthClipEnable = true;
+	rasterDesc.FillMode = D3D11_FILL_SOLID;
+	rasterDesc.FrontCounterClockwise = false;
+	rasterDesc.MultisampleEnable = false; // true;
+	rasterDesc.ScissorEnable = false;
+	rasterDesc.SlopeScaledDepthBias = 0.0f;
+
+	// === Default
+	rasterDesc.CullMode = D3D11_CULL_BACK;
+	Renderer::GetInstance()->GetDevice()->CreateRasterizerState(&rasterDesc, &m_RasterizerStates[Default]);
+
+	// === Front Culling
+	rasterDesc.CullMode = D3D11_CULL_FRONT;
+	Renderer::GetInstance()->GetDevice()->CreateRasterizerState(&rasterDesc, &m_RasterizerStates[Front_Culling]);
+
+	// === Cull None
+	rasterDesc.CullMode = D3D11_CULL_NONE;
+	Renderer::GetInstance()->GetDevice()->CreateRasterizerState(&rasterDesc, &m_RasterizerStates[No_Culling]);
 }
 // ========================= //

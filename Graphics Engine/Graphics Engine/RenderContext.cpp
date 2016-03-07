@@ -7,7 +7,7 @@ RenderContext::RenderContext() : RenderNode()
 	// === Set Everything to Null
 	m_pVertexShader = nullptr;
 	m_pPixelShader = nullptr;
-	m_pBlendState = nullptr;
+	m_BlendState = BlendStates::Default;
 	m_RasterizerStateType = RasterizerStates::Default;
 }
 
@@ -16,7 +16,6 @@ RenderContext::~RenderContext()
 	// === Release all objects
 	SAFE_RELEASE(m_pVertexShader);
 	SAFE_RELEASE(m_pPixelShader);
-	SAFE_RELEASE(m_pBlendState);
 }
 // ==================================== //
 
@@ -43,15 +42,15 @@ void RenderContext::Apply()
 		deviceContext->VSSetShader(m_pVertexShader, NULL, 0);
 	if (m_pPixelShader != nullptr)
 		deviceContext->PSSetShader(m_pPixelShader, NULL, 0);
-	if (m_pBlendState != nullptr)
-		deviceContext->OMSetBlendState(m_pBlendState, NULL, 0xFFFFFFFF);
 
+	BlendStateManager::GetInstance()->Apply(m_BlendState);
 	RasterizerStateManager::GetInstance()->Apply(m_RasterizerStateType);
 }
 
 void RenderContext::Revert()
 {
 	// === Revert to Defaults
+	BlendStateManager::GetInstance()->Revert();
 	RasterizerStateManager::GetInstance()->Revert();
 }
 

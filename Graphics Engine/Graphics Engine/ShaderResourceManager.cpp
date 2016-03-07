@@ -24,7 +24,7 @@ ShaderResourceManager* ShaderResourceManager::GetInstance()
 // ============================ //
 
 // ===== Interface ===== //
-void ShaderResourceManager::Shutdown()
+void ShaderResourceManager::Terminate()
 {
 	// === Release all the ShaderResources
 	for (std::map<std::string, ID3D11ShaderResourceView*>::iterator iter = m_ShaderResources.begin(); iter != m_ShaderResources.end(); ++iter) {

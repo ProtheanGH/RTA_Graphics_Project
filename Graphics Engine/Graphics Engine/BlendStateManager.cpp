@@ -12,19 +12,21 @@
 //////////////////////////////////////////////////
 // SINGLETON
 //////////////////////////////////////////////////
-/*static*/ BlendStateManager* BlendStateManager::m_instance = nullptr;
+/*static*/ BlendStateManager* BlendStateManager::s_Instance = nullptr;
 
 /*static*/ BlendStateManager* BlendStateManager::GetInstance()
 {
-	if (m_instance == nullptr)
-		m_instance = new BlendStateManager;
-	return m_instance;
+	if (s_Instance == nullptr) {
+		s_Instance = new BlendStateManager;
+		s_Instance->Initialize();
+	}
+	return s_Instance;
 }
 
 void BlendStateManager::DeleteInstance()
 {
-	delete m_instance;
-	m_instance = nullptr;
+	delete s_Instance;
+	s_Instance = nullptr;
 }
 //////////////////////////////////////////////////
 
@@ -38,6 +40,22 @@ void BlendStateManager::DeleteInstance()
 void BlendStateManager::Initialize()
 {
 	// Initialize ID3D11BlendState's here...
+	D3D11_BLEND_DESC blendDesc;
+
+	// === Default BlendState
+	ZeroMemory(&blendDesc, sizeof(blendDesc));
+	blendDesc.AlphaToCoverageEnable = false;
+	blendDesc.IndependentBlendEnable = false;
+	blendDesc.RenderTarget[0].BlendEnable = true;
+	blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	blendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+
+	Renderer::GetInstance()->GetDevice()->CreateBlendState(&blendDesc, &m_blendStates[Default]);
 }
 
 void BlendStateManager::Terminate()
@@ -50,7 +68,7 @@ void BlendStateManager::Revert()
 	Renderer::GetInstance()->GetDeviceContext()->OMSetBlendState(m_blendStates[Default], 0, 0xFFFFFFFF);
 }
 
-bool BlendStateManager::Apply(BlendStateEnum _state)
+bool BlendStateManager::Apply(BlendStates _state)
 {
 	if (_state < 0 || _state >= MAX_BLENDSTATES)
 		return false;

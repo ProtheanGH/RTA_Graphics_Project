@@ -16,15 +16,17 @@ using namespace DirectX;
 #include "Renderer.h"
 
 
-enum BlendStateEnum { Default = 0, 
+enum BlendStates{ Default = 0, 
 	MAX_BLENDSTATES };
 
 
 class BlendStateManager
 {
 private:
+	// === Static Members
+	static BlendStateManager *s_Instance;
+
 	// === Members
-	static BlendStateManager *m_instance;
 	ID3D11BlendState         *m_blendStates[MAX_BLENDSTATES];
 
 public:
@@ -33,20 +35,20 @@ public:
 	~BlendStateManager( void ) = default;
 	BlendStateManager(const BlendStateManager& _copy)                = delete;
 	BlendStateManager& operator = (const BlendStateManager& _assign) = delete;
-	// ===
+	// ================ //
 
 
 	// === Singleton === //
 	static BlendStateManager* GetInstance( void );
 	void DeleteInstance( void );
-	// ===
+	// ================= //
 
 
 	// === Interface === //
 	void Initialize( void );
 	void Terminate ( void );
 	void Revert    ( void );
-	bool Apply     ( BlendStateEnum _state );
-	// ===
+	bool Apply     ( BlendStates _state );
+	// ================= //
 };
 

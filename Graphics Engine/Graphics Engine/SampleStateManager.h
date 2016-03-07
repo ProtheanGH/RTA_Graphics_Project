@@ -35,7 +35,7 @@ public:
 	// === Interface === //
 	void Apply(SampleStates _sampleState);
 	void Revert();
-	void Shutdown();
+	void Terminate();
 	// ================= //
 };
 

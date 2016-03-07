@@ -3,20 +3,18 @@
 // Created By:		Doug Berg
 // Last Updated:	3.2.2016
 //////////////////////////////////////////////////////////////////////////////////
-
+#include "RenderSet.h"
 
 #include <DirectXMath.h>
-using namespace DirectX;
-
-
 #include <d3d11.h>
 #pragma comment(lib, "d3d11.lib")
 
+using namespace DirectX;
 
 class Renderer
 {
 private:
-	// === Members
+	// === DirectX Members
 	ID3D11Device             *device;
 	IDXGISwapChain           *swapChain;
 	ID3D11RenderTargetView   *RTV;
@@ -25,8 +23,10 @@ private:
 	ID3D11ShaderResourceView *SRV;
 	ID3D11SamplerState       *samplerState;
 	D3D11_VIEWPORT            viewport;
-	D3D11_INPUT_ELEMENT_DESC  inputElementDesc[];
-	
+	D3D11_INPUT_ELEMENT_DESC  inputElementDesc;
+
+	// === Members
+	RenderSet m_RenderSet;
 
 	// === DirectX Initialization === //
 	void CreateDeviceAndSwapChain ( HWND _window );
@@ -56,7 +56,7 @@ public:
 
 
 	// === Interface === //
-	void Render() const;
+	void Render();
 	// ================= //
 
 	// === Accessors === //

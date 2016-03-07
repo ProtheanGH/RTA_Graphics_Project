@@ -38,7 +38,7 @@ void SampleStateManager::Revert()
 	Renderer::GetInstance()->GetDeviceContext()->PSSetSamplers(0, 1, &m_SampleStates[Default]);
 }
 
-void SampleStateManager::Shutdown()
+void SampleStateManager::Terminate()
 {
 	// === Release all the SampleStates
 	for (int i = 0; i < MAX_SAMPLE_STATES; ++i) {
@@ -50,6 +50,18 @@ void SampleStateManager::Shutdown()
 // ===== Private Interface ===== //
 void SampleStateManager::Initialize()
 {
-	// *** Add ALL Sample States here
+	D3D11_SAMPLER_DESC samplerDesc;
+
+	// === Default
+	samplerDesc.Filter = D3D11_FILTER::D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	samplerDesc.MinLOD = -FLT_MAX;
+	samplerDesc.MaxLOD = FLT_MAX;
+	samplerDesc.MipLODBias = 0.0f;
+	samplerDesc.MaxAnisotropy = 1;
+	samplerDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+	Renderer::GetInstance()->GetDevice()->CreateSamplerState(&samplerDesc, &m_SampleStates[Default]);
 }
 // ============================= //

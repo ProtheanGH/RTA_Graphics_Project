@@ -1,5 +1,6 @@
 #pragma once
 #include "RenderNode.h"
+#include "Object.h"
 
 #include <d3d11.h>
 
@@ -8,6 +9,7 @@
 class RenderShape : public RenderNode
 {
 	// === Members
+	Object* m_Object;
 
 	// === Private Interface === //
 	void DefaultShape_RenderProcess(RenderNode& _node);

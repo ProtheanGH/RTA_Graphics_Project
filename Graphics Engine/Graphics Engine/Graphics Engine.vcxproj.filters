@@ -115,6 +115,7 @@
     <ClCompile Include="SampleStateManager.cpp">
       <Filter>Managers\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Color.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -174,6 +175,7 @@
     <ClInclude Include="SampleStateManager.h">
       <Filter>Managers\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Color.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">

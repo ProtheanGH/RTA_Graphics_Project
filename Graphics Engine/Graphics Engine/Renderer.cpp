@@ -1,5 +1,7 @@
 #include "Renderer.h"
 
+#include "Color.h"
+
 #define SAFE_RELEASE(pointer) {if(pointer){pointer->Release(); pointer = nullptr;}}
 
 // Instantiate static instance
@@ -148,8 +150,21 @@ void Renderer::Terminate()
 	SAFE_RELEASE(samplerState);
 }
 
-void Renderer::Render() const
+void Renderer::Render()
 {
+	// === Clear the Screen
+	deviceContext->RSSetViewports(1, &viewport);
+	deviceContext->OMSetRenderTargets(1, &RTV, DSV);
+	deviceContext->ClearRenderTargetView(RTV, Colors::BLACK.RGBA);
+	deviceContext->ClearDepthStencilView(DSV, D3D11_CLEAR_DEPTH, 1, NULL);
 
+	// === Render the Stuff in the Scene
+	RenderNode* currNode = m_RenderSet.GetFront();
+	while (currNode != nullptr) {
+		currNode->RenderProcess();
+		currNode = currNode->m_Next;
+	}
+
+	swapChain->Present(0, 0);
 }
 

@@ -1,35 +1,37 @@
 #include "RenderMaterial.h"
 
+#include "Renderer.h"
+
 // ===== Constructor / Destructor ===== //
 RenderMaterial::RenderMaterial() : RenderNode()
 {
-	// === Set everything to null
-	m_pTexture = nullptr;
+	m_SampleState = SampleStates::Default;
 }
 
 RenderMaterial::~RenderMaterial()
 {
-	// === Release all objects
-	SAFE_RELEASE(m_pTexture);
+	
 }
 // ==================================== //
 
 // ===== Interface ===== //
 void RenderMaterial::Add(RenderNode* _rMaterial, RenderNode* _rShape)
 {
-
+	m_RShapesSet.Add(_rShape);
 }
 // ===================== //
 
 // ===== Private Interface ===== //
 void RenderMaterial::Apply()
 {
-
+	SampleStateManager::GetInstance()->Apply(m_SampleState);
+	ID3D11ShaderResourceView* resource = ShaderResourceManager::GetInstance()->GetShaderResource(m_ShaderResourceID);
+	Renderer::GetInstance()->GetDeviceContext()->PSSetShaderResources(0, 1, &resource);
 }
 
 void RenderMaterial::Revert()
 {
-
+	SampleStateManager::GetInstance()->Revert();
 }
 
 void RenderMaterial::DefaultMaterial_RenderProcess(RenderNode& _node)
