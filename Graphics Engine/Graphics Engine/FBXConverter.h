@@ -37,5 +37,5 @@ public:
 	void LoadMesh(const char* fileName, Mesh& mesh);
 
 	static FBXConverter* GetInstance();
-	static void DeleteInstance();
+	static void Terminate();
 };

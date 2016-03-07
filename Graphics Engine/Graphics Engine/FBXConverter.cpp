@@ -17,7 +17,7 @@ FBXConverter* FBXConverter::GetInstance(){
 	return instance;
 }
 
-void FBXConverter::DeleteInstance(){
+void FBXConverter::Terminate(){
 	delete instance;
 	instance = nullptr;
 }
