@@ -10,6 +10,9 @@ private:
 	WNDPROC m_WindProc;
 	HWND m_Window;
 
+	// === Private Interface
+	void SetupScene();
+	// ===
 	
 public:
 	// === Constructor / Destructor

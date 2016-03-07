@@ -121,6 +121,9 @@
     <ClCompile Include="ConstantBufferManager.cpp">
       <Filter>Managers\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -184,6 +187,9 @@
       <Filter>Utilities\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBufferManager.h">
+      <Filter>Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
       <Filter>Managers\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

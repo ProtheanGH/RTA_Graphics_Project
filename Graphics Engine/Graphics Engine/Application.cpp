@@ -63,3 +63,10 @@ bool Application::Run()
 	return true;
 }
 // ===================== //
+
+// ===== Private Interface ===== //
+void SetupScene()
+{
+
+}
+// ============================= //
