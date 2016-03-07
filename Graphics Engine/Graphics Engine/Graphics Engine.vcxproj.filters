@@ -121,6 +121,9 @@
     <ClCompile Include="ConstantBufferManager.cpp">
       <Filter>Managers\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -186,6 +189,9 @@
     <ClInclude Include="ConstantBufferManager.h">
       <Filter>Managers\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Managers\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">
@@ -204,6 +210,12 @@
     </None>
     <None Include="Cube.fbx">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="DefaultPixel.csh">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="DefaultVertex.csh">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

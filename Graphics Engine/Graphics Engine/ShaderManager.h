@@ -8,6 +8,10 @@
 
 #include "Renderer.h"
 
+// Shaders
+#include "DefaultPixel.csh"
+#include "DefaultVertex.csh"
+
 // DirectX
 #include <DirectXMath.h>
 using namespace DirectX;
@@ -70,6 +74,9 @@ private:
 	// Singleton class
 	static ShaderManager* m_instance;
 
+	// Helper Function
+	void Init( void );
+
 public:
 	// Defaults
 	ShaderManager ( void ) = default;
@@ -90,7 +97,7 @@ public:
 
 	// Singleton
 	ShaderManager* GetInstance( void );
-	void DeleteInstance( void );
+	void Terminate( void );
 };
 
 
