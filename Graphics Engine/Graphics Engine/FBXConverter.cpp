@@ -2,10 +2,24 @@
 #include <fstream>
 #include "MeshManager.h"
 
+FBXConverter* FBXConverter::instance = nullptr;
+
 void RemoveExtension(std::string& name);
 
 FBXConverter::~FBXConverter(){
 	fbxManager->Destroy();
+}
+
+FBXConverter* FBXConverter::GetInstance(){
+	if (instance == nullptr)
+		instance = new FBXConverter;
+
+	return instance;
+}
+
+void FBXConverter::DeleteInstance(){
+	delete instance;
+	instance = nullptr;
 }
 
 void FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
