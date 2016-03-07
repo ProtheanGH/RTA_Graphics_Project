@@ -5,6 +5,8 @@
 class FBXConverter{
 
 private:
+	static FBXConverter* instance;
+
 	FbxManager* fbxManager = nullptr;
 
 	void LoadFBX(FbxNode* _rootNode, Object* rootObject);
@@ -18,10 +20,10 @@ private:
 	void FBXConverter::SaveObject(std::fstream* file, Object& _object);
 	bool LoadObject(std::fstream* _file, Object& _object);
 
-public:
-
 	FBXConverter() = default;
 	~FBXConverter();
+
+public:
 	
 	void LoadFBX(const char* fileName, Object* object);
 
@@ -33,4 +35,7 @@ public:
 	void SaveMesh(const char* fileName, Mesh& mesh);
 
 	void LoadMesh(const char* fileName, Mesh& mesh);
+
+	static FBXConverter* GetInstance();
+	static void Terminate();
 };
