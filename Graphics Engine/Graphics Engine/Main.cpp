@@ -17,6 +17,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPTSTR, int)
 	pApp = new Application(hInstance, (WNDPROC)WndProc);
 	MSG msg; ZeroMemory(&msg, sizeof(msg));
 
+	//2986
+	FBXConverter converter;
+	Object* obj = Object::Create();
+	converter.LoadFBX("Cube.fbx", obj);
+
 	while (msg.message != WM_QUIT && pApp->Run())
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))

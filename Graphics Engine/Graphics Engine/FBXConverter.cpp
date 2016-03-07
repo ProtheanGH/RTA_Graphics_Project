@@ -80,38 +80,61 @@ void FBXConverter::LoadFBX(FbxNode* _rootNode, Object* _rootObject){
 
 void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 
-	FbxVector4* vertices = _mesh->GetControlPoints();
+	FbxVector4* controlPoints = _mesh->GetControlPoints();
+	unsigned int controlPointCount = _mesh->GetControlPointsCount();
 	unsigned int vertexCount = 0;
 	Mesh* object_mesh = new Mesh();
 
-	//Polygons are triangles
-	for (int i = 0; i < _mesh->GetPolygonCount(); ++i){
-		int numVertices = _mesh->GetPolygonSize(i);
-		if (numVertices < 3) continue;
+	for (unsigned int i = 0; i < controlPointCount; ++i){
+		Vertex_POSNORMUV vertex;
+		vertex.pos[0] = (float)controlPoints[i].mData[0];
+		vertex.pos[1] = (float)controlPoints[i].mData[1];
+		vertex.pos[2] = (float)controlPoints[i].mData[2];
 
-		for (int j = 0; j < 3; ++j){
-			int controlPointIndex = _mesh->GetPolygonVertex(i, j);
-			Vertex_POSNORMUV vertex;
-			vertex.pos[0] = (float)vertices[controlPointIndex].mData[0];
-			vertex.pos[1] = (float)vertices[controlPointIndex].mData[1];
-			vertex.pos[2] = (float)vertices[controlPointIndex].mData[2];
+		DirectX::XMFLOAT3 normal;
+		LoadNormal(_mesh, i, vertexCount, normal);
+		vertex.normal[0] = normal.x;
+		vertex.normal[1] = normal.y;
+		vertex.normal[2] = normal.z;
 
-			DirectX::XMFLOAT3 normal;
-			LoadNormal(_mesh, controlPointIndex, vertexCount, normal);
-			vertex.normal[0] = normal.x;
-			vertex.normal[1] = normal.y;
-			vertex.normal[2] = normal.z;
+		DirectX::XMFLOAT2 uv;
+		LoadUV(_mesh, i, vertexCount, uv);
 
-			DirectX::XMFLOAT2 uv;
-			LoadUV(_mesh, controlPointIndex, _mesh->GetTextureUVIndex(i, j), uv);
-			vertex.uv[0] = uv.x;
-			vertex.uv[1] = uv.y;
+		object_mesh->GetVerts().push_back(vertex);
 
-			object_mesh->GetVerts().push_back(vertex);
-
-			++vertexCount;
-		}
+		++vertexCount;
 	}
+
+	//Polygons are triangles
+	/*
+	for (int i = 0; i < _mesh->GetPolygonCount(); ++i){
+	int numVertices = _mesh->GetPolygonSize(i);
+	if (numVertices < 3) continue;
+
+	for (int j = 0; j < 3; ++j){
+	int controlPointIndex = _mesh->GetPolygonVertex(i, j);
+
+	Vertex_POSNORMUV vertex;
+	vertex.pos[0] = (float)controlPoints[controlPointIndex].mData[0];
+	vertex.pos[1] = (float)controlPoints[controlPointIndex].mData[1];
+	vertex.pos[2] = (float)controlPoints[controlPointIndex].mData[2];
+
+	DirectX::XMFLOAT3 normal;
+	LoadNormal(_mesh, controlPointIndex, vertexCount, normal);
+	vertex.normal[0] = normal.x;
+	vertex.normal[1] = normal.y;
+	vertex.normal[2] = normal.z;
+
+	DirectX::XMFLOAT2 uv;
+	LoadUV(_mesh, controlPointIndex, _mesh->GetTextureUVIndex(i, j), uv);
+	vertex.uv[0] = uv.x;
+	vertex.uv[1] = uv.y;
+
+	object_mesh->GetVerts().push_back(vertex);
+
+	++vertexCount;
+	}
+	}*/
 
 	//Vertices are indices
 	int* indices = _mesh->GetPolygonVertices();
@@ -182,11 +205,6 @@ void FBXConverter::LoadUV(FbxMesh* _mesh, int _controlPointIndex, int _textureUV
 			_outUV.x = (float)vertex_uv->GetDirectArray().GetAt(_textureUVIndex).mData[0];
 			_outUV.y = (float)vertex_uv->GetDirectArray().GetAt(_textureUVIndex).mData[1];
 		}
-		else if (vertex_uv->GetReferenceMode() == FbxGeometryElement::eIndexToDirect){
-			int index = vertex_uv->GetIndexArray().GetAt(_textureUVIndex);
-			_outUV.x = (float)vertex_uv->GetDirectArray().GetAt(index).mData[0];
-			_outUV.y = (float)vertex_uv->GetDirectArray().GetAt(index).mData[1];
-		}
 	}
 }
 
@@ -200,7 +218,7 @@ void FBXConverter::SaveObject(const char* _fileName, Object& _object){
 	file.open(file_name.c_str(), std::ios_base::binary | std::ios_base::trunc | std::ios_base::out);
 
 	if (!file.is_open()) return;
-	
+
 	file.close();
 
 	file.open(file_name.c_str(), std::ios_base::binary | std::ios_base::app | std::ios_base::out);

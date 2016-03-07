@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Renderer.h"
 
 #define DEFAULT_WIDTH 1024
 #define DEFAULT_HEIGHT 780
@@ -29,6 +30,8 @@ Application::Application(HINSTANCE _hinst, WNDPROC _proc)
 							NULL, NULL, m_Instance, this);
 
 	ShowWindow(m_Window, SW_SHOW);
+
+	Renderer::GetInstance()->Initialize(m_Window, 1, DEFAULT_WIDTH, DEFAULT_HEIGHT);
 }
 
 Application::~Application()
