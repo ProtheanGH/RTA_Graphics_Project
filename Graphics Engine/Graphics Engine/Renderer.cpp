@@ -11,7 +11,11 @@ Renderer* Renderer::m_instance = nullptr;
 /*static*/ Renderer* Renderer::GetInstance()
 {
 	if (m_instance == nullptr)
+	{
 		m_instance = new Renderer;
+		ZeroMemory( &m_instance->m_viewMatrix,       sizeof( XMMATRIX ) );
+		ZeroMemory( &m_instance->m_projectionMatrix, sizeof( XMMATRIX ) );
+	}
 	return m_instance;
 }
 
