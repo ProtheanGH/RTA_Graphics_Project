@@ -2,7 +2,7 @@
 #include <d3d11.h>
 
 // === Enum
-enum SampleStates { Default = 0, MAX_SAMPLE_STATES };
+enum SampleStates { SampleState_Default = 0, MAX_SAMPLE_STATES };
 
 class SampleStateManager
 {

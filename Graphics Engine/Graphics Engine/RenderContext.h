@@ -35,7 +35,7 @@ public:
 	// ================= //
 
 	// === Mutators === //
-	inline void SetSetting(ID3D11VertexShader* _vertexShader = nullptr, ID3D11PixelShader* _pixelShader = nullptr, BlendStates _blendState = BlendStates::Default, RasterizerStates _rasterizerState = RasterizerStates::Default) {
+	inline void SetSetting(ID3D11VertexShader* _vertexShader = nullptr, ID3D11PixelShader* _pixelShader = nullptr, BlendStates _blendState = BlendStates::BlendState_Default, RasterizerStates _rasterizerState = RasterizerStates::RasterizerState_Default) {
 		m_pVertexShader = _vertexShader;
 		m_pPixelShader = _pixelShader;
 		m_BlendState = _blendState;

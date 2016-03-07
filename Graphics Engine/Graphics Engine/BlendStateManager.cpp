@@ -8,6 +8,7 @@
 
 #include "Renderer.h"
 
+#define SAFE_RELEASE(p) { if(p) { p->Release(); p = nullptr; } }
 
 //////////////////////////////////////////////////
 // SINGLETON
@@ -55,17 +56,21 @@ void BlendStateManager::Initialize()
 	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-	Renderer::GetInstance()->GetDevice()->CreateBlendState(&blendDesc, &m_blendStates[Default]);
+	Renderer::GetInstance()->GetDevice()->CreateBlendState(&blendDesc, &m_blendStates[BlendState_Default]);
 }
 
 void BlendStateManager::Terminate()
 {
-	
+	for (int i = 0; i < BlendStates::MAX_BLENDSTATES; ++i) {
+		SAFE_RELEASE(m_blendStates[i]);
+	}
+
+	delete s_Instance;
 }
 
 void BlendStateManager::Revert()
 {
-	Renderer::GetInstance()->GetDeviceContext()->OMSetBlendState(m_blendStates[Default], 0, 0xFFFFFFFF);
+	Renderer::GetInstance()->GetDeviceContext()->OMSetBlendState(m_blendStates[BlendState_Default], 0, 0xFFFFFFFF);
 }
 
 bool BlendStateManager::Apply(BlendStates _state)

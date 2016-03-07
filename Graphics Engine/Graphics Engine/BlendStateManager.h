@@ -2,7 +2,7 @@
 // BlendStateManager.h
 // 
 // Created By:		Doug Berg
-// Last Updated:	3.2.2016
+// Last Updated:	3.7.2016
 ///////////////////////////////////////////////////////////////////
 #pragma once
 
@@ -16,7 +16,7 @@ using namespace DirectX;
 #include "Renderer.h"
 
 
-enum BlendStates{ Default = 0, 
+enum BlendStates{ BlendState_Default = 0, 
 	MAX_BLENDSTATES };
 
 

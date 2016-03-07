@@ -29,9 +29,13 @@ struct OUTPUT_VERTEX
 	float2 uv : UV;
 };
 
-cbuffer WorldViewProjection : register(b0)
+cbuffer Object : register(b0)
 {
 	float4x4 worldMatrix;
+}
+
+cbuffer Scene : register(b1)
+{
 	float4x4 viewMatrix;
 	float4x4 projection;
 }
