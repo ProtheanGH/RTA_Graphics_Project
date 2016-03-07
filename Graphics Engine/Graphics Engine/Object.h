@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "Mesh.h"
 #include <string>
+#include <d3d11.h>
 
 class Object{
 
@@ -13,8 +14,14 @@ private:
 	std::vector<Object*> children;
 	std::string name;
 
+	ID3D11Buffer* vertexBuffer;
+	ID3D11Buffer* indexBuffer;
+
 	Object();
 	~Object();
+
+	void SetBuffers();
+	void ReleaseBuffers();
 
 public:
 
@@ -22,13 +29,16 @@ public:
 	inline std::vector<Object*>& GetChildren() { return children; }
 
 	inline Mesh* GetMesh() { return mesh; }
-	inline void SetMesh(Mesh* _mesh){ mesh = _mesh; }
+	void SetMesh(Mesh* mesh);
 
 	inline Object* GetParent(){ return parent; }
 	inline void SetParent(Object* _parent){ parent = _parent; }
 
 	inline std::string& GetName() { return name; }
 	inline void SetName(std::string _name){ name = _name; }
+
+	inline ID3D11Buffer* GetVertexBuffer() { return vertexBuffer; }
+	inline ID3D11Buffer* GetIndexBuffer(){ return indexBuffer; }
 
 	static Object* Create();
 

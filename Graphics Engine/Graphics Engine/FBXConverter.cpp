@@ -1,5 +1,6 @@
 #include "FBXConverter.h"
 #include <fstream>
+#include "MeshManager.h"
 
 void RemoveExtension(std::string& name);
 
@@ -18,7 +19,9 @@ void FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
 	FbxImporter* fbxImporter = FbxImporter::Create(fbxManager, "");
 	FbxScene* fbxScene = FbxScene::Create(fbxManager, "");
 
-	bool result = fbxImporter->Initialize(_fileName, -1, fbxManager->GetIOSettings());
+	std::string file_name("Assets/");
+	file_name.append(_fileName);
+	bool result = fbxImporter->Initialize(file_name.c_str(), -1, fbxManager->GetIOSettings());
 
 	if (!result) return;
 
@@ -43,10 +46,17 @@ void FBXConverter::LoadFBX(FbxNode* _rootNode, Object* _rootObject){
 
 	int child_count = _rootNode->GetChildCount();
 
-	//Transform& root_transform = _rootObject->GetTransform();
-	//FbxDouble3 translation = _rootNode->LclTranslation.Get();
-	//FbxDouble3 rotation = _rootNode->LclRotation.Get();
-	//FbxDouble3 scale = _rootNode->LclScaling.Get();
+	Transform& root_transform = _rootObject->GetTransform();
+	FbxDouble3 translation = _rootNode->LclTranslation.Get();
+	FbxDouble3 rotation = _rootNode->LclRotation.Get();
+	FbxDouble3 scale = _rootNode->LclScaling.Get();
+
+	DirectX::XMMATRIX matrix = DirectX::XMMatrixIdentity();
+	matrix = matrix * DirectX::XMMatrixScaling(scale.mData[0], scale.mData[1], scale.mData[2]);
+	matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw(rotation.mData[0], rotation.mData[1], rotation.mData[2]);
+	matrix = matrix * DirectX::XMMatrixTranslation(translation.mData[0], translation.mData[1], translation.mData[2]);
+
+	DirectX::XMStoreFloat4x4(&root_transform.GetLocalMatrix(), matrix);
 
 	for (int i = 0; i < child_count; ++i){
 		FbxNode* child_node = _rootNode->GetChild(i);
@@ -73,7 +83,6 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 	FbxVector4* vertices = _mesh->GetControlPoints();
 	unsigned int vertexCount = 0;
 	Mesh* object_mesh = new Mesh();
-	_object->SetMesh(object_mesh);
 
 	//Polygons are triangles
 	for (int i = 0; i < _mesh->GetPolygonCount(); ++i){
@@ -93,16 +102,6 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 			vertex.normal[1] = normal.y;
 			vertex.normal[2] = normal.z;
 
-			/*bool isDupe = false;
-			for (unsigned int index = 0; index < object_mesh->GetVerts().size(); ++index){
-			if (object_mesh->GetVerts()[index].isDuplicate(vertex)){
-			isDupe = true;
-			break;
-			}
-			}
-
-			if (isDupe) continue;*/
-
 			DirectX::XMFLOAT2 uv;
 			LoadUV(_mesh, controlPointIndex, _mesh->GetTextureUVIndex(i, j), uv);
 			vertex.uv[0] = uv.x;
@@ -121,8 +120,9 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 		object_mesh->GetIndices().push_back(index);
 	}
 
-	SaveMesh(_object->GetName().c_str(), *object_mesh);
+	_object->SetMesh(object_mesh);
 
+	SaveMesh(_object->GetName().c_str(), *object_mesh);
 }
 
 void FBXConverter::LoadNormal(FbxMesh* _mesh, int _controlPointIndex, int _vertexCounter, DirectX::XMFLOAT3& _outNormal){
@@ -193,8 +193,17 @@ void FBXConverter::LoadUV(FbxMesh* _mesh, int _controlPointIndex, int _textureUV
 
 void FBXConverter::SaveObject(const char* _fileName, Object& _object){
 	std::fstream file;
+	std::string file_name("Assets/");
+	file_name.append(_fileName);
+	file_name.append(".object");
 
-	file.open(_fileName, std::ios_base::binary | std::ios_base::app | std::ios_base::out);
+	file.open(file_name.c_str(), std::ios_base::binary | std::ios_base::trunc | std::ios_base::out);
+
+	if (!file.is_open()) return;
+	
+	file.close();
+
+	file.open(file_name.c_str(), std::ios_base::binary | std::ios_base::app | std::ios_base::out);
 
 	if (!file.is_open()) return;
 
@@ -249,7 +258,10 @@ void FBXConverter::SaveObject(std::fstream* file, Object& _object){
 
 void FBXConverter::LoadObject(const char* _fileName, Object& _object){
 	std::fstream file;
-	file.open(_fileName, std::ios_base::binary | std::ios_base::in);
+	std::string file_name("Assets/");
+	file_name.append(_fileName);
+	file_name.append(".object");
+	file.open(file_name.c_str(), std::ios_base::binary | std::ios_base::in);
 
 	if (!file.is_open()) return;
 
@@ -319,8 +331,9 @@ void FBXConverter::LoadObject(std::fstream* file, Object& _object){
 }
 
 void FBXConverter::SaveMesh(const char* _fileName, Mesh& _mesh){
-	std::string file_name(_fileName);
-	file_name += ".meshfilter";
+	std::string file_name("Assets/");
+	file_name.append(_fileName);
+	file_name += ".mesh";
 
 	std::fstream file;
 	file.open(file_name.c_str(), std::ios_base::out | std::ios_base::binary);
@@ -345,8 +358,9 @@ void FBXConverter::SaveMesh(const char* _fileName, Mesh& _mesh){
 }
 
 void FBXConverter::LoadMesh(const char* _fileName, Mesh& _mesh){
-	std::string file_name(_fileName);
-	file_name += ".meshfilter";
+	std::string file_name("Assets/");
+	file_name.append(_fileName);
+	file_name += ".mesh";
 
 	std::fstream file;
 	file.open(file_name.c_str(), std::ios_base::in | std::ios_base::binary);
@@ -380,25 +394,9 @@ void FBXConverter::LoadMesh(const char* _fileName, Mesh& _mesh){
 
 
 void RemoveExtension(std::string& name){
-	int dotCount = 0;
-	for (unsigned int i = 0; i < name.size(); ++i){
-		if (name[i] == '.')
-			++dotCount;
-	}
 
-	int dotHit = 0;
-	std::string copy;
-	for (unsigned int i = 0; i < name.size(); ++i){
-		if (name[i] == '.') {
-			++dotHit;
-			if (dotHit >= dotCount)
-				break;
-		}
-
-		copy += name[i];
-	}
-
-	name = copy;
+	unsigned int pos = name.find_last_of('.');
+	name.erase(pos);
 }
 
 
