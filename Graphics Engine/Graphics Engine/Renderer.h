@@ -17,50 +17,52 @@ using namespace DirectX;
 class Renderer
 {
 private:
+	// === Static Members
+	static Renderer* s_Instance;
+
 	// === DirectX Members
 	ID3D11Device             *device;
 	IDXGISwapChain           *swapChain;
 	ID3D11RenderTargetView   *RTV;
 	ID3D11DepthStencilView   *DSV;
+	ID3D11Texture2D			 *depthStencil;
 	ID3D11DeviceContext      *deviceContext;
-	ID3D11ShaderResourceView *SRV;
-	ID3D11SamplerState       *samplerState;
 	D3D11_VIEWPORT            viewport;
 	D3D11_INPUT_ELEMENT_DESC  inputElementDesc;
-	XMMATRIX                  m_viewMatrix;
-	XMMATRIX                  m_projectionMatrix;
+	XMFLOAT4X4                m_ViewMatrix;
+	XMFLOAT4X4                m_ProjectionMatrix;
 
 	// === Members
 	RenderSet m_RenderSet;
 
+	// === Private Interface === //
+	XMFLOAT4X4 CreateProjectionMatrix(float _fov, float _width, float _height);
+	void CreateViewMatrix();
+	// ========================= //
+
 	// === DirectX Initialization === //
 	void CreateDeviceAndSwapChain ( HWND _window );
 	void CreateRTV ( void );
-	void CreateDSV ( ID3D11Texture2D* _depthStencil );
+	void CreateDSV(int _width, int _height);
+	void SetupViewports(int _width, int _height);
 	void CreateInputElementDescription ( void );
-	void CreateSamplerState ( const D3D11_SAMPLER_DESC &_description );
 	// ============================== //
 
 public:
-	static Renderer* m_instance;
-
 	// === Constructor / Destructor === //
 	Renderer  ( void ) = default;
 	~Renderer ( void ) = default;
 	Renderer(const Renderer& _copy)                = delete;
 	Renderer& operator = (const Renderer& _assign) = delete;
-	
 	// ================================ //
 
 	// === SINGLETON CLASS === //
 	static Renderer* GetInstance ( void );
-	static void DeleteInstance   ( void );
-	void Initialize( HWND _window, const int _samplerCount, const int _screenHeight, const int _screenWidth );
-	void Terminate();
 	// ======================= //
 
-
 	// === Interface === //
+	void Initialize(HWND _window, const int _samplerCount, const int _screenHeight, const int _screenWidth);
+	void Terminate();
 	void Render();
 	void AddForRendering(RenderContext* _rContext, RenderMaterial* _rMaterial, RenderShape* _rShape);
 	// ================= //
@@ -81,28 +83,24 @@ public:
 	inline ID3D11DeviceContext* GetDeviceContext() {
 		return deviceContext;
 	}
-	inline ID3D11ShaderResourceView* GetShaderResourceView() {
-		return SRV;
-	}
-	inline ID3D11SamplerState* GetSamplerState() {
-		return samplerState;
-	}
 	inline D3D11_VIEWPORT GetViewport() {
 		return viewport;
 	}
-	inline XMMATRIX GetViewMatrix() const {
-		return m_viewMatrix;
+	inline XMFLOAT4X4 GetViewMatrix() const {
+		return m_ViewMatrix;
 	}
-	inline XMMATRIX GetProjectionMatrix() const {
-		return m_projectionMatrix;
+	inline XMFLOAT4X4 GetProjectionMatrix() const {
+		return m_ProjectionMatrix;
 	}
 	// ================= //
 
-
-
 	// === Mutators === //
-	void SetViewMatrix      ( const XMMATRIX& _mat );
-	void SetProjectionMatrix( const XMMATRIX& _mat );
+	inline void SetViewMatrix(const XMFLOAT4X4& _viewMatrix) {
+		m_ViewMatrix = _viewMatrix;
+	}
+	inline void SetProjectionMatrix(const XMFLOAT4X4& _projMatrix) {
+		m_ProjectionMatrix = _projMatrix;
+	}
 	// ================ //
 
 };

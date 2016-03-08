@@ -32,6 +32,7 @@ void ShaderResourceManager::Terminate()
 	}
 
 	delete s_Instance;
+	s_Instance = nullptr;
 }
 // ===================== //
 

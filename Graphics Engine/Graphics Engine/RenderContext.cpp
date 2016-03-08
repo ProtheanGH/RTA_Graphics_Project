@@ -4,11 +4,12 @@
 // ===== Constructor / Destructor ===== //
 RenderContext::RenderContext() : RenderNode()
 {
-	// === Set Everything to Null
+	// === Default Everything
 	m_VertexShader = VertexShaderEnum::Vertex_Default;
 	m_PixelShader = PixelShaderEnum::Pixel_Default;
 	m_BlendState = BlendStates::BlendState_Default;
 	m_RasterizerStateType = RasterizerStates::RasterizerState_Default;
+	m_Func = DefaultContext_RenderProcess;
 }
 
 RenderContext::~RenderContext()
@@ -49,14 +50,16 @@ void RenderContext::Revert()
 
 void RenderContext::DefaultContext_RenderProcess(RenderNode& _node)
 {
-	Apply();
+	RenderContext& rContext = (RenderContext&)_node;
 
-	RenderNode* currNode = m_RMaterialSet.GetFront();
+	rContext.Apply();
+
+	RenderNode* currNode = rContext.m_RMaterialSet.GetFront();
 	while (currNode != nullptr) {
 		currNode->RenderProcess();
 		currNode = currNode->m_Next;
 	}
 
-	Revert();
+	rContext.Revert();
 }
 // ============================= //

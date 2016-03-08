@@ -22,7 +22,8 @@ private:
 	// === Private Interface === //
 	void Apply();
 	void Revert();
-	void DefaultContext_RenderProcess(RenderNode& _node);
+
+	static void DefaultContext_RenderProcess(RenderNode& _node);
 	// ========================= //
 
 public:

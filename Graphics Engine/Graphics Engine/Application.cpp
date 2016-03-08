@@ -1,6 +1,6 @@
 #include "Application.h"
-#include "Renderer.h"
 
+#include "Renderer.h"
 #include "BlendStateManager.h"
 #include "ConstantBufferManager.h"
 #include "FBXConverter.h"
@@ -45,24 +45,31 @@ Application::Application(HINSTANCE _hinst, WNDPROC _proc)
 
 	ShowWindow(m_Window, SW_SHOW);
 
-	// === Initialize the Managers
+	// === Initialize the Renderer
 	Renderer::GetInstance()->Initialize(m_Window, 1, DEFAULT_HEIGHT, DEFAULT_WIDTH);
+
+	// === Initialize the Managers
 	BlendStateManager::GetInstance();
+	ConstantBufferManager::GetInstance();
 	RasterizerStateManager::GetInstance();
 	SampleStateManager::GetInstance();
 	ShaderManager::GetInstance();
 	ShaderResourceManager::GetInstance();
-	ConstantBufferManager::GetInstance();
+
+	// === TEMPORARY
+	SetupScene();
 }
 
 Application::~Application()
 {
 	// === Shut everything down
-	ConstantBufferManager::GetInstance()->Terminate();
 	ShaderResourceManager::GetInstance()->Terminate();
+	ShaderManager::GetInstance()->Terminate();
 	SampleStateManager::GetInstance()->Terminate();
 	RasterizerStateManager::GetInstance()->Terminate();
+	ConstantBufferManager::GetInstance()->Terminate();
 	BlendStateManager::GetInstance()->Terminate();
+
 	Renderer::GetInstance()->Terminate();
 }
 // ==================================== //
@@ -70,17 +77,23 @@ Application::~Application()
 // ===== Interface ===== //
 bool Application::Run() 
 {
+	// === Update the Scene 
+	ToShaderScene toShaderScene;
+	toShaderScene.SceneViewMatrix = Renderer::GetInstance()->GetViewMatrix();
+	toShaderScene.SceneProjectionMatrix = Renderer::GetInstance()->GetProjectionMatrix();
+
+	ConstantBufferManager::GetInstance()->ApplySceneBuffer(&toShaderScene);
 	Renderer::GetInstance()->Render();
 	return true;
 }
 // ===================== //
 
 // ===== Private Interface ===== //
-void SetupScene()
+void Application::SetupScene()
 {
 	Object* object = Object::Create();
-	FBXConverter converter;
-	converter.LoadFBX("Cube.fbx", object);
+	FBXConverter* fbxConverter = FBXConverter::GetInstance();
+	fbxConverter->LoadFBX("Cube.fbx", object);
 
 	RenderContext* context = new RenderContext();
 	RenderMaterial* material = new RenderMaterial();

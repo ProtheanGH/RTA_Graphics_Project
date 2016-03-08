@@ -5,7 +5,9 @@
 // ===== Constructor / Destructor ===== //
 RenderMaterial::RenderMaterial() : RenderNode()
 {
+	// === Default Everything
 	m_SampleState = SampleStates::SampleState_Default;
+	m_Func = DefaultMaterial_RenderProcess;
 }
 
 RenderMaterial::~RenderMaterial()
@@ -36,14 +38,15 @@ void RenderMaterial::Revert()
 
 void RenderMaterial::DefaultMaterial_RenderProcess(RenderNode& _node)
 {
-	Apply();
+	RenderMaterial& rMaterial = (RenderMaterial&)_node;
+	rMaterial.Apply();
 
-	RenderNode* currNode = m_RShapesSet.GetFront();
+	RenderNode* currNode = rMaterial.m_RShapesSet.GetFront();
 	while (currNode != nullptr) {
 		currNode->RenderProcess();
 		currNode = currNode->m_Next;
 	}
 
-	Revert();
+	rMaterial.Revert();
 }
 // ============================= //

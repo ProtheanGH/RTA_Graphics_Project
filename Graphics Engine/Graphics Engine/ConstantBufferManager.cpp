@@ -29,6 +29,7 @@ ConstantBufferManager* ConstantBufferManager::GetInstance()
 void ConstantBufferManager::ApplyObjectBuffer(ToShaderObject* _toShaderObject)
 {
 	ID3D11DeviceContext* deviceContext = Renderer::GetInstance()->GetDeviceContext();
+
 	D3D11_MAPPED_SUBRESOURCE subResource;
 	deviceContext->Map(m_pObjectCBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, NULL, &subResource);
 	memcpy(subResource.pData, _toShaderObject, sizeof(ToShaderObject));
@@ -38,7 +39,13 @@ void ConstantBufferManager::ApplyObjectBuffer(ToShaderObject* _toShaderObject)
 
 void ConstantBufferManager::ApplySceneBuffer(ToShaderScene* _toShaderScene)
 {
+	ID3D11DeviceContext* deviceContext = Renderer::GetInstance()->GetDeviceContext();
 
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	deviceContext->Map(m_pSceneCBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, NULL, &subResource);
+	memcpy(subResource.pData, _toShaderScene, sizeof(ToShaderScene));
+	deviceContext->Unmap(m_pSceneCBuffer, 0);
+	deviceContext->VSSetConstantBuffers(1, 1, &m_pSceneCBuffer);
 }
 
 void ConstantBufferManager::Terminate()
@@ -48,6 +55,7 @@ void ConstantBufferManager::Terminate()
 	SAFE_RELEASE(m_pLightsCBuffer);
 
 	delete s_Instance;
+	s_Instance = nullptr;
 }
 // ================= //
 

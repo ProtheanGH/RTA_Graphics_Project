@@ -13,8 +13,9 @@ class RenderShape : public RenderNode
 	D3D11_PRIMITIVE_TOPOLOGY	m_TopologyType;
 
 	// === Private Interface === //
-	void DefaultShape_RenderProcess(RenderNode& _node);
+	static void DefaultShape_RenderProcess(RenderNode& _node);
 	// ========================= //
+
 public:
 	// === Constructor / Destructor === //
 	RenderShape();

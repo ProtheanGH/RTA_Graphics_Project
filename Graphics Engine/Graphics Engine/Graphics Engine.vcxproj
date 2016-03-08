@@ -174,6 +174,8 @@
     <ClInclude Include="BlendStateManager.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="ConstantBufferManager.h" />
+    <ClInclude Include="DefaultPixel.h" />
+    <ClInclude Include="DefaultVertex.h" />
     <ClInclude Include="FBXConverter.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshManager.h" />
@@ -204,7 +206,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)</VariableName>
-      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).csh</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).h</HeaderFileOutput>
     </FxCompile>
     <FxCompile Include="DefaultVertex.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
@@ -216,15 +218,13 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <VariableName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename)</VariableName>
-      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).csh</HeaderFileOutput>
+      <HeaderFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).h</HeaderFileOutput>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="chest.epic.fbx" />
     <None Include="chest.epic.mesh" />
     <None Include="Cube.fbx" />
-    <None Include="DefaultPixel.csh" />
-    <None Include="DefaultVertex.csh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -8,13 +8,9 @@
 
 // DirectX
 #include <DirectXMath.h>
-using namespace DirectX;
 #include <d3d11.h>
-#pragma comment(lib, "d3d11.lib")
 
-// Include
-#include "Renderer.h"
-
+using namespace DirectX;
 
 enum BlendStates{ BlendState_Default = 0, 
 	MAX_BLENDSTATES };

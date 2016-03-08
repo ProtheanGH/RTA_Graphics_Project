@@ -44,6 +44,7 @@ void RasterizerStateManager::Terminate()
 	}
 
 	delete s_Instance;
+	s_Instance = nullptr;
 }
 // ===================== //
 

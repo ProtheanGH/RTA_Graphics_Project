@@ -46,6 +46,7 @@ void SampleStateManager::Terminate()
 	}
 
 	delete s_Instance;
+	s_Instance = nullptr;
 }
 // ===================== //
 

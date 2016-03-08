@@ -19,7 +19,8 @@ private:
 	// === Private Interface === //
 	void Apply();
 	void Revert();
-	void DefaultMaterial_RenderProcess(RenderNode& _node);
+
+	static void DefaultMaterial_RenderProcess(RenderNode& _node);
 	// ========================= //
 
 public:

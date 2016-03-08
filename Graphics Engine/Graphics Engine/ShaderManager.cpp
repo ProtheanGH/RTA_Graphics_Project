@@ -4,56 +4,32 @@
 // Author:			Doug Berg
 // Last Updated:	3.7.2015
 ///////////////////////////////////////////////////////////////////////////
+
 #include "ShaderManager.h"
 
-#define SAFE_RELEASE(pointer) {if(pointer){pointer.Release();}}
+#include "Renderer.h"
 
+// == Shader Files
+#include "DefaultPixel.h"
+#include "DefaultVertex.h"
 
+#define SAFE_RELEASE(p) { if(p) { p->Release(); p = nullptr; } }
 
-/*static*/ShaderManager* ShaderManager::m_instance = nullptr;
+ShaderManager* ShaderManager::s_Instance = nullptr;
 
-
-
-///////////////////////////////////////////////////////////////////////////
-// ACCESSORS
-///////////////////////////////////////////////////////////////////////////
-ID3D11ComputeShader* ShaderManager::GetComputeShaders(const int _enumValue)
+// ===== Static Interface ===== //
+ShaderManager* ShaderManager::GetInstance()
 {
-	return computeShaders[_enumValue];
+	if (s_Instance == nullptr) {
+		s_Instance = new ShaderManager;
+		s_Instance->Initialize();
+	}
+
+	return s_Instance;
 }
+// ============================ //
 
-ID3D11DomainShader* ShaderManager::GetDomainShaders(const int _enumValue)
-{
-	return domainShaders[_enumValue];
-}
-
-ID3D11GeometryShader* ShaderManager::GetGeometryShaders(const int _enumValue)
-{
-	return geometryShaders[_enumValue];
-}
-
-ID3D11HullShader* ShaderManager::GetHullShaders(const int _enumValue)
-{
-	return hullShaders[_enumValue];
-}
-
-ID3D11PixelShader* ShaderManager::GetPixelShaders(const int _enumValue)
-{
-	return pixelShaders[_enumValue];
-}
-
-ID3D11VertexShader* ShaderManager::GetVertexShaders(const int _enumValue)
-{
-	return vertexShaders[_enumValue];
-}
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////
-// MUTATORS
-///////////////////////////////////////////////////////////////////////////
+// ===== Interface ===== //
 bool ShaderManager::Apply(ShaderTypeEnum _shader, const int _index)
 {
 	if (_shader < 0 || _shader > SHADER_TYPE_MAX)
@@ -62,82 +38,54 @@ bool ShaderManager::Apply(ShaderTypeEnum _shader, const int _index)
 	switch (_shader)
 	{
 	case Compute_Shader:
-		Renderer::GetInstance()->GetDeviceContext()->CSSetShader(computeShaders[_index], nullptr, 0xFFFFFFFF);
+//		Renderer::GetInstance()->GetDeviceContext()->CSSetShader(m_ComputeShaders[_index], nullptr, 0xFFFFFFFF);
 		return true;
 
 	case Domain_Shader:
-		Renderer::GetInstance()->GetDeviceContext()->DSSetShader(domainShaders[_index], nullptr, 0xFFFFFFFF);
+//		Renderer::GetInstance()->GetDeviceContext()->DSSetShader(m_DomainShaders[_index], nullptr, 0xFFFFFFFF);
 		return true;
 
 	case Hull_Shader:
-		Renderer::GetInstance()->GetDeviceContext()->HSSetShader(hullShaders[_index], nullptr, 0xFFFFFFFF);
+//		Renderer::GetInstance()->GetDeviceContext()->HSSetShader(m_HullShaders[_index], nullptr, 0xFFFFFFFF);
 		return true;
 
 	case Geometry_Shader:
-		Renderer::GetInstance()->GetDeviceContext()->GSSetShader(geometryShaders[_index], nullptr, 0xFFFFFFFF);
+//		Renderer::GetInstance()->GetDeviceContext()->GSSetShader(m_GeometryShaders[_index], nullptr, 0xFFFFFFFF);
 		return true;
 
 	case Pixel_Shader:
-		Renderer::GetInstance()->GetDeviceContext()->PSSetShader(pixelShaders[_index], nullptr, 0xFFFFFFFF);
+		Renderer::GetInstance()->GetDeviceContext()->PSSetShader(m_PixelShaders[_index], nullptr, 0);
 		return true;
 
 	case Vertex_Shader:
-		Renderer::GetInstance()->GetDeviceContext()->VSSetShader(vertexShaders[_index], nullptr, 0xFFFFFFFF);
+		Renderer::GetInstance()->GetDeviceContext()->VSSetShader(m_VertexShaders[_index], nullptr, 0);
 		return true;
 	}
 	return false;
 }
 
-
-
-///////////////////////////////////////////////////////////////////////////
-// SINGLETON
-///////////////////////////////////////////////////////////////////////////
-ShaderManager* ShaderManager::GetInstance()
-{
-	if (m_instance == nullptr)
-	{
-		m_instance = new ShaderManager;
-		Init();
-	}
-	return m_instance;
-}
-
 void ShaderManager::Terminate()
 {
-	for (int i = 0; i < COMPUTE_MAX; ++i)
-		computeShaders[i]->Release();
-	for (int i = 0; i < DOMAIN_MAX; ++i)
-		domainShaders[i]->Release();
-	for (int i = 0; i < GEOMETRY_MAX; ++i)
-		geometryShaders[i]->Release();
-	for (int i = 0; i < HULL_MAX; ++i)
-		hullShaders[i]->Release();
+//	for (int i = 0; i < COMPUTE_MAX; ++i)
+//		SAFE_RELEASE(m_ComputeShaders[i]);
+//	for (int i = 0; i < DOMAIN_MAX; ++i)
+//		SAFE_RELEASE(m_DomainShaders[i]);
+//	for (int i = 0; i < GEOMETRY_MAX; ++i)
+//		SAFE_RELEASE(m_GeometryShaders[i]);
+//	for (int i = 0; i < HULL_MAX; ++i)
+//		SAFE_RELEASE(m_HullShaders[i]);
 	for (int i = 0; i < PIXEL_MAX; ++i)
-		pixelShaders[i]->Release();
+		SAFE_RELEASE(m_PixelShaders[i]);
 	for (int i = 0; i < VERTEX_MAX; ++i)
-		vertexShaders[i]->Release();
+		SAFE_RELEASE(m_VertexShaders[i]);
 
-	// delete[] computeShaders;
-	// delete[] domainShaders;
-	// delete[] geometryShaders;
-	// delete[] hullShaders;
-	// delete[] pixelShaders;
-	// delete[] vertexShaders;
-
-	delete m_instance;
-	m_instance = nullptr;
+	delete s_Instance;
+	s_Instance = nullptr;
 }
+// ===================== //
 
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////
-// SINGLETON
-///////////////////////////////////////////////////////////////////////////
-void ShaderManager::Init()
+// ===== Private Interface ===== //
+void ShaderManager::Initialize()
 {
 	// === Compute Shaders === //
 	// Renderer::GetInstance()->GetDevice()->CreateComputeShader(compiledShader, sizeof(compiledShader), nullptr, &computeShaders[0]);
@@ -160,12 +108,13 @@ void ShaderManager::Init()
 
 
 	// === Pixel Shaders === //
-	Renderer::GetInstance()->GetDevice()->CreatePixelShader(DefaultPixel, sizeof(DefaultPixel), nullptr, &pixelShaders[0]);
+	Renderer::GetInstance()->GetDevice()->CreatePixelShader(DefaultPixel, sizeof(DefaultPixel), nullptr, &m_PixelShaders[Pixel_Default]);
 	// ===
 
 
 	// === Vertex Shaders === //
-	Renderer::GetInstance()->GetDevice()->CreateVertexShader(DefaultVertex, sizeof(DefaultVertex), nullptr, &vertexShaders[0]);
+	Renderer::GetInstance()->GetDevice()->CreateVertexShader(DefaultVertex, sizeof(DefaultVertex), nullptr, &m_VertexShaders[Vertex_Default]);
 	// ===
 }
+// ============================= //
 

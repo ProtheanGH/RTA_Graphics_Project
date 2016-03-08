@@ -3,7 +3,7 @@
 class RenderNode
 {
 	typedef void(*RenderFunc)(RenderNode& _Node);
-
+protected:
 	// === Members
 	RenderFunc m_Func;
 
@@ -20,5 +20,9 @@ public:
 	inline void RenderProcess() { m_Func(*this); }
 	virtual void Add(RenderNode* _rMaterial, RenderNode* _rShape);
 	// ================= //
+
+	// === Mutators === //
+	void SetFunc(RenderFunc _func);
+	// ================ //
 };
 

@@ -8,7 +8,7 @@
 // ===== Constructor / Destructor ===== //
 RenderShape::RenderShape()
 {
-
+	m_Func = DefaultShape_RenderProcess;
 }
 
 RenderShape::~RenderShape()
@@ -28,7 +28,7 @@ void RenderShape::DefaultShape_RenderProcess(RenderNode& _node)
 	ConstantBufferManager::GetInstance()->ApplyObjectBuffer(&toShaderObj);
 
 	// === Set the Topology 
-	Renderer::GetInstance()->GetDeviceContext()->IASetPrimitiveTopology(m_TopologyType);
+	Renderer::GetInstance()->GetDeviceContext()->IASetPrimitiveTopology(rShape.m_TopologyType);
 
 	// === Set the Vertex Buffer
 	UINT strides[] = { sizeof(Vertex_POSNORMUV) };
@@ -40,6 +40,7 @@ void RenderShape::DefaultShape_RenderProcess(RenderNode& _node)
 	Renderer::GetInstance()->GetDeviceContext()->IASetIndexBuffer(rShape.m_pObject->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 
 	// === Draw
+	unsigned int size = rShape.m_pObject->GetMesh()->GetIndices().size();
 	Renderer::GetInstance()->GetDeviceContext()->DrawIndexed(rShape.m_pObject->GetMesh()->GetIndices().size(), 0, 0);
 }
 // ========================= //

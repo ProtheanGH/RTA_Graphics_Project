@@ -2,7 +2,7 @@
 
 // === Color Initializations
 Color Colors::RED = Color(1.0, 0.0, 0.0, 1.0);
-Color Colors::BLUE = Color(0.0, 0.0, 0.0, 1.0);
+Color Colors::BLUE = Color(0.0, 0.0, 1.0, 1.0);
 Color Colors::GREEN = Color(0.0, 1.0, 0.0, 1.0);
 Color Colors::WHITE = Color(1.0, 1.0, 1.0, 1.0);
 Color Colors::BLACK = Color(0.0, 0.0, 0.0, 1.0);
