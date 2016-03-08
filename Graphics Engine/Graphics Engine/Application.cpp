@@ -7,6 +7,7 @@
 #include "RasterizerStateManager.h"
 #include "Renderer.h"
 #include "SampleStateManager.h"
+#include "ShaderManager.h"
 #include "ShaderResourceManager.h"
 
 // ==== TEMP
@@ -80,7 +81,7 @@ void SetupScene()
 	Object* object = Object::Create();
 	FBXConverter converter;
 	converter.LoadFBX("Cube.fbx", object);
-	
+
 	RenderContext* context = new RenderContext();
 	RenderMaterial* material = new RenderMaterial();
 	RenderShape* shape = new RenderShape();
