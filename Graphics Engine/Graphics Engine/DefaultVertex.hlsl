@@ -22,7 +22,6 @@ struct INPUT_VERTEX
 
 struct OUTPUT_VERTEX
 {
-	float4 colorOut : COLOR;
 	float4 projectedCoordinate : SV_POSITION;
 	float4 worldPosition : WORLDPOS;
 	float4 normals : NORMALS;
