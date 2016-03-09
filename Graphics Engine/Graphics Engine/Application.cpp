@@ -64,7 +64,7 @@ Application::Application(HINSTANCE _hinst, WNDPROC _proc)
 	ShaderManager::GetInstance();
 	ShaderResourceManager::GetInstance();
 
-	m_Time = GetTickCount64();
+	m_Time = (unsigned long)GetTickCount64();
 
 	// === TEMPORARY
 	SetupScene();
@@ -91,7 +91,7 @@ Application::~Application()
 bool Application::Run() 
 {
 	// === Update the Time (in seconds)
-	float deltaTime = (GetTickCount64() - m_Time);
+	float deltaTime = (float)((GetTickCount64() - (unsigned long long)m_Time));
 	deltaTime /= 1000;
 	m_Time = GetTickCount();
 

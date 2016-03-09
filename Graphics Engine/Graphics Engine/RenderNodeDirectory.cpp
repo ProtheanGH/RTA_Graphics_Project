@@ -45,17 +45,17 @@ RenderShape* RenderNodeDirectory::CreateRenderShape()
 
 void RenderNodeDirectory::Terminate()
 {
-	unsigned int size = m_RenderContextes.size();
+	unsigned int size = (unsigned int)m_RenderContextes.size();
 	for (unsigned int i = 0; i < size; ++i) {
 		delete m_RenderContextes[i];
 	}
 
-	size = m_RenderMaterials.size();
+	size = (unsigned int)m_RenderMaterials.size();
 	for (unsigned int i = 0; i < size; ++i) {
 		delete m_RenderMaterials[i];
 	}
 
-	size = m_RenderShapes.size();
+	size = (unsigned int)m_RenderShapes.size();
 	for (unsigned int i = 0; i < size; ++i) {
 		delete m_RenderShapes[i];
 	}
