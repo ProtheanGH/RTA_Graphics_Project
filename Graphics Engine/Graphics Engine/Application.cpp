@@ -101,10 +101,16 @@ bool Application::Run()
 
 	// === Update the Scene 
 	ToShaderScene toShaderScene;
+	ToShaderLight toShaderLight;
 	toShaderScene.SceneViewMatrix = m_Camera.GetViewMatrix();
 	toShaderScene.SceneProjectionMatrix = Renderer::GetInstance()->GetProjectionMatrix();
-
+	toShaderLight.diffuseColor     = XMFLOAT4( 201.0f, 226.0f, 255.0f, 1.0f );	// Color of overcast sky
+	toShaderLight.diffuseDirection = XMFLOAT4( 1.0f,  -1.0f,   1.0f,   1.0f );
+	toShaderLight.pointColor       = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
+	toShaderLight.pointPosition    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
 	ConstantBufferManager::GetInstance()->ApplySceneBuffer(&toShaderScene);
+	ConstantBufferManager::GetInstance()->ApplyLightBuffer(&toShaderLight);
+	
 	Renderer::GetInstance()->Render();
 	return true;
 }

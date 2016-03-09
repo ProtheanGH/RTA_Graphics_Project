@@ -36,6 +36,7 @@ public:
 	// === Interface === //
 	void ApplyObjectBuffer(ToShaderObject* _toShaderObject);
 	void ApplySceneBuffer(ToShaderScene* _toShaderScene);
+	void ApplyLightBuffer(ToShaderLight* _toShaderLight);
 	void Terminate();
 	// ================= //
 };

@@ -9,7 +9,7 @@ ConstantBufferManager* ConstantBufferManager::s_Instance = nullptr;
 // ===== Destructor ===== //
 ConstantBufferManager::~ConstantBufferManager()
 {
-
+	
 }
 // ====================== //
 
@@ -48,6 +48,17 @@ void ConstantBufferManager::ApplySceneBuffer(ToShaderScene* _toShaderScene)
 	deviceContext->VSSetConstantBuffers(1, 1, &m_pSceneCBuffer);
 }
 
+void ConstantBufferManager::ApplyLightBuffer(ToShaderLight* _toShaderLight)
+{
+	ID3D11DeviceContext* deviceContext = Renderer::GetInstance()->GetDeviceContext();
+
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	deviceContext->Map(m_pLightsCBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, NULL, &subResource);
+	memcpy(subResource.pData, _toShaderLight, sizeof(ToShaderLight));
+	deviceContext->Unmap(m_pLightsCBuffer, 0);
+	deviceContext->PSSetConstantBuffers(0, 1, &m_pLightsCBuffer);
+}
+
 void ConstantBufferManager::Terminate()
 {
 	SAFE_RELEASE(m_pObjectCBuffer);
@@ -63,6 +74,7 @@ void ConstantBufferManager::Terminate()
 void ConstantBufferManager::Initialize()
 {
 	D3D11_BUFFER_DESC bufferDesc;
+	HRESULT hr;
 
 	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
 	bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -77,5 +89,10 @@ void ConstantBufferManager::Initialize()
 	// == Scene Buffer
 	bufferDesc.ByteWidth = sizeof(ToShaderScene);
 	Renderer::GetInstance()->GetDevice()->CreateBuffer(&bufferDesc, NULL, &m_pSceneCBuffer);
+
+	// == Light Buffer
+	bufferDesc.ByteWidth = sizeof(ToShaderLight);
+	hr = Renderer::GetInstance()->GetDevice()->CreateBuffer(&bufferDesc, nullptr, &m_pLightsCBuffer);
+	assert(hr == S_OK);
 }
 // ============================= //

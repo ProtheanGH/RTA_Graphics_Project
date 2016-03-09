@@ -130,7 +130,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Utilities\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RenderNodeDirectory.cpp" />
+    <ClCompile Include="RenderNodeDirectory.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -211,7 +213,9 @@
     <ClInclude Include="Camera.h">
       <Filter>Utilities\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderNodeDirectory.h" />
+    <ClInclude Include="RenderNodeDirectory.h">
+      <Filter>Managers\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">

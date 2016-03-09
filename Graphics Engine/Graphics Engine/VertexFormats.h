@@ -64,3 +64,10 @@ struct ToShaderScene {
 	XMFLOAT4X4 SceneProjectionMatrix;
 };
 
+struct ToShaderLight {
+	XMFLOAT4 diffuseDirection;
+	XMFLOAT4 diffuseColor;
+	XMFLOAT4 pointPosition;
+	XMFLOAT4 pointColor;
+};
+
