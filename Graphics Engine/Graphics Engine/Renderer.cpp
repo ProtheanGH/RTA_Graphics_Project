@@ -90,7 +90,10 @@ XMFLOAT4X4 Renderer::CreateProjectionMatrix(float _fov, float _width, float _hei
 
 void Renderer::CreateViewMatrix() 
 {
-	m_ViewMatrix = XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, -2, 1);
+	m_ViewMatrix = XMFLOAT4X4(1, 0,  0, 0,
+							  0, 1,  0, 0,
+							  0, 0,  1, 0,
+							  0, 1, -2, 1);
 	XMMATRIX matrix = XMLoadFloat4x4(&m_ViewMatrix);
 	XMVECTOR determinant = XMMatrixDeterminant(matrix);
 	matrix = XMMatrixInverse(&determinant, matrix);

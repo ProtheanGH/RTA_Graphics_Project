@@ -108,6 +108,10 @@ bool Application::Run()
 	toShaderLight.diffuseDirection = XMFLOAT4( 1.0f,  -1.0f,   1.0f,   1.0f );
 	toShaderLight.pointColor       = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
 	toShaderLight.pointPosition    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
+	toShaderLight.spotPosition     = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
+	toShaderLight.spotDirection    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
+	toShaderLight.spotColor        = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
+	toShaderLight.spotConeRatio    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
 	ConstantBufferManager::GetInstance()->ApplySceneBuffer(&toShaderScene);
 	ConstantBufferManager::GetInstance()->ApplyLightBuffer(&toShaderLight);
 	

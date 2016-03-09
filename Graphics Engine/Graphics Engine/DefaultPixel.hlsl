@@ -30,12 +30,18 @@ SamplerState filter : register(s0);
 cbuffer LIGHT_BUFFER : register(b0)
 {
 	// Directional
-	float4 diffuseLightDirection : DIRECTION;
-	float4 diffuseLightColor : COLOR;
+	float4 diffuseLightDirection : DF_DIRECTION;
+	float4 diffuseLightColor : DF_COLOR;
 
 	// Point
-	float4 pointLightLocation : LOCATION;
-	float4 pointLightColor : PL_COLOR;
+	float4 pointLightLocation : PT_LOCATION;
+	float4 pointLightColor : PT_COLOR;
+
+	// Spot
+	float4 spotLightLocation : SP_LOCATION;
+	float4 spotLightDirection : SP_DIRECTION;
+	float4 spotLightColor : SP_COLOR;
+	float4 spotLightConeRatio : SP_RATIO;
 }
 // ===
 

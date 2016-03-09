@@ -69,5 +69,9 @@ struct ToShaderLight {
 	XMFLOAT4 diffuseColor;
 	XMFLOAT4 pointPosition;
 	XMFLOAT4 pointColor;
+	XMFLOAT4 spotPosition;
+	XMFLOAT4 spotDirection;
+	XMFLOAT4 spotColor;
+	XMFLOAT4 spotConeRatio;
 };
 
