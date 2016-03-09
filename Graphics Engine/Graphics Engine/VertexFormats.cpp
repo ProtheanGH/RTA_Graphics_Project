@@ -1,5 +1,11 @@
 #include "VertexFormats.h"
 
+#include "Renderer.h"
+
+#include "DefaultVertex.h"
+
+#define SAFE_RELEASE(p) { if(p) { p->Release(); p = nullptr; } }
+
 // === VertexFormats
 VertexFormats::VertexFormats()
 {
@@ -32,10 +38,47 @@ InputLayoutManager* InputLayoutManager::GetInstance()
 }
 // ======================== //
 
+// ===== Interface ===== //
+void InputLayoutManager::Apply(InputLayouts _inputLayout)
+{
+	if (_inputLayout >= MAX_INPUT_LAYOUTS) {
+		Renderer::GetInstance()->GetDeviceContext()->IASetInputLayout(m_InputLayouts[InputLayout_Default]);
+	}
+	else {
+		Renderer::GetInstance()->GetDeviceContext()->IASetInputLayout(m_InputLayouts[_inputLayout]);
+	}
+}
+
+void InputLayoutManager::Revert()
+{
+	Renderer::GetInstance()->GetDeviceContext()->IASetInputLayout(m_InputLayouts[InputLayout_Default]);
+}
+
+void InputLayoutManager::Terminate()
+{
+	for (int i = 0; i < MAX_INPUT_LAYOUTS; ++i) {
+		SAFE_RELEASE(m_InputLayouts[i]);
+	}
+
+	delete s_Instance;
+	s_Instance = nullptr;
+}
+// ===================== //
+
 // === Private Interface === //
 void InputLayoutManager::Initialize()
 {
-	// *** Add in all the Input Layouts
+	ID3D11Device* device = Renderer::GetInstance()->GetDevice();
+	// === Default InputLayout
+	D3D11_INPUT_ELEMENT_DESC layoutDescription[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "NORMALS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "UV", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+	};
+
+	device->CreateInputLayout(layoutDescription, sizeof(layoutDescription) / sizeof(D3D11_INPUT_ELEMENT_DESC), DefaultVertex, sizeof(DefaultVertex), &m_InputLayouts[InputLayout_Default]);
 }
 // ========================= //
 

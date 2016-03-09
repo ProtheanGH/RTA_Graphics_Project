@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BlendStateManager.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="ConstantBufferManager.cpp" />
     <ClCompile Include="FBXConverter.cpp" />
@@ -156,11 +157,13 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="RasterizerStateManager.cpp" />
     <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderMaterial.cpp" />
     <ClCompile Include="RenderNode.cpp" />
+    <ClCompile Include="RenderNodeDirectory.cpp" />
     <ClCompile Include="RenderSet.cpp" />
     <ClCompile Include="RenderShape.cpp" />
     <ClCompile Include="SampleStateManager.cpp" />
@@ -172,6 +175,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="BlendStateManager.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="ConstantBufferManager.h" />
     <ClInclude Include="DefaultPixel.h" />
@@ -180,11 +184,13 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshManager.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="RasterizerStateManager.h" />
     <ClInclude Include="RenderContext.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderMaterial.h" />
     <ClInclude Include="RenderNode.h" />
+    <ClInclude Include="RenderNodeDirectory.h" />
     <ClInclude Include="RenderSet.h" />
     <ClInclude Include="RenderShape.h" />
     <ClInclude Include="SampleStateManager.h" />

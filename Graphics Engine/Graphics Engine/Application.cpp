@@ -4,11 +4,15 @@
 #include "BlendStateManager.h"
 #include "ConstantBufferManager.h"
 #include "FBXConverter.h"
+#include "ObjectManager.h"
 #include "RasterizerStateManager.h"
 #include "Renderer.h"
 #include "SampleStateManager.h"
 #include "ShaderManager.h"
 #include "ShaderResourceManager.h"
+#include "VertexFormats.h"
+
+#include <ctime>
 
 // ==== TEMP
 #include "RenderContext.h"
@@ -51,10 +55,14 @@ Application::Application(HINSTANCE _hinst, WNDPROC _proc)
 	// === Initialize the Managers
 	BlendStateManager::GetInstance();
 	ConstantBufferManager::GetInstance();
+	InputLayoutManager::GetInstance();
+	ObjectManager::GetInstance();
 	RasterizerStateManager::GetInstance();
 	SampleStateManager::GetInstance();
 	ShaderManager::GetInstance();
 	ShaderResourceManager::GetInstance();
+
+	m_Time = GetTickCount64();
 
 	// === TEMPORARY
 	SetupScene();
@@ -67,6 +75,8 @@ Application::~Application()
 	ShaderManager::GetInstance()->Terminate();
 	SampleStateManager::GetInstance()->Terminate();
 	RasterizerStateManager::GetInstance()->Terminate();
+	ObjectManager::GetInstance()->Terminate();
+	InputLayoutManager::GetInstance()->Terminate();
 	ConstantBufferManager::GetInstance()->Terminate();
 	BlendStateManager::GetInstance()->Terminate();
 
@@ -77,9 +87,17 @@ Application::~Application()
 // ===== Interface ===== //
 bool Application::Run() 
 {
+	// === Update the Time (in seconds)
+	float deltaTime = (GetTickCount64() - m_Time);
+	deltaTime /= 1000;
+	m_Time = GetTickCount();
+
+	// === Update the Camera
+	m_Camera.Update(deltaTime);
+
 	// === Update the Scene 
 	ToShaderScene toShaderScene;
-	toShaderScene.SceneViewMatrix = Renderer::GetInstance()->GetViewMatrix();
+	toShaderScene.SceneViewMatrix = m_Camera.GetViewMatrix();
 	toShaderScene.SceneProjectionMatrix = Renderer::GetInstance()->GetProjectionMatrix();
 
 	ConstantBufferManager::GetInstance()->ApplySceneBuffer(&toShaderScene);
@@ -91,7 +109,7 @@ bool Application::Run()
 // ===== Private Interface ===== //
 void Application::SetupScene()
 {
-	Object* object = Object::Create();
+	Object* object = ObjectManager::GetInstance()->CreateNewObject();
 	FBXConverter* fbxConverter = FBXConverter::GetInstance();
 	fbxConverter->LoadFBX("Cube.fbx", object);
 
@@ -101,5 +119,12 @@ void Application::SetupScene()
 	shape->SetObject(object);
 
 	Renderer::GetInstance()->AddForRendering(context, material, shape);
+
+	for (unsigned int i = 0; i < object->GetChildren().size(); ++i) {
+		shape = new RenderShape();
+		shape->SetObject(object->GetChildren()[i]);
+
+		Renderer::GetInstance()->AddForRendering(context, material, shape);
+	}
 }
 // ============================= //

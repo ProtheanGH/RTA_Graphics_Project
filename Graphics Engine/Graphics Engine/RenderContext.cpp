@@ -9,6 +9,7 @@ RenderContext::RenderContext() : RenderNode()
 	m_PixelShader = PixelShaderEnum::Pixel_Default;
 	m_BlendState = BlendStates::BlendState_Default;
 	m_RasterizerStateType = RasterizerStates::RasterizerState_Default;
+	m_InputLayout = InputLayouts::InputLayout_Default;
 	m_Func = DefaultContext_RenderProcess;
 }
 
@@ -39,6 +40,7 @@ void RenderContext::Apply()
 	ShaderManager::GetInstance()->Apply(ShaderTypeEnum::Pixel_Shader, m_PixelShader);
 	BlendStateManager::GetInstance()->Apply(m_BlendState);
 	RasterizerStateManager::GetInstance()->Apply(m_RasterizerStateType);
+	InputLayoutManager::GetInstance()->Apply(m_InputLayout);
 }
 
 void RenderContext::Revert()
@@ -46,6 +48,7 @@ void RenderContext::Revert()
 	// === Revert to Defaults
 	BlendStateManager::GetInstance()->Revert();
 	RasterizerStateManager::GetInstance()->Revert();
+	InputLayoutManager::GetInstance()->Revert();
 }
 
 void RenderContext::DefaultContext_RenderProcess(RenderNode& _node)
