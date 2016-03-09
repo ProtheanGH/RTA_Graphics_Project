@@ -31,7 +31,7 @@ void Object::SetBuffers(){
 	D3D11_BUFFER_DESC vertexBufferDesc;
 	ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
 	vertexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	vertexBufferDesc.ByteWidth = sizeof(Vertex_POSNORMUV)* mesh->GetVerts().size();
+	vertexBufferDesc.ByteWidth = sizeof(Vertex_POSNORMUV)* (unsigned int)mesh->GetVerts().size();
 	vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 
 	D3D11_SUBRESOURCE_DATA vertexData;
@@ -45,7 +45,7 @@ void Object::SetBuffers(){
 	D3D11_BUFFER_DESC indexBufferDesc;
 	ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
 	indexBufferDesc.Usage = D3D11_USAGE_DEFAULT;
-	indexBufferDesc.ByteWidth = sizeof(unsigned int)* mesh->GetIndices().size();
+	indexBufferDesc.ByteWidth = sizeof(unsigned int)* (unsigned int)mesh->GetIndices().size();
 	indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
 
 	D3D11_SUBRESOURCE_DATA indexData;

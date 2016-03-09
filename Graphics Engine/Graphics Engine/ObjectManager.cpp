@@ -31,7 +31,7 @@ Object* ObjectManager::CreateNewObject()
 
 void ObjectManager::UpdateObjects()
 {
-	unsigned int objCount = m_Objects.size();
+	unsigned int objCount = (unsigned int)m_Objects.size();
 	for (unsigned int i = 0; i < objCount; ++i) {
 		// === ADD IN UPDATE CODE
 	}
@@ -39,7 +39,7 @@ void ObjectManager::UpdateObjects()
 
 void ObjectManager::Terminate()
 {
-	unsigned int objCount = m_Objects.size();
+	unsigned int objCount = (unsigned int)m_Objects.size();
 	for (unsigned int i = 0; i < objCount; ++i) {
 		m_Objects[i]->Destroy();
 	}
