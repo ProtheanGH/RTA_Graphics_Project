@@ -68,9 +68,9 @@ void FBXConverter::LoadFBX(FbxNode* _rootNode, Object* _rootObject){
 	FbxDouble3 scale = _rootNode->LclScaling.Get();
 
 	DirectX::XMMATRIX matrix = DirectX::XMMatrixIdentity();
-	matrix = matrix * DirectX::XMMatrixScaling(scale.mData[0], scale.mData[1], scale.mData[2]);
-	matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw(rotation.mData[0], rotation.mData[1], rotation.mData[2]);
-	matrix = matrix * DirectX::XMMatrixTranslation(translation.mData[0], translation.mData[1], translation.mData[2]);
+	matrix = matrix * DirectX::XMMatrixScaling((float)scale.mData[0], (float)scale.mData[1], (float)scale.mData[2]);
+	matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw((float)rotation.mData[0], (float)rotation.mData[1], (float)rotation.mData[2]);
+	matrix = matrix * DirectX::XMMatrixTranslation((float)translation.mData[0], (float)translation.mData[1], (float)translation.mData[2]);
 
 	DirectX::XMStoreFloat4x4(&root_transform.GetLocalMatrix(), matrix);
 
@@ -250,7 +250,7 @@ void FBXConverter::SaveObject(std::fstream* file, Object& _object){
 	_object.GetName() += '\0';
 
 	//write the size of the objects name
-	unsigned int nameSize = _object.GetName().size();
+	unsigned int nameSize = (unsigned int)_object.GetName().size();
 	file->write((char*)&nameSize, sizeof(nameSize));
 
 	//write the objects name
@@ -267,14 +267,14 @@ void FBXConverter::SaveObject(std::fstream* file, Object& _object){
 
 	if (hasMesh){
 
-		unsigned int vertCount = _object.GetMesh()->GetVerts().size();
+		unsigned int vertCount = (unsigned int)_object.GetMesh()->GetVerts().size();
 		//write the number of vertices in the mesh
 		file->write((char*)&vertCount, sizeof(vertCount));
 
 		//write out all of the vertices
 		file->write((char*)_object.GetMesh()->GetVerts().data(), sizeof(Vertex_POSNORMUV)* vertCount);
 
-		unsigned int indicesCount = _object.GetMesh()->GetIndices().size();
+		unsigned int indicesCount = (unsigned int)_object.GetMesh()->GetIndices().size();
 		//write the number of indices
 		file->write((char*)&indicesCount, sizeof(indicesCount));
 
@@ -282,7 +282,7 @@ void FBXConverter::SaveObject(std::fstream* file, Object& _object){
 		file->write((char*)_object.GetMesh()->GetIndices().data(), sizeof(unsigned int)* indicesCount);
 	}
 
-	unsigned int child_count = _object.GetChildren().size();
+	unsigned int child_count = (unsigned int)_object.GetChildren().size();
 	file->write((char*)&child_count, sizeof(unsigned int));
 
 	for (unsigned int i = 0; i < child_count; ++i){
@@ -379,11 +379,11 @@ void FBXConverter::SaveMesh(const char* _fileName, Mesh& _mesh){
 	if (file.is_open() == false) return;
 
 	//write out the amount of vertices
-	unsigned int vertCount = _mesh.GetVerts().size();
+	unsigned int vertCount = (unsigned int)_mesh.GetVerts().size();
 	file.write((char*)&vertCount, sizeof(vertCount));
 
 	//write out the amount of vertices
-	unsigned int indexCount = _mesh.GetVerts().size();
+	unsigned int indexCount = (unsigned int)_mesh.GetVerts().size();
 	file.write((char*)&indexCount, sizeof(indexCount));
 
 	//write out all of the vertices
@@ -433,7 +433,7 @@ void FBXConverter::LoadMesh(const char* _fileName, Mesh& _mesh){
 
 void RemoveExtension(std::string& name){
 
-	unsigned int pos = name.find_last_of('.');
+	unsigned int pos = (unsigned int)name.find_last_of('.');
 	name.erase(pos);
 }
 

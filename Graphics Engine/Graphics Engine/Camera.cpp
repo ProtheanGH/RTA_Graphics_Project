@@ -63,13 +63,13 @@ void Camera::Update(float _deltaTime)
 		if (newCursorPos.x != m_CursorPosition.x) {
 			XMVECTOR position = matrix.r[3];
 			matrix = XMMatrixMultiply(matrix, XMMatrixTranslation(0, 0, 0));
-			distance = m_CursorPosition.x - newCursorPos.x;
+			distance = (float)m_CursorPosition.x - (float)newCursorPos.x;
 			matrix = XMMatrixMultiply(matrix, XMMatrixRotationY(-distance * 0.0174532925f));
 			matrix.r[3] = position;
 		}
 		// === Up / Down Rotation
 		if (newCursorPos.y != m_CursorPosition.y) {
-			distance = m_CursorPosition.y - newCursorPos.y;
+			distance = (float)m_CursorPosition.y - (float)newCursorPos.y;
 			matrix = XMMatrixMultiply(XMMatrixRotationX(-distance * 0.0174532925f), matrix);
 		}
 

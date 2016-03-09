@@ -44,7 +44,7 @@ private:
 	void CreateDeviceAndSwapChain ( HWND _window );
 	void CreateRTV ( void );
 	void CreateDSV(int _width, int _height);
-	void SetupViewports(int _width, int _height);
+	void SetupViewports(float _width, float _height);
 	void CreateInputElementDescription ( void );
 	// ============================== //
 
@@ -61,7 +61,7 @@ public:
 	// ======================= //
 
 	// === Interface === //
-	void Initialize(HWND _window, const int _samplerCount, const int _screenHeight, const int _screenWidth);
+	void Initialize(HWND _window, const int _samplerCount, const float _screenHeight, const float _screenWidth);
 	void Terminate();
 	void Render();
 	void AddForRendering(RenderContext* _rContext, RenderMaterial* _rMaterial, RenderShape* _rShape);

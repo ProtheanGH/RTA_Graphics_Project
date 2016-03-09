@@ -2,7 +2,7 @@
 
 #include "Color.h"
 
-#define SAFE_RELEASE(pointer) {if(pointer){pointer->Release(); pointer = nullptr;}}
+// #define SAFE_RELEASE(pointer) {if(pointer){pointer->Release(); pointer = nullptr;}}
 
 // Instantiate static instance
 Renderer* Renderer::s_Instance = nullptr;
@@ -19,13 +19,11 @@ Renderer* Renderer::GetInstance()
 // ============================ //
 
 // ===== Interface ===== //
-void Renderer::Initialize(HWND _window, const int _samplerCount, const int _screenHeight, const int _screenWidth)
+void Renderer::Initialize(HWND _window, const int _samplerCount, const float _screenHeight, const float _screenWidth)
 {
-	HRESULT hr;
-
 	CreateDeviceAndSwapChain(_window);
 	CreateRTV();
-	CreateDSV(_screenWidth, _screenHeight);
+	CreateDSV((int)_screenWidth, (int)_screenHeight);
 	CreateInputElementDescription();
 	SetupViewports(_screenWidth, _screenHeight);
 
@@ -86,10 +84,10 @@ XMFLOAT4X4 Renderer::CreateProjectionMatrix(float _fov, float _width, float _hei
 	float yScale = (1 / tan(verticalFOV * 0.5f)), xScale = yScale / aspectRatio;
 
 	return XMFLOAT4X4
-		(xScale, 0, 0, 0,
-		0, yScale, 0, 0,
-		0, 0, farPlane / (farPlane - nearPlane), 1,
-		0, 0, (-(farPlane * nearPlane)) / (farPlane - nearPlane), 0);
+		(xScale, 0,      0,                                                  0,
+		 0,      yScale, 0,                                                  0,
+		 0,      0,      farPlane / (farPlane - nearPlane),                  1,
+		 0,      0,      (-(farPlane * nearPlane)) / (farPlane - nearPlane), 0);
 }
 
 void Renderer::CreateViewMatrix() 
@@ -174,10 +172,10 @@ void Renderer::CreateDSV(int _width, int _height)
 	device->CreateDepthStencilView(depthStencil, &viewDescription, &DSV);
 }
 
-void Renderer::SetupViewports(int _width, int _height)
+void Renderer::SetupViewports(float _width, float _height)
 {
-	viewport.Height = _height;
-	viewport.Width = _width;
+	viewport.Height   = _height;
+	viewport.Width    = _width;
 	viewport.MinDepth = 0;
 	viewport.MaxDepth = 1;
 	viewport.TopLeftX = 0;
