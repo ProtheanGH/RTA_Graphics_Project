@@ -3,6 +3,9 @@
 #include "Application.h"
 #include "FBXConverter.h"
 
+// Leak detection
+#define _CRTDBG_MAP_ALLOC
+
 #pragma comment(lib, "d3d11.lib")
 
 Application* pApp;
@@ -14,6 +17,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wparam, LPARAM lparam);
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPTSTR, int)
 {
 	srand(unsigned int(time(0)));
+	// Leak detection
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetBreakAlloc(-1);
+
 	pApp = new Application(hInstance, (WNDPROC)WndProc);
 	MSG msg; ZeroMemory(&msg, sizeof(msg));
 

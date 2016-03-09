@@ -2,6 +2,7 @@
 #include "Camera.h"
 
 #include <Windows.h>
+#include <D3D11SDKLayers.h>
 
 class Application
 {

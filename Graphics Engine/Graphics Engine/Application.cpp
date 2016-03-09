@@ -82,6 +82,7 @@ Application::~Application()
 	InputLayoutManager::GetInstance()->Terminate();
 	ConstantBufferManager::GetInstance()->Terminate();
 	BlendStateManager::GetInstance()->Terminate();
+	FBXConverter::GetInstance()->Terminate();
 
 	Renderer::GetInstance()->Terminate();
 }
@@ -124,7 +125,7 @@ void Application::SetupScene()
 	Renderer::GetInstance()->AddForRendering(context, material, shape);
 
 	for (unsigned int i = 0; i < object->GetChildren().size(); ++i) {
-		shape = new RenderShape();
+		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 		shape->SetObject(object->GetChildren()[i]);
 
 		Renderer::GetInstance()->AddForRendering(context, material, shape);

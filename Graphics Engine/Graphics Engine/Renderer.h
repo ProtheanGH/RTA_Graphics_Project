@@ -45,7 +45,6 @@ private:
 	void CreateRTV ( void );
 	void CreateDSV(int _width, int _height);
 	void SetupViewports(float _width, float _height);
-	void CreateInputElementDescription ( void );
 	// ============================== //
 
 public:

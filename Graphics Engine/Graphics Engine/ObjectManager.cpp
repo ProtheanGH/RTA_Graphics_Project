@@ -42,6 +42,7 @@ void ObjectManager::Terminate()
 	unsigned int objCount = (unsigned int)m_Objects.size();
 	for (unsigned int i = 0; i < objCount; ++i) {
 		m_Objects[i]->Destroy();
+		delete m_Objects[i];
 	}
 
 	delete s_Instance;

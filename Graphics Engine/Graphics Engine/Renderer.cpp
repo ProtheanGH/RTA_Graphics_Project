@@ -2,8 +2,6 @@
 
 #include "Color.h"
 
-// #define SAFE_RELEASE(pointer) {if(pointer){pointer->Release(); pointer = nullptr;}}
-
 // Instantiate static instance
 Renderer* Renderer::s_Instance = nullptr;
 
@@ -24,7 +22,6 @@ void Renderer::Initialize(HWND _window, const int _samplerCount, const float _sc
 	CreateDeviceAndSwapChain(_window);
 	CreateRTV();
 	CreateDSV((int)_screenWidth, (int)_screenHeight);
-	CreateInputElementDescription();
 	SetupViewports(_screenWidth, _screenHeight);
 
 	// === Float4x4 Initialization (Probably will be moved later)
@@ -38,6 +35,7 @@ void Renderer::Terminate()
 	SAFE_RELEASE(swapChain);
 	SAFE_RELEASE(RTV);
 	SAFE_RELEASE(DSV);
+	SAFE_RELEASE(depthStencil);
 	SAFE_RELEASE(deviceContext);
 
 	delete s_Instance;
@@ -180,21 +178,5 @@ void Renderer::SetupViewports(float _width, float _height)
 	viewport.MaxDepth = 1;
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
-}
-
-void Renderer::CreateInputElementDescription()
-{
-	//	inputElementDesc[] =
-	//	{
-	//		{ "NAME", 0, FORMAT, 0, ELEMENT, DATA, 0 }
-	//	};
-
-
-	//	inputElementDesc[] =
-	//	{
-	//		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	//		{ "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	//		{ "UV",       0, DXGI_FORMAT_R32G32_FLOAT,       0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-	//	};
 }
 // ================================== //

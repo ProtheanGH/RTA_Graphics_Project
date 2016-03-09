@@ -2,7 +2,7 @@
 // BlendStateManager.cpp
 //
 // Created By:		Doug Berg
-// Last Updated:	3.2.2016
+// Last Updated:	3.8.2016
 ///////////////////////////////////////////////////////////////////
 #include "BlendStateManager.h"
 
@@ -40,6 +40,8 @@ void BlendStateManager::DeleteInstance()
 //////////////////////////////////////////////////
 void BlendStateManager::Initialize()
 {
+	HRESULT hr;
+
 	// Initialize ID3D11BlendState's here...
 	D3D11_BLEND_DESC blendDesc;
 
@@ -56,12 +58,13 @@ void BlendStateManager::Initialize()
 	blendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 
-	Renderer::GetInstance()->GetDevice()->CreateBlendState(&blendDesc, &m_blendStates[BlendState_Default]);
+	hr = Renderer::GetInstance()->GetDevice()->CreateBlendState(&blendDesc, &m_blendStates[BlendState_Default]);
+	assert(hr == S_OK);
 }
 
 void BlendStateManager::Terminate()
 {
-	for (int i = 0; i < BlendStates::MAX_BLENDSTATES; ++i) {
+	for (int i = 0; i < MAX_BLENDSTATES; ++i) {
 		SAFE_RELEASE(m_blendStates[i]);
 	}
 
