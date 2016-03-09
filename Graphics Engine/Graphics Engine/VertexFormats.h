@@ -6,7 +6,7 @@ using namespace DirectX;
 
 #define VERTEX_FORMATS_MAX 1
 
-// === Enumerations
+// === Vertex Enums
 enum VertexFormat { default };
 
 class VertexFormats
@@ -16,6 +16,9 @@ public:
 	~VertexFormats();
 };
 
+// === Layout Enums
+enum InputLayouts { InputLayout_Default, MAX_INPUT_LAYOUTS };
+
 class InputLayoutManager
 {
 private:
@@ -23,7 +26,7 @@ private:
 	static InputLayoutManager* s_Instance;
 
 	// === Members
-	ID3D11InputLayout* m_InputLayouts[VERTEX_FORMATS_MAX];
+	ID3D11InputLayout* m_InputLayouts[MAX_INPUT_LAYOUTS];
 
 	// === Private Interface === //
 	InputLayoutManager() { }
@@ -45,9 +48,9 @@ public:
 	// ======================== //
 
 	// === Interface === //
-	inline ID3D11InputLayout* GetInputLayout(VertexFormat _index) {
-		return m_InputLayouts[_index];
-	}
+	void Apply(InputLayouts _inputLayout);
+	void Revert();
+	void Terminate();
 	// ================= //
 };
 

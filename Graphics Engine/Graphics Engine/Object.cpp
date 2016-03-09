@@ -11,7 +11,7 @@ Object::Object(){
 }
 
 Object::~Object(){
-	Destroy();
+//	Destroy();
 }
 
 void Object::SetMesh(Mesh* _mesh){

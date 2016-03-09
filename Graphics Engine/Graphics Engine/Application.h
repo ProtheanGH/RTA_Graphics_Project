@@ -1,4 +1,5 @@
 #pragma once
+#include "Camera.h"
 
 #include <Windows.h>
 
@@ -9,6 +10,8 @@ private:
 	HINSTANCE m_Instance;
 	WNDPROC m_WindProc;
 	HWND m_Window;
+	Camera m_Camera;
+	long m_Time;
 
 	// === Private Interface
 	void SetupScene();

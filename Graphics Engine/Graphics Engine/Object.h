@@ -23,12 +23,14 @@ private:
 
 	void SetBuffers();
 	void ReleaseBuffers();
-	void Destroy();
+	
 
 public:
 
 	static Object* Create();
 	~Object();
+
+	void Destroy();
 
 	inline Transform& GetTransform()  { return transform; }
 	inline std::vector<Object*>& GetChildren() { return children; }

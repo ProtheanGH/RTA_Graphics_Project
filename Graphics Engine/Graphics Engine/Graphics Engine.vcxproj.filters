@@ -124,6 +124,13 @@
     <ClCompile Include="ShaderManager.cpp">
       <Filter>Managers\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectManager.cpp">
+      <Filter>Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Utilities\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderNodeDirectory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -198,6 +205,13 @@
     <ClInclude Include="DefaultVertex.h">
       <Filter>Shaders\Vertex Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="ObjectManager.h">
+      <Filter>Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Utilities\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderNodeDirectory.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">
