@@ -38,6 +38,8 @@ public:
 	// === Interface === //
 	RenderContext* CreateRenderContext();
 	RenderMaterial* CreateRenderMaterial();
+	RenderShape* CreateRenderShape();
+	void Terminate();
 	// ================= //
 };
 

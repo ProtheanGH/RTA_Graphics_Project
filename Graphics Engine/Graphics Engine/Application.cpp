@@ -7,6 +7,7 @@
 #include "ObjectManager.h"
 #include "RasterizerStateManager.h"
 #include "Renderer.h"
+#include "RenderNodeDirectory.h"
 #include "SampleStateManager.h"
 #include "ShaderManager.h"
 #include "ShaderResourceManager.h"
@@ -58,6 +59,7 @@ Application::Application(HINSTANCE _hinst, WNDPROC _proc)
 	InputLayoutManager::GetInstance();
 	ObjectManager::GetInstance();
 	RasterizerStateManager::GetInstance();
+	RenderNodeDirectory::GetInstance();
 	SampleStateManager::GetInstance();
 	ShaderManager::GetInstance();
 	ShaderResourceManager::GetInstance();
@@ -74,6 +76,7 @@ Application::~Application()
 	ShaderResourceManager::GetInstance()->Terminate();
 	ShaderManager::GetInstance()->Terminate();
 	SampleStateManager::GetInstance()->Terminate();
+	RenderNodeDirectory::GetInstance()->Terminate();
 	RasterizerStateManager::GetInstance()->Terminate();
 	ObjectManager::GetInstance()->Terminate();
 	InputLayoutManager::GetInstance()->Terminate();
@@ -113,9 +116,9 @@ void Application::SetupScene()
 	FBXConverter* fbxConverter = FBXConverter::GetInstance();
 	fbxConverter->LoadFBX("Cube.fbx", object);
 
-	RenderContext* context = new RenderContext();
-	RenderMaterial* material = new RenderMaterial();
-	RenderShape* shape = new RenderShape();
+	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
+	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
+	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(object);
 
 	Renderer::GetInstance()->AddForRendering(context, material, shape);
