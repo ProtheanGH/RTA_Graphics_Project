@@ -4,6 +4,7 @@
 #include "BlendStateManager.h"
 #include "ConstantBufferManager.h"
 #include "FBXConverter.h"
+#include "Writer.h"
 #include "ObjectManager.h"
 #include "RasterizerStateManager.h"
 #include "Renderer.h"
@@ -63,7 +64,6 @@ Application::Application(HINSTANCE _hinst, WNDPROC _proc)
 	SampleStateManager::GetInstance();
 	ShaderManager::GetInstance();
 	ShaderResourceManager::GetInstance();
-
 	m_Time = (unsigned long)GetTickCount64();
 
 	// === TEMPORARY
@@ -83,6 +83,7 @@ Application::~Application()
 	ConstantBufferManager::GetInstance()->Terminate();
 	BlendStateManager::GetInstance()->Terminate();
 	FBXConverter::GetInstance()->Terminate();
+	Writer::Terminate();
 
 	Renderer::GetInstance()->Terminate();
 }
@@ -125,8 +126,8 @@ void Application::SetupScene()
 {
 	Object* object = ObjectManager::GetInstance()->CreateNewObject();
 	FBXConverter* fbxConverter = FBXConverter::GetInstance();
-	fbxConverter->LoadFBX("Cube.fbx", object);
-
+	fbxConverter->LoadFBX("Box", object);
+	
 	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
 	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
 	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();

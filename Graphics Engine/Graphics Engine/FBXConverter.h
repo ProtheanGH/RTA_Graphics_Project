@@ -1,6 +1,8 @@
 #pragma once
 #include <fbxsdk.h>
 #include "Object.h"
+#include "Animation.h"
+
 
 class FBXConverter{
 
@@ -9,32 +11,24 @@ private:
 
 	FbxManager* fbxManager = nullptr;
 
-	void LoadFBX(FbxNode* _rootNode, Object* rootObject);
-
-	//Load the fbx data into the objects mesh
+	bool LoadFBX(FbxNode* _rootNode, Object* rootObject);
 	void LoadMesh(FbxMesh* _mesh, Object* object);
-
 	void LoadNormal(FbxMesh* _mesh, int _controlPointIndex, int _vertexCounter, DirectX::XMFLOAT3& _outNormal);
 	void LoadUV(FbxMesh* _mesh, int _controlPointIndex, int _textureUVIndex, DirectX::XMFLOAT2& _outUV);
+	void LoadSkeleton(FbxNode* _rootNode, Bone* bone);
+	void LoadJoints(FbxNode* _rootNode, Bone* bone);
+	void LoadAnimation(FbxNode* _node, FbxScene* _scene, Animation& _animation, Bone* _rootBone);
+	void LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxScene* _scene, Animation& _animation, Bone* _rootBone);
 
-	void FBXConverter::SaveObject(std::fstream* file, Object& _object);
-	bool LoadObject(std::fstream* _file, Object& _object);
+	void ProcessBone(FbxNode* _node, Bone* bone);
+	void ProcessJoints(FbxNode* _node, Bone* _rootBone);
 
 	FBXConverter() = default;
 	~FBXConverter();
 
 public:
 	
-	void LoadFBX(const char* fileName, Object* object);
-
-	//Saves the object as a binary file 
-	void SaveObject(const char* fileName, Object& object);
-
-	bool LoadObject(const char* fileName, Object& object);
-
-	void SaveMesh(const char* fileName, Mesh& mesh);
-
-	void LoadMesh(const char* fileName, Mesh& mesh);
+	bool LoadFBX(const char* fileName, Object* object);
 
 	static FBXConverter* GetInstance();
 	static void Terminate();

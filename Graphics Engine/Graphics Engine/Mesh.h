@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "VertexTypes.h"
+#include <DirectXMath.h>
+
 
 class Mesh{
 

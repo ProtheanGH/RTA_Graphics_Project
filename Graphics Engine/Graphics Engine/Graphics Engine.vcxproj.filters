@@ -131,7 +131,13 @@
       <Filter>Utilities\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderNodeDirectory.cpp">
-      <Filter>Managers\Source Files</Filter>
+      <Filter>Renderer\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>Utilities\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Writer.cpp">
+      <Filter>FBX Importer\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -214,7 +220,16 @@
       <Filter>Utilities\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderNodeDirectory.h">
-      <Filter>Managers\Header Files</Filter>
+      <Filter>Renderer\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>Utilities\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Utilities\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Writer.h">
+      <Filter>FBX Importer\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

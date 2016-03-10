@@ -153,6 +153,7 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="ConstantBufferManager.cpp" />
     <ClCompile Include="FBXConverter.cpp" />
+    <ClCompile Include="Bone.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshManager.cpp" />
@@ -171,8 +172,10 @@
     <ClCompile Include="ShaderResourceManager.cpp" />
     <ClCompile Include="SortedRenderSet.cpp" />
     <ClCompile Include="VertexFormats.cpp" />
+    <ClCompile Include="Writer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="BlendStateManager.h" />
     <ClInclude Include="Camera.h" />
@@ -181,6 +184,7 @@
     <ClInclude Include="DefaultPixel.h" />
     <ClInclude Include="DefaultVertex.h" />
     <ClInclude Include="FBXConverter.h" />
+    <ClInclude Include="Bone.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshManager.h" />
     <ClInclude Include="Object.h" />
@@ -200,6 +204,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="VertexFormats.h" />
     <ClInclude Include="VertexTypes.h" />
+    <ClInclude Include="Writer.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">

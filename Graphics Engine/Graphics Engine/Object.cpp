@@ -22,6 +22,14 @@ void Object::SetMesh(Mesh* _mesh){
 	}
 }
 
+void Object::SetRootBone(Bone* _bone){
+
+	rootBone = _bone;
+	for (unsigned int i = 0; i < children.size(); ++i){
+		children[i]->SetRootBone(_bone);
+	}
+}
+
 void Object::SetBuffers(){
 
 	ReleaseBuffers();
@@ -67,6 +75,12 @@ void Object::ReleaseBuffers(){
 void Object::Destroy(){
 
 	ReleaseBuffers();
+
+	if (rootBone != nullptr){
+		rootBone->Destroy();
+		delete rootBone;
+		SetRootBone(nullptr);
+	}
 
 	for (unsigned int i = 0; i < children.size(); ++i){
 		children[i]->Destroy();
