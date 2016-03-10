@@ -1,6 +1,6 @@
 #pragma once
 #include <d3d11.h>
-#include <map>
+#include <vector>
 
 class ShaderResourceManager
 {
@@ -9,7 +9,8 @@ private:
 	static ShaderResourceManager* s_Instance;
 
 	// === Members
-	std::map<std::string, ID3D11ShaderResourceView*> m_ShaderResources;
+	std::vector<std::string> m_ResourceIDs;
+	std::vector<ID3D11ShaderResourceView*> m_Resources;
 
 	// === Private Interface === //
 	ShaderResourceManager() { }
@@ -19,6 +20,9 @@ private:
 	ShaderResourceManager& operator=(const ShaderResourceManager &&) { }
 
 	void Initialize();
+	void ConvertFileToDDS(char* _filename);
+	unsigned int ContainsResource(std::string _resourceID);
+	std::string DropFileExtension(std::string _filename);
 	// ========================= //
 
 public:
@@ -31,13 +35,9 @@ public:
 	// ======================== //
 
 	// === Interface === //
+	std::string LoadTextureFromFile(std::string _fromFile);
+	void ApplyShaderResource(std::string _resourceID);
 	void Terminate();
 	// ================= // 
-
-	// === Accessors === //
-	inline ID3D11ShaderResourceView* GetShaderResource(std::string _resourceName) {
-		return m_ShaderResources[_resourceName];
-	}
-	// ================= //
 };
 
