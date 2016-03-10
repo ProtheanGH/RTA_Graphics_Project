@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include <string>
 #include <d3d11.h>
+#include "Bone.h"
 
 class Object{
 
@@ -13,6 +14,7 @@ private:
 	Object* parent;
 	std::vector<Object*> children;
 	std::string name;
+	Bone* rootBone;
 
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;
@@ -34,6 +36,9 @@ public:
 
 	inline Transform& GetTransform()  { return transform; }
 	inline std::vector<Object*>& GetChildren() { return children; }
+
+	inline Bone* GetRootBone(){ return rootBone; }
+	void SetRootBone(Bone* bone);
 
 	inline Mesh* GetMesh() { return mesh; }
 	void SetMesh(Mesh* mesh);

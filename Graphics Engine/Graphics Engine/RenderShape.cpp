@@ -27,8 +27,8 @@ void RenderShape::DefaultShape_RenderProcess(RenderNode& _node)
 	if (rShape.m_pObject->GetMesh() != nullptr) {
 		// == Update the Constant Buffer
 		ToShaderObject toShaderObj;
-		toShaderObj.ObjectWorldMatrix = XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 3, 1);
-//		toShaderObj.ObjectWorldMatrix = rShape.m_pObject->GetTransform().GetLocalMatrix();
+//		toShaderObj.ObjectWorldMatrix = XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 3, 1);
+		toShaderObj.ObjectWorldMatrix = rShape.m_pObject->GetTransform().GetLocalMatrix();
 		ConstantBufferManager::GetInstance()->ApplyObjectBuffer(&toShaderObj);
 
 		// == Set the Topology 
