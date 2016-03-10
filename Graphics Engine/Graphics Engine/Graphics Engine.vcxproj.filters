@@ -131,6 +131,9 @@
       <Filter>Utilities\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderNodeDirectory.cpp" />
+    <ClCompile Include="DDSTextureLoader.cpp">
+      <Filter>Utilities\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -212,6 +215,9 @@
       <Filter>Utilities\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RenderNodeDirectory.h" />
+    <ClInclude Include="DDSTextureLoader.h">
+      <Filter>Utilities\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">

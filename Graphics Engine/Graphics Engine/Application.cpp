@@ -118,7 +118,10 @@ void Application::SetupScene()
 	fbxConverter->LoadFBX("Cube.fbx", object);
 
 	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
+
 	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
+	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("WindowedBox.dds"));
+
 	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(object);
 

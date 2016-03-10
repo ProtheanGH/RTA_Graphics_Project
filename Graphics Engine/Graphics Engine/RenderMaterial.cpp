@@ -27,8 +27,7 @@ void RenderMaterial::Add(RenderNode* _rMaterial, RenderNode* _rShape)
 void RenderMaterial::Apply()
 {
 	SampleStateManager::GetInstance()->Apply(m_SampleState);
-	ID3D11ShaderResourceView* resource = ShaderResourceManager::GetInstance()->GetShaderResource(m_ShaderResourceID);
-	Renderer::GetInstance()->GetDeviceContext()->PSSetShaderResources(0, 1, &resource);
+	ShaderResourceManager::GetInstance()->ApplyShaderResource(m_ShaderResourceID);
 }
 
 void RenderMaterial::Revert()
