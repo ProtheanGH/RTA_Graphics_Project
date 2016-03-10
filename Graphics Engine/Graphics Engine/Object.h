@@ -2,6 +2,7 @@
 
 #include "Transform.h"
 #include "Mesh.h"
+#include "Component.h"
 #include <string>
 #include <d3d11.h>
 
@@ -13,6 +14,7 @@ private:
 	Object* parent;
 	std::vector<Object*> children;
 	std::string name;
+	std::vector<Component*> components;
 
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;
@@ -29,6 +31,8 @@ public:
 
 	static Object* Create();
 	~Object();
+
+	void Update();
 
 	void Destroy();
 

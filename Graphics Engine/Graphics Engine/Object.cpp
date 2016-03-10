@@ -73,5 +73,25 @@ void Object::Destroy(){
 		delete children[i];
 	}
 
+	for (unsigned int i = 0; i < components.size(); ++i)
+	{
+		components[i]->Destroy();
+		delete components[i];
+	}
+
 	delete mesh;
 }
+
+void Object::Update()
+{
+	for (unsigned int i = 0; i < children.size(); ++i)
+	{
+		children[i]->Update();
+	}
+
+	for (unsigned int i = 0; i < components.size(); ++i)
+	{
+		components[i]->Update();
+	}
+}
+
