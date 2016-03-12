@@ -113,6 +113,7 @@ bool FBXConverter::LoadFBX(FbxNode* _rootNode, Object* _rootObject){
 	return true;
 }
 
+/*
 void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 
 	FbxVector4* controlPoints = _mesh->GetControlPoints();
@@ -133,7 +134,7 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 		vertex.normal[2] = normal.z;
 
 		DirectX::XMFLOAT2 uv;
-		LoadUV(_mesh, i, vertexCount, uv);
+		//LoadUV(_mesh, i, vertexCount, uv);
 		vertex.uv[0] = uv.x;
 		vertex.uv[1] = uv.y;
 
@@ -150,6 +151,50 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 	}
 
 	_object->SetMesh(object_mesh);
+}
+*/
+
+void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
+
+	FbxVector4* controlPoints = _mesh->GetControlPoints();
+	unsigned int polygonCount = _mesh->GetPolygonCount();
+	int vertexCounter = 0;
+	Mesh* objectMesh = new Mesh();
+
+	for (unsigned int polygon = 0; polygon < polygonCount; ++polygon){
+
+		unsigned int polygonVertexCount = _mesh->GetPolygonSize(polygon);
+		for (unsigned int polygonVertex = 0; polygonVertex < polygonVertexCount; ++polygonVertex){
+
+			Vertex_POSNORMUV vertex;
+			int controlPointIndex = _mesh->GetPolygonVertex(polygon, polygonVertex);
+			vertex.pos[0] = (float)controlPoints[controlPointIndex].mData[0];
+			vertex.pos[1] = (float)controlPoints[controlPointIndex].mData[1];
+			vertex.pos[2] = (float)controlPoints[controlPointIndex].mData[2];
+
+			DirectX::XMFLOAT2 uv;
+			LoadUV(_mesh, controlPointIndex, polygon, polygonVertex, uv);
+			vertex.uv[0] = uv.x;
+			vertex.uv[1] = uv.y;
+
+			DirectX::XMFLOAT3 normal;
+			LoadNormal(_mesh, controlPointIndex, vertexCounter, normal);
+			vertex.normal[0] = normal.x;
+			vertex.normal[1] = normal.y;
+			vertex.normal[2] = normal.z;
+
+			unsigned int index = -1;
+			if (CheckDuplicates(objectMesh->GetVerts(), vertex, index) == false){
+				objectMesh->GetVerts().push_back(vertex);
+			}
+
+			objectMesh->GetIndices().push_back(index);
+
+			++vertexCounter;
+		}
+	}
+
+	_object->SetMesh(objectMesh);
 }
 
 void FBXConverter::LoadNormal(FbxMesh* _mesh, int _controlPointIndex, int _vertexCounter, DirectX::XMFLOAT3& _outNormal){
@@ -186,7 +231,7 @@ void FBXConverter::LoadNormal(FbxMesh* _mesh, int _controlPointIndex, int _verte
 	}
 }
 
-void FBXConverter::LoadUV(FbxMesh* _mesh, int _controlPointIndex, int _textureUVIndex, DirectX::XMFLOAT2& _outUV){
+void FBXConverter::LoadUV(FbxMesh* _mesh, int _controlPointIndex, int polygon, int polygonVertex, DirectX::XMFLOAT2& _outUV){
 
 	if (_mesh->GetElementUVCount() < 1) return;
 
@@ -205,11 +250,28 @@ void FBXConverter::LoadUV(FbxMesh* _mesh, int _controlPointIndex, int _textureUV
 		}
 	}
 	else if (vertex_uv->GetMappingMode() == FbxGeometryElement::eByPolygonVertex){
-		if (vertex_uv->GetReferenceMode() == FbxGeometryElement::eIndexToDirect){
-			_outUV.x = (float)vertex_uv->GetDirectArray().GetAt(_textureUVIndex).mData[0];
-			_outUV.y = (float)vertex_uv->GetDirectArray().GetAt(_textureUVIndex).mData[1];
+		if (vertex_uv->GetReferenceMode() == FbxGeometryElement::eIndexToDirect || vertex_uv->GetReferenceMode() == FbxGeometryElement::eDirect){
+			int index = _mesh->GetTextureUVIndex(polygon, polygonVertex);
+			_outUV.x = (float)vertex_uv->GetDirectArray().GetAt(index).mData[0];
+			_outUV.y = (float)vertex_uv->GetDirectArray().GetAt(index).mData[1];
 		}
 	}
+}
+
+bool FBXConverter::CheckDuplicates(std::vector<Vertex_POSNORMUV>& _vertices, Vertex_POSNORMUV& _vertex, unsigned int _outIndex){
+
+	unsigned int i;
+	for (i = 0; i < _vertices.size(); ++i){
+
+		if (_vertices[i].isDuplicate(_vertex)){
+			_outIndex = i;
+			return true;
+		}
+	}
+
+	_outIndex = i;
+
+	return false;
 }
 
 void FBXConverter::LoadSkeleton(FbxNode* _rootNode, Bone* bone){
