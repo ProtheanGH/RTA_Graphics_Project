@@ -14,4 +14,5 @@ public:
 	~Transform() = default;
 
 	inline DirectX::XMFLOAT4X4& GetLocalMatrix() { return localMatrix; }
+	inline void SetLocalMatrix(DirectX::XMFLOAT4X4 _view) { localMatrix = _view; }
 };
