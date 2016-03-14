@@ -85,9 +85,6 @@
     <ClCompile Include="VertexFormats.cpp">
       <Filter>Managers\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Utilities\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>Utilities\Source Files</Filter>
     </ClCompile>
@@ -153,6 +150,9 @@
     </ClCompile>
     <ClCompile Include="SkyboxComponent.cpp">
       <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DDSTextureLoader.cpp">
+      <Filter>Utilities\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -252,12 +252,21 @@
     <ClInclude Include="SkyboxComponent.h">
       <Filter>Components\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DDSTextureLoader.h">
+      <Filter>Utilities\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">
       <Filter>Shaders\Pixel Shaders</Filter>
     </FxCompile>
     <FxCompile Include="DefaultVertex.hlsl">
+      <Filter>Shaders\Vertex Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="NormalMapPixel.hlsl">
+      <Filter>Shaders\Pixel Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="NormalMapVertex.hlsl">
       <Filter>Shaders\Vertex Shaders</Filter>
     </FxCompile>
   </ItemGroup>
