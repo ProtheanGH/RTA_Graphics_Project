@@ -23,7 +23,7 @@ private:
 	void ProcessBone(FbxNode* _node, Bone* bone);
 	void ProcessJoints(FbxNode* _node, Bone* _rootBone);
 
-	bool CheckDuplicates(std::vector<Vertex_POSNORMUV>& _vertices, Vertex_POSNORMUV& _vertex, unsigned int _outIndex);
+	bool CheckDuplicates(std::vector<Vertex_POSNORMUV>& _vertices, Vertex_POSNORMUV& _vertex, unsigned int& _outIndex);
 
 	FBXConverter() = default;
 	~FBXConverter();

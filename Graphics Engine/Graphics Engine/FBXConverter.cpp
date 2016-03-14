@@ -174,7 +174,7 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 
 			DirectX::XMFLOAT2 uv;
 			LoadUV(_mesh, controlPointIndex, polygon, polygonVertex, uv);
-			vertex.uv[0] = uv.x;
+			vertex.uv[0] = fabsf(1 - uv.x);
 			vertex.uv[1] = uv.y;
 
 			DirectX::XMFLOAT3 normal;
@@ -194,6 +194,7 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 		}
 	}
 
+	Writer::GetInstance()->SaveTextureCoords(_object->GetName().c_str(), objectMesh);
 	_object->SetMesh(objectMesh);
 }
 
@@ -258,7 +259,7 @@ void FBXConverter::LoadUV(FbxMesh* _mesh, int _controlPointIndex, int polygon, i
 	}
 }
 
-bool FBXConverter::CheckDuplicates(std::vector<Vertex_POSNORMUV>& _vertices, Vertex_POSNORMUV& _vertex, unsigned int _outIndex){
+bool FBXConverter::CheckDuplicates(std::vector<Vertex_POSNORMUV>& _vertices, Vertex_POSNORMUV& _vertex, unsigned int& _outIndex){
 
 	unsigned int i;
 	for (i = 0; i < _vertices.size(); ++i){
