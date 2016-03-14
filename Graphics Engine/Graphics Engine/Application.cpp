@@ -119,11 +119,16 @@ bool Application::Run()
 	Renderer::GetInstance()->Render();
 	return true;
 }
+/*static*/ Camera Application::GetCamera()
+{
+	return m_Camera;
+}
 // ===================== //
 
 // ===== Private Interface ===== //
 void Application::SetupScene()
 {
+	// Cube
 	Object* object = ObjectManager::GetInstance()->CreateNewObject();
 	FBXConverter* fbxConverter = FBXConverter::GetInstance();
 	fbxConverter->LoadFBX("Box", object);
@@ -131,12 +136,23 @@ void Application::SetupScene()
 	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
 
 	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
-	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("WindowedBox.dds"));
+	//material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("WindowedBox.dds"));
+	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/TestCube.dds"));
 
 	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(object);
 
 	Renderer::GetInstance()->AddForRendering(context, material, shape);
+
+	// Skybox
+	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
+	fbxConverter->LoadFBX("Cube.fbx", skybox);
+	RenderContext* skybox_context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
+	RenderMaterial* skybox_mat = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
+	RenderShape* skybox_shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+	skybox_shape->SetObject(skybox);
+	Renderer::GetInstance()->AddForRendering(skybox_context, skybox_mat, skybox_shape);
+
 
 	for (unsigned int i = 0; i < object->GetChildren().size(); ++i) {
 		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();

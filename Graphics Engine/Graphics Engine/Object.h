@@ -5,6 +5,8 @@
 #include <string>
 #include <d3d11.h>
 #include "Bone.h"
+#include "Component.h"
+#include <vector>
 
 class Object{
 
@@ -15,11 +17,10 @@ private:
 	std::vector<Object*> children;
 	std::string name;
 	Bone* rootBone;
+	std::vector<Component*> components;
 
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;
-
-	unsigned int m_VertexSize;
 
 	Object();
 
@@ -33,6 +34,8 @@ public:
 	~Object();
 
 	void Destroy();
+
+	void Update();
 
 	inline Transform& GetTransform()  { return transform; }
 	inline std::vector<Object*>& GetChildren() { return children; }

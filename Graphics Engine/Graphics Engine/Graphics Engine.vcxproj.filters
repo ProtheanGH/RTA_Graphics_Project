@@ -59,6 +59,15 @@
     <Filter Include="Utilities\Source Files">
       <UniqueIdentifier>{04cd626c-601f-4489-a3ce-2e3cf2bc7797}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{ddaf98f0-1808-417d-8ae7-59d56ae1d222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Header Files">
+      <UniqueIdentifier>{9a8723bc-4301-4680-9796-c996a7804bfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Source Files">
+      <UniqueIdentifier>{c3ae4870-7745-43a0-87ce-5b941044735e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -139,7 +148,12 @@
     <ClCompile Include="Writer.cpp">
       <Filter>FBX Importer\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="Component.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyboxComponent.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -232,19 +246,18 @@
     <ClInclude Include="Writer.h">
       <Filter>FBX Importer\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="Component.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyboxComponent.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">
       <Filter>Shaders\Pixel Shaders</Filter>
     </FxCompile>
     <FxCompile Include="DefaultVertex.hlsl">
-      <Filter>Shaders\Vertex Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="NormalMapPixel.hlsl">
-      <Filter>Shaders\Pixel Shaders</Filter>
-    </FxCompile>
-    <FxCompile Include="NormalMapVertex.hlsl">
       <Filter>Shaders\Vertex Shaders</Filter>
     </FxCompile>
   </ItemGroup>

@@ -34,6 +34,7 @@ void ObjectManager::UpdateObjects()
 	unsigned int objCount = (unsigned int)m_Objects.size();
 	for (unsigned int i = 0; i < objCount; ++i) {
 		// === ADD IN UPDATE CODE
+		m_Objects[i]->Update();
 	}
 }
 

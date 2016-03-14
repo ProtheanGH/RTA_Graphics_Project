@@ -4,6 +4,8 @@
 #include <Windows.h>
 #include <D3D11SDKLayers.h>
 
+static Camera m_Camera;
+
 class Application
 {
 private:
@@ -11,7 +13,6 @@ private:
 	HINSTANCE m_Instance;
 	WNDPROC m_WindProc;
 	HWND m_Window;
-	Camera m_Camera;
 	long m_Time;
 
 	// === Private Interface
@@ -26,6 +27,7 @@ public:
 
 	// === Interface
 	bool Run();
+	static Camera GetCamera();
 	// ===
 };
 

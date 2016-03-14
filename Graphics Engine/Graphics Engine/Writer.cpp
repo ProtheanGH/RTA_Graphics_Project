@@ -158,3 +158,23 @@ bool Writer::LoadObject(std::fstream* file, Object& _object){
 	return true;
 }
 
+void Writer::SaveTextureCoords(const char* fileName, Mesh* mesh){
+	std::fstream file;
+	std::string file_name(fileName);
+	file_name.append(".txt");
+	file.open(file_name.c_str() , std::ios_base::out);
+
+	if (!file.is_open()) return;
+
+	file << mesh->GetVerts().size() << '\n';
+	for (unsigned int i = 0; i < mesh->GetVerts().size(); ++i){
+		file << mesh->GetVerts()[i].uv[0];
+		file << '\t';
+		file << mesh->GetVerts()[i].uv[1];
+		file << '\n';
+	}
+
+	file.close();
+}
+
+
