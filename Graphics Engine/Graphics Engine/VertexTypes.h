@@ -1,8 +1,8 @@
 #pragma once
 
 struct Vertex_POSNORMUV{
-	float pos[3];
-	float normal[3];
+	float pos[4];
+	float normal[4];
 	float uv[2];
 
 	bool isDuplicate(const Vertex_POSNORMUV& vertex){
