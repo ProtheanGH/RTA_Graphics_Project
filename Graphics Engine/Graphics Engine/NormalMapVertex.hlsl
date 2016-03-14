@@ -2,10 +2,10 @@
 struct VertexInput 
 {
 	float4 position : POSITION;
+	float4 normal : NORMAL;
 	float2 texCoords : TEXTURECOORDS;
-	float3 normal : NORMAL;
-	float3 tangent : TANGENT;
-	float3 binormal : BINORMAL;
+	float4 tangent : TANGENT;
+	float4 binormal : BINORMAL;
 };
 
 struct PixelInput {
