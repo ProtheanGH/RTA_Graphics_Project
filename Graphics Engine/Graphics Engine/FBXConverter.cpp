@@ -146,9 +146,18 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 
 			DirectX::XMFLOAT3 biNormal;
 			LoadBiNormal(_mesh, controlPointIndex, vertexCounter, biNormal);
+			vertex.binormal[0] = biNormal.x;
+			vertex.binormal[1] = biNormal.y;
+			vertex.binormal[2] = biNormal.z;
+			vertex.binormal[3] = 1.0;
+
 
 			DirectX::XMFLOAT3 tangent;
 			LoadTangent(_mesh, controlPointIndex, vertexCounter, tangent);
+			vertex.tangent[0] = tangent.x;
+			vertex.tangent[1] = tangent.y;
+			vertex.tangent[2] = tangent.z;
+			vertex.tangent[3] = 1.0f;
 
 			unsigned int index = -1;
 			if (CheckDuplicates(objectMesh->GetVerts(), vertex, index) == false){
