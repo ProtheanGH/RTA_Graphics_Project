@@ -19,6 +19,8 @@ private:
 	Bone* rootBone;
 	std::vector<Component*> components;
 
+	std::vector<std::string> textureNames;
+
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;
 
@@ -51,6 +53,8 @@ public:
 
 	inline std::string& GetName() { return name; }
 	inline void SetName(std::string _name){ name = _name; }
+
+	inline std::vector<std::string>& GetTextureNames(){ return textureNames; }
 
 	inline ID3D11Buffer* GetVertexBuffer() { return vertexBuffer; }
 	inline ID3D11Buffer* GetIndexBuffer(){ return indexBuffer; }
