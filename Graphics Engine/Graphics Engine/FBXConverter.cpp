@@ -144,6 +144,12 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 			vertex.normal[2] = normal.z;
 			vertex.normal[3] = 1;
 
+			DirectX::XMFLOAT3 biNormal;
+			LoadBiNormal(_mesh, controlPointIndex, vertexCounter, biNormal);
+
+			DirectX::XMFLOAT3 tangent;
+			LoadTangent(_mesh, controlPointIndex, vertexCounter, tangent);
+
 			unsigned int index = -1;
 			if (CheckDuplicates(objectMesh->GetVerts(), vertex, index) == false){
 				objectMesh->GetVerts().push_back(vertex);
@@ -188,6 +194,74 @@ void FBXConverter::LoadNormal(FbxMesh* _mesh, int _controlPointIndex, int _verte
 			_outNormal.x = (float)(vertex_normal->GetDirectArray().GetAt(index).mData[0]);
 			_outNormal.y = (float)(vertex_normal->GetDirectArray().GetAt(index).mData[1]);
 			_outNormal.z = (float)(vertex_normal->GetDirectArray().GetAt(index).mData[2]);
+		}
+	}
+}
+
+void FBXConverter::LoadBiNormal(FbxMesh* _mesh, int _controlPointIndex, int _vertexCounter, DirectX::XMFLOAT3& _outNormal){
+
+	if (_mesh->GetElementBinormalCount() < 1) return;
+
+	FbxGeometryElementBinormal* vertex_biNormal = _mesh->GetElementBinormal();
+
+	if (vertex_biNormal->GetMappingMode() == FbxGeometryElement::eByControlPoint){
+		if (vertex_biNormal->GetReferenceMode() == FbxGeometryElement::eDirect){
+			_outNormal.x = (float)(vertex_biNormal->GetDirectArray().GetAt(_controlPointIndex).mData[0]);
+			_outNormal.y = (float)(vertex_biNormal->GetDirectArray().GetAt(_controlPointIndex).mData[1]);
+			_outNormal.z = (float)(vertex_biNormal->GetDirectArray().GetAt(_controlPointIndex).mData[2]);
+		}
+		else if (vertex_biNormal->GetReferenceMode() == FbxGeometryElement::eIndexToDirect){
+			int index = vertex_biNormal->GetIndexArray().GetAt(_controlPointIndex);
+			_outNormal.x = (float)(vertex_biNormal->GetDirectArray().GetAt(index).mData[0]);
+			_outNormal.y = (float)(vertex_biNormal->GetDirectArray().GetAt(index).mData[1]);
+			_outNormal.z = (float)(vertex_biNormal->GetDirectArray().GetAt(index).mData[2]);
+		}
+	}
+	else if (vertex_biNormal->GetMappingMode() == FbxGeometryElement::eByPolygonVertex){
+		if (vertex_biNormal->GetReferenceMode() == FbxGeometryElement::eDirect){
+			_outNormal.x = (float)(vertex_biNormal->GetDirectArray().GetAt(_vertexCounter).mData[0]);
+			_outNormal.y = (float)(vertex_biNormal->GetDirectArray().GetAt(_vertexCounter).mData[1]);
+			_outNormal.z = (float)(vertex_biNormal->GetDirectArray().GetAt(_vertexCounter).mData[2]);
+		}
+		else if (vertex_biNormal->GetReferenceMode() == FbxGeometryElement::eIndexToDirect){
+			int index = vertex_biNormal->GetIndexArray().GetAt(_vertexCounter);
+			_outNormal.x = (float)(vertex_biNormal->GetDirectArray().GetAt(index).mData[0]);
+			_outNormal.y = (float)(vertex_biNormal->GetDirectArray().GetAt(index).mData[1]);
+			_outNormal.z = (float)(vertex_biNormal->GetDirectArray().GetAt(index).mData[2]);
+		}
+	}
+}
+
+void FBXConverter::LoadTangent(FbxMesh* _mesh, int _controlPointIndex, int _vertexCounter,DirectX::XMFLOAT3& _outTangent){
+	
+	if (_mesh->GetElementTangentCount() < 1) return;
+
+	FbxGeometryElementTangent* vertex_tangent = _mesh->GetElementTangent();
+
+	if (vertex_tangent->GetMappingMode() == FbxGeometryElement::eByControlPoint){
+		if (vertex_tangent->GetReferenceMode() == FbxGeometryElement::eDirect){
+			_outTangent.x = (float)(vertex_tangent->GetDirectArray().GetAt(_controlPointIndex).mData[0]);
+			_outTangent.y = (float)(vertex_tangent->GetDirectArray().GetAt(_controlPointIndex).mData[1]);
+			_outTangent.z = (float)(vertex_tangent->GetDirectArray().GetAt(_controlPointIndex).mData[2]);
+		}
+		else if (vertex_tangent->GetReferenceMode() == FbxGeometryElement::eIndexToDirect){
+			int index = vertex_tangent->GetIndexArray().GetAt(_controlPointIndex);
+			_outTangent.x = (float)(vertex_tangent->GetDirectArray().GetAt(index).mData[0]);
+			_outTangent.y = (float)(vertex_tangent->GetDirectArray().GetAt(index).mData[1]);
+			_outTangent.z = (float)(vertex_tangent->GetDirectArray().GetAt(index).mData[2]);
+		}
+	}
+	else if (vertex_tangent->GetMappingMode() == FbxGeometryElement::eByPolygonVertex){
+		if (vertex_tangent->GetReferenceMode() == FbxGeometryElement::eDirect){
+			_outTangent.x = (float)(vertex_tangent->GetDirectArray().GetAt(_vertexCounter).mData[0]);
+			_outTangent.y = (float)(vertex_tangent->GetDirectArray().GetAt(_vertexCounter).mData[1]);
+			_outTangent.z = (float)(vertex_tangent->GetDirectArray().GetAt(_vertexCounter).mData[2]);
+		}
+		else if (vertex_tangent->GetReferenceMode() == FbxGeometryElement::eIndexToDirect){
+			int index = vertex_tangent->GetIndexArray().GetAt(_vertexCounter);
+			_outTangent.x = (float)(vertex_tangent->GetDirectArray().GetAt(index).mData[0]);
+			_outTangent.y = (float)(vertex_tangent->GetDirectArray().GetAt(index).mData[1]);
+			_outTangent.z = (float)(vertex_tangent->GetDirectArray().GetAt(index).mData[2]);
 		}
 	}
 }
