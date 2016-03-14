@@ -17,7 +17,7 @@ public:
 };
 
 // === Layout Enums
-enum InputLayouts { InputLayout_Default, MAX_INPUT_LAYOUTS };
+enum InputLayouts { InputLayout_Default, NormalMapped_InputLayout, MAX_INPUT_LAYOUTS };
 
 class InputLayoutManager
 {

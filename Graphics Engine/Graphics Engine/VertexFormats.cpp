@@ -70,14 +70,30 @@ void InputLayoutManager::Initialize()
 {
 	ID3D11Device* device = Renderer::GetInstance()->GetDevice();
 	// === Default InputLayout
-	D3D11_INPUT_ELEMENT_DESC layoutDescription[] =
 	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "NORMALS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "UV", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-	};
+		D3D11_INPUT_ELEMENT_DESC layoutDescription[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMALS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "UV", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		};
 
-	device->CreateInputLayout(layoutDescription, sizeof(layoutDescription) / sizeof(D3D11_INPUT_ELEMENT_DESC), DefaultVertex, sizeof(DefaultVertex), &m_InputLayouts[InputLayout_Default]);
+		device->CreateInputLayout(layoutDescription, sizeof(layoutDescription) / sizeof(D3D11_INPUT_ELEMENT_DESC), DefaultVertex, sizeof(DefaultVertex), &m_InputLayouts[InputLayout_Default]);
+	}
+
+	// === NormalMapped InputLayout
+	{
+		D3D11_INPUT_ELEMENT_DESC layoutDescription[] =
+		{
+			{ "POSITION", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "NORMALS", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "UV", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TANGENT", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "BINORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+		};
+
+		device->CreateInputLayout(layoutDescription, sizeof(layoutDescription) / sizeof(D3D11_INPUT_ELEMENT_DESC), DefaultVertex, sizeof(DefaultVertex), &m_InputLayouts[NormalMapped_InputLayout]);
+	}
 }
 // ========================= //
 
