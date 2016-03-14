@@ -17,6 +17,7 @@ private:
 	void LoadBiNormal(FbxMesh* _mesh, int _controlPointIndex, int _vertexCounter, DirectX::XMFLOAT3& _outNormal);
 	void LoadTangent(FbxMesh* _mesh, int _controlPointIndex, int, DirectX::XMFLOAT3&);
 	void LoadUV(FbxMesh* _mesh, int _controlPointIndex, int polygon, int polygonVertex, DirectX::XMFLOAT2& _outUV);
+	void LoadTexture(FbxNode* _node, Object& _object);
 	void LoadSkeleton(FbxNode* _rootNode, Bone* bone);
 	void LoadJoints(FbxNode* _rootNode, Bone* bone);
 	void LoadAnimation(FbxNode* _node, FbxScene* _scene, Animation& _animation, Bone* _rootBone);

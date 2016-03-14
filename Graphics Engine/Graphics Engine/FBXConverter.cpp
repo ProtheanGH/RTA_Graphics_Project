@@ -37,7 +37,7 @@ bool FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
 
 	FbxImporter* fbxImporter = FbxImporter::Create(fbxManager, "");
 	FbxScene* fbxScene = FbxScene::Create(fbxManager, "");
-	
+
 	std::string file_name("Assets/");
 	file_name.append(_fileName);
 	file_name.append(".fbx");
@@ -65,7 +65,7 @@ bool FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
 
 		if (LoadFBX(rootNode, _rootObject) == false){
 			_rootObject->Destroy();
-			
+
 			return false;
 		}
 
@@ -78,7 +78,7 @@ bool FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
 bool FBXConverter::LoadFBX(FbxNode* _rootNode, Object* _rootObject){
 
 	int child_count = _rootNode->GetChildCount();
-	
+
 	Transform& root_transform = _rootObject->GetTransform();
 	FbxDouble3 translation = _rootNode->LclTranslation.Get();
 	FbxDouble3 rotation = _rootNode->LclRotation.Get();
@@ -108,6 +108,8 @@ bool FBXConverter::LoadFBX(FbxNode* _rootNode, Object* _rootObject){
 
 		FbxMesh* mesh = (FbxMesh*)child_node->GetNodeAttribute();
 		LoadMesh(mesh, child_obj);
+
+		LoadTexture(child_node, *child_obj);
 	}
 
 	return true;
@@ -142,14 +144,14 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 			vertex.normal[0] = normal.x;
 			vertex.normal[1] = normal.y;
 			vertex.normal[2] = normal.z;
-			vertex.normal[3] = 1;
+			vertex.normal[3] = 1.0f;
 
 			DirectX::XMFLOAT3 biNormal;
 			LoadBiNormal(_mesh, controlPointIndex, vertexCounter, biNormal);
 			vertex.binormal[0] = biNormal.x;
 			vertex.binormal[1] = biNormal.y;
 			vertex.binormal[2] = biNormal.z;
-			vertex.binormal[3] = 1.0;
+			vertex.binormal[3] = 1.0f;
 
 
 			DirectX::XMFLOAT3 tangent;
@@ -169,7 +171,6 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 			++vertexCounter;
 		}
 	}
-
 	_object->SetMesh(objectMesh);
 }
 
@@ -241,8 +242,8 @@ void FBXConverter::LoadBiNormal(FbxMesh* _mesh, int _controlPointIndex, int _ver
 	}
 }
 
-void FBXConverter::LoadTangent(FbxMesh* _mesh, int _controlPointIndex, int _vertexCounter,DirectX::XMFLOAT3& _outTangent){
-	
+void FBXConverter::LoadTangent(FbxMesh* _mesh, int _controlPointIndex, int _vertexCounter, DirectX::XMFLOAT3& _outTangent){
+
 	if (_mesh->GetElementTangentCount() < 1) return;
 
 	FbxGeometryElementTangent* vertex_tangent = _mesh->GetElementTangent();
@@ -300,6 +301,42 @@ void FBXConverter::LoadUV(FbxMesh* _mesh, int _controlPointIndex, int polygon, i
 			_outUV.y = (float)vertex_uv->GetDirectArray().GetAt(index).mData[1];
 		}
 	}
+}
+
+void FBXConverter::LoadTexture(FbxNode* _node, Object& _object){
+	
+	int materialCount = _node->GetSrcObjectCount<FbxSurfaceMaterial>();
+	
+	for (int i = 0; i < materialCount; ++i){
+
+		FbxSurfaceMaterial* material = (FbxSurfaceMaterial*)_node->GetSrcObject<FbxSurfaceMaterial>(i);
+
+		if (material != nullptr){
+			FbxProperty prop = material->FindProperty(FbxSurfaceMaterial::sDiffuse);
+
+			int layeredTextureCount = prop.GetSrcObjectCount<FbxLayeredTexture>();
+
+			if (layeredTextureCount > 0){
+				for (int j = 0; j < layeredTextureCount; ++j){
+					FbxLayeredTexture* layeredTexture = FbxCast<FbxLayeredTexture>(prop.GetSrcObject<FbxLayeredTexture>(j));
+					int layeredCount = layeredTexture->GetSrcObjectCount<FbxFileTexture>();
+					for (int k = 0; k < layeredCount; ++k){
+						FbxFileTexture* texture = FbxCast<FbxFileTexture>(layeredTexture->GetSrcObject<FbxFileTexture>(k));
+
+						_object.GetTextureNames().push_back(std::string(texture->GetName()));
+					}
+				}
+			}
+			else{
+				int textureCount = prop.GetSrcObjectCount<FbxFileTexture>();
+				for (int j = 0; j < textureCount; ++j){
+					const FbxFileTexture* texture = FbxCast<FbxFileTexture>(prop.GetSrcObject<FbxFileTexture>(j));
+					_object.GetTextureNames().push_back(std::string(texture->GetFileName()));
+				}
+			}
+		}
+	}
+	
 }
 
 bool FBXConverter::CheckDuplicates(std::vector<Vertex_POSNORMUV>& _vertices, Vertex_POSNORMUV& _vertex, unsigned int& _outIndex){
@@ -398,25 +435,26 @@ void FBXConverter::ProcessJoints(FbxNode* _node, Bone* _rootBone){
 
 void FBXConverter::LoadAnimation(FbxNode* _node, FbxScene* _scene, Animation& _animation, Bone* _rootBone){
 
-//	int anim_stack_count = _scene->GetSrcObjectCount<FbxAnimStack>();
-//	for (int i = 0; i < anim_stack_count; ++i){
-//
-//		FbxAnimStack* anim_stack = _scene->GetSrcObject<FbxAnimStack>(i);
-//
-//		std::string anim_name(anim_stack->GetName());
-//		_animation.GetName() = anim_name;
-//
-//		int anim_layer_count = anim_stack->GetMemberCount<FbxAnimLayer>();
-//
-//		for (int j = 0; j < anim_layer_count; ++j){
-//
-//			FbxAnimLayer* anim_layer = anim_stack->GetMember< FbxAnimLayer >(j);
-//
-//			LoadAnimation(_node, anim_layer, _scene, _animation);
-//		}
-//	}
-//
-//	_animation.CalculateDuration();
+		int anim_stack_count = _scene->GetSrcObjectCount<FbxAnimStack>();
+
+		for (int i = 0; i < anim_stack_count; ++i){
+	
+			FbxAnimStack* anim_stack = _scene->GetSrcObject<FbxAnimStack>(i);
+	
+			std::string anim_name(anim_stack->GetName());
+			_animation.GetName() = anim_name;
+	
+			int anim_layer_count = anim_stack->GetMemberCount<FbxAnimLayer>();
+	
+			for (int j = 0; j < anim_layer_count; ++j){
+	
+				FbxAnimLayer* anim_layer = anim_stack->GetMember< FbxAnimLayer >(j);
+	
+				LoadAnimation(_node, anim_layer, _scene, _animation, _rootBone);
+			}
+		}
+	
+		_animation.CalculateDuration();
 }
 
 void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxScene* _scene, Animation& _animation, Bone* _rootBone){
