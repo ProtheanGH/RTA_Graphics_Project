@@ -48,9 +48,7 @@ cbuffer LIGHT_BUFFER : register(b0)
 
 float4 main( OUTPUT_VERTEX _input ) : SV_TARGET
 {
-	float2 offset = _input.uv;
-	offset.x = 1 - (offset.x + _input.uv.x);
-	float4 imageColor = image.Sample(filter, offset);
+	float4 imageColor = image.Sample(filter, _input.uv);
 
 	// === Directional Light === //
 	float directionRatio = saturate(dot(-diffuseLightDirection, _input.normals));
