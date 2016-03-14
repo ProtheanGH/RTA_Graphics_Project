@@ -63,8 +63,8 @@ float4 main( OUTPUT_VERTEX _input ) : SV_TARGET
 	greyScale = greyScale * imageColor;
 	// ===
 
-
-	return saturate(greyScale + directionResult + ambientDirection);
+	return saturate(imageColor);
+	//return saturate(greyScale + directionResult + ambientDirection);
 }
 
 

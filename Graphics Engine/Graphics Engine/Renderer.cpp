@@ -47,7 +47,7 @@ void Renderer::Render()
 	// === Clear the Screen
 	deviceContext->RSSetViewports(1, &viewport);
 	deviceContext->OMSetRenderTargets(1, &RTV, DSV);
-	deviceContext->ClearRenderTargetView(RTV, Colors::BLUE.RGBA);
+	deviceContext->ClearRenderTargetView(RTV, Colors::BLACK.RGBA);
 	deviceContext->ClearDepthStencilView(DSV, D3D11_CLEAR_DEPTH, 1, NULL);
 
 	// === Render the Stuff in the Scene
