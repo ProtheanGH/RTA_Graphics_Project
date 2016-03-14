@@ -15,7 +15,6 @@
 struct INPUT_VERTEX
 {
 	float4 coordinate : POSITION;
-	float4 color : COLOR;
 	float4 normals : NORMALS;
 	float2 uv : UV;
 };

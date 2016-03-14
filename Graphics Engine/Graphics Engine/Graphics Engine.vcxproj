@@ -151,6 +151,7 @@
     <ClCompile Include="BlendStateManager.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConstantBufferManager.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="FBXConverter.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="SampleStateManager.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ShaderResourceManager.cpp" />
+    <ClCompile Include="SkyboxComponent.cpp" />
     <ClCompile Include="SortedRenderSet.cpp" />
     <ClCompile Include="VertexFormats.cpp" />
     <ClCompile Include="Writer.cpp" />
@@ -181,6 +183,7 @@
     <ClInclude Include="BlendStateManager.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBufferManager.h" />
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DefaultPixel.h" />
@@ -202,6 +205,7 @@
     <ClInclude Include="SampleStateManager.h" />
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="ShaderResourceManager.h" />
+    <ClInclude Include="SkyboxComponent.h" />
     <ClInclude Include="SortedRenderSet.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="VertexFormats.h" />

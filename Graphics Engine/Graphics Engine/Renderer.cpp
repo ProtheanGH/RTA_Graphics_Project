@@ -1,3 +1,7 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Created By:		Doug Berg
+// Last Updated:	3.9.2016
+//////////////////////////////////////////////////////////////////////////////////
 #include "Renderer.h"
 
 #include "Color.h"
@@ -147,6 +151,8 @@ void Renderer::CreateRTV()
 
 void Renderer::CreateDSV(int _width, int _height)
 {
+	HRESULT hr;
+
 	// === Create the Depth-Stencil
 	D3D11_TEXTURE2D_DESC depthDescription;
 	depthDescription.Width = _width;
@@ -161,7 +167,8 @@ void Renderer::CreateDSV(int _width, int _height)
 	depthDescription.CPUAccessFlags = 0;
 	depthDescription.MiscFlags = 0;
 
-	device->CreateTexture2D(&depthDescription, NULL, &depthStencil);
+	hr = device->CreateTexture2D(&depthDescription, NULL, &depthStencil);
+	assert(hr == S_OK);
 
 	// === Create the Depth-Stencil View
 	D3D11_DEPTH_STENCIL_VIEW_DESC viewDescription;
