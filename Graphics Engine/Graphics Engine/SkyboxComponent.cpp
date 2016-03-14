@@ -12,10 +12,9 @@
 
 
 // Defaults
-SkyboxComponent::SkyboxComponent()
-{
-
-}
+SkyboxComponent::SkyboxComponent(Object* _parent) :
+	Component(_parent)
+{ }
 
 SkyboxComponent::~SkyboxComponent()
 {
@@ -28,8 +27,7 @@ bool SkyboxComponent::Update() // override
 	if (m_parent != nullptr)
 	{
 		m_parent->GetTransform().SetLocalMatrix(Application::GetCamera().GetViewMatrix());
-		return true;
 	}
-	return false;
+	return Component::Update();
 }
 

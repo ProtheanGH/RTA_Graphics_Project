@@ -54,6 +54,7 @@ float4 main( OUTPUT_VERTEX _input ) : SV_TARGET
 	float directionRatio = saturate(dot(-diffuseLightDirection, _input.normals));
 	float4 directionResult = directionRatio * diffuseLightColor * imageColor;
 	directionResult.w = 1;
+
 	// Ambient lighting
 	float4 ambientDirection = imageColor * directionResult;
 
@@ -63,8 +64,7 @@ float4 main( OUTPUT_VERTEX _input ) : SV_TARGET
 	greyScale = greyScale * imageColor;
 	// ===
 
-	return saturate(imageColor);
-	//return saturate(greyScale + directionResult + ambientDirection);
+	return saturate(greyScale + directionResult + ambientDirection);
 }
 
 
