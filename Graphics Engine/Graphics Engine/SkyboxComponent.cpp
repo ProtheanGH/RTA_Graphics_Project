@@ -27,7 +27,7 @@ bool SkyboxComponent::Update() // override
 {
 	if (m_parent != nullptr)
 	{
-		Application::GetCamera();
+		m_parent->GetTransform().SetLocalMatrix(Application::GetCamera().GetViewMatrix());
 		return true;
 	}
 	return false;
