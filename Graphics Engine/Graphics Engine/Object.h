@@ -38,6 +38,7 @@ public:
 	void Destroy();
 
 	void Update();
+	void AddComponent(Component* _comp);
 
 	inline Transform& GetTransform()  { return transform; }
 	inline std::vector<Object*>& GetChildren() { return children; }

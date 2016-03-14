@@ -2,7 +2,7 @@
 // Component.h
 // 
 // Created By:		Doug Berg
-// Last Update:		3.10.2016
+// Last Update:		3.14.2016
 //////////////////////////////////////////////////////////////////
 #pragma once
 
@@ -17,7 +17,9 @@ protected:
 
 public:
 	// Defaults
-	Component( void );
+	Component( Object* _parent = nullptr );
+	Component( const Component& _copy );
+	Component& operator = (const Component& _assign);
 	virtual ~Component( void ) = 0;
 
 	// Accessors

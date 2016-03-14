@@ -3,6 +3,7 @@
 
 #include <Windows.h>
 #include <D3D11SDKLayers.h>
+#include "SkyboxComponent.h"
 
 static Camera m_Camera;
 

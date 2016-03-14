@@ -2,7 +2,7 @@
 // Component.cpp
 // 
 // Created By:		Doug Berg
-// Last Update:		3.10.2016
+// Last Update:		3.14.2016
 //////////////////////////////////////////////////////////////////
 #include "Component.h"
 #include "Object.h"
@@ -12,9 +12,29 @@
 //////////////////////////////////////////////////////////////////
 // DEFAULTS
 //////////////////////////////////////////////////////////////////
-Component::Component()
+Component::Component(Object* _parent)
 {
-	m_parent = nullptr;
+	m_parent = _parent;
+}
+
+Component::Component(const Component& _copy)
+{
+	*this = _copy;
+}
+
+Component& Component::operator = (const Component& _assign)
+{
+	if (this != &_assign)
+	{
+		if (m_parent)
+		{
+			delete m_parent;
+			m_parent = nullptr;
+		}
+		m_parent = Object::Create();
+		m_parent = _assign.m_parent;
+	}
+	return *this;
 }
 
 /*virtual*/Component::~Component()
@@ -58,8 +78,6 @@ void Component::SetParent(Object* _parent)
 
 /*virtual*/ void Component::Destroy()
 {
-	if (m_parent != nullptr)
-		delete m_parent;
-	m_parent = nullptr;
+	
 }
 

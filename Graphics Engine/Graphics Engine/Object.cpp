@@ -109,3 +109,8 @@ void Object::Update()
 	}
 }
 
+void Object::AddComponent(Component* _comp)
+{
+	components.push_back(_comp);
+}
+

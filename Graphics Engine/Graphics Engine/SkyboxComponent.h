@@ -2,7 +2,7 @@
 // SkyboxComponent.h
 // 
 // Created By:		Doug Berg
-// Last Update:		3.10.2016
+// Last Update:		3.14.2016
 //////////////////////////////////////////////////////////////////
 #pragma once
 #include "Camera.h"
@@ -17,10 +17,11 @@ class SkyboxComponent : public Component
 {
 private:
 
+
 public:
 	// Defaults
-	SkyboxComponent ( void );
-	~SkyboxComponent( void );
+	SkyboxComponent ( Object* _parent = nullptr );
+	virtual ~SkyboxComponent( void );
 
 	// Interface
 	bool Update( void ) override;

@@ -39,7 +39,7 @@ std::string ShaderResourceManager::LoadTextureFromFile(std::string _fromFile)
 
 		size_t length = strlen(_fromFile.c_str()) + 1;
 		wchar_t path[50];
-		int needed = MultiByteToWideChar(0, 0, _fromFile.c_str(), length + 1, path, length + 1);
+		int needed = MultiByteToWideChar(0, 0, _fromFile.c_str(), (int)length + 1, path, (int)length + 1);
 		
 		ID3D11ShaderResourceView* newResource;
 		CreateDDSTextureFromFile(device, path, NULL, &newResource);
@@ -65,7 +65,7 @@ void ShaderResourceManager::ApplyShaderResource(std::string _resourceID)
 void ShaderResourceManager::Terminate()
 {
 	// === Release all the ShaderResources
-	unsigned int size = m_Resources.size();
+	unsigned int size = (unsigned int)m_Resources.size();
 	for (unsigned int i = 0; i < size; ++i) {
 		SAFE_RELEASE(m_Resources[i]);
 	}
@@ -89,7 +89,7 @@ void ShaderResourceManager::ConvertFileToDDS(char* _filename)
 
 unsigned int ShaderResourceManager::ContainsResource(std::string _resourceID)
 {
-	unsigned int size = m_ResourceIDs.size();
+	unsigned int size = (unsigned int)m_ResourceIDs.size();
 	for (unsigned int i = 0; i < size; ++i) {
 		if (m_ResourceIDs[i] == _resourceID)
 			return i;
@@ -102,7 +102,7 @@ std::string ShaderResourceManager::DropFileExtension(std::string _filepath)
 {
 	std::string filename = _filepath;
 
-	unsigned int position = filename.find_last_of(".");
+	unsigned int position = (unsigned int)filename.find_last_of(".");
 	filename.erase(position);
 
 	return filename;
