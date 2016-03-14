@@ -156,7 +156,6 @@
     <ClCompile Include="FBXConverter.cpp" />
     <ClCompile Include="Bone.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />

@@ -131,7 +131,8 @@ void Application::SetupScene()
 	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
 
 	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
-	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("WindowedBox.dds"));
+	//material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("WindowedBox.dds"));
+	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/TestCube.dds"));
 
 	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(object);
