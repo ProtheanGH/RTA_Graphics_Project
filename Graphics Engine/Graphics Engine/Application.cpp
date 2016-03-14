@@ -133,15 +133,34 @@ bool Application::Run()
 // ===== Private Interface ===== //
 void Application::SetupScene()
 {
+	// === Skybox === //
+	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
+	skybox->AddComponent(new SkyboxComponent(skybox));
+	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
+	context->SetRasterizerState(RasterizerStates::Front_Culling);
+	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
+	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+	FBXConverter* fbxConverter = FBXConverter::GetInstance();
+	assert(fbxConverter->LoadFBX("BasicCube", skybox) == true);
+	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Skybox.dds"));
+	shape->SetObject(skybox);
+	Renderer::GetInstance()->AddForRendering(context, material, shape);
+	for (unsigned int i = 0; i < skybox->GetChildren().size(); ++i) {
+		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+		shape->SetObject(skybox->GetChildren()[i]);
+		Renderer::GetInstance()->AddForRendering(context, material, shape);
+	}
+	// ============== //
+
+
 	// === Cube === //
 	Object* object = ObjectManager::GetInstance()->CreateNewObject();
-	FBXConverter* fbxConverter = FBXConverter::GetInstance();
 	fbxConverter->LoadFBX("Teddy_Idle", object);
-	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
-	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
+	context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
+	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
 	//material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("WindowedBox.dds"));
 	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_D.dds"));
-	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+	shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(object);
 	Renderer::GetInstance()->AddForRendering(context, material, shape);
 	for (unsigned int i = 0; i < object->GetChildren().size(); ++i) {
@@ -153,22 +172,6 @@ void Application::SetupScene()
 	// ============ //
 
 
-	// === Skybox === //
-	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
-	skybox->AddComponent(new SkyboxComponent(skybox));
-	context  = RenderNodeDirectory::GetInstance()->CreateRenderContext();
-	context->SetRasterizerState(RasterizerStates::Front_Culling);
-	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
-	shape    = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-	fbxConverter->LoadFBX("BasicCube", skybox);
-	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Skybox.dds"));
-	shape->SetObject(skybox);
-	Renderer::GetInstance()->AddForRendering(context, material, shape);
-	for (unsigned int i = 0; i < skybox->GetChildren().size(); ++i) {
-		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-		shape->SetObject(skybox->GetChildren()[i]);
-		Renderer::GetInstance()->AddForRendering(context, material, shape);
-	}
-	// ============== //
+	
 }
 // ============================= //
