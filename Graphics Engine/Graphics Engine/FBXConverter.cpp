@@ -113,47 +113,6 @@ bool FBXConverter::LoadFBX(FbxNode* _rootNode, Object* _rootObject){
 	return true;
 }
 
-/*
-void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
-
-	FbxVector4* controlPoints = _mesh->GetControlPoints();
-	unsigned int controlPointCount = _mesh->GetControlPointsCount();
-	unsigned int vertexCount = 0;
-	Mesh* object_mesh = new Mesh();
-
-	for (unsigned int i = 0; i < controlPointCount; ++i){
-		Vertex_POSNORMUV vertex;
-		vertex.pos[0] = (float)controlPoints[i].mData[0];
-		vertex.pos[1] = (float)controlPoints[i].mData[1];
-		vertex.pos[2] = (float)controlPoints[i].mData[2];
-
-		DirectX::XMFLOAT3 normal;
-		LoadNormal(_mesh, i, vertexCount, normal);
-		vertex.normal[0] = normal.x;
-		vertex.normal[1] = normal.y;
-		vertex.normal[2] = normal.z;
-
-		DirectX::XMFLOAT2 uv;
-		//LoadUV(_mesh, i, vertexCount, uv);
-		vertex.uv[0] = uv.x;
-		vertex.uv[1] = uv.y;
-
-		object_mesh->GetVerts().push_back(vertex);
-
-		++vertexCount;
-	}
-
-	//Vertices are indices
-	int* indices = _mesh->GetPolygonVertices();
-	for (int i = 0; i < _mesh->GetPolygonVertexCount(); ++i){
-		int index = indices[i];
-		object_mesh->GetIndices().push_back(index);
-	}
-
-	_object->SetMesh(object_mesh);
-}
-*/
-
 void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 
 	FbxVector4* controlPoints = _mesh->GetControlPoints();
@@ -171,17 +130,19 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 			vertex.pos[0] = (float)controlPoints[controlPointIndex].mData[0];
 			vertex.pos[1] = (float)controlPoints[controlPointIndex].mData[1];
 			vertex.pos[2] = (float)controlPoints[controlPointIndex].mData[2];
+			vertex.pos[3] = 1;
 
 			DirectX::XMFLOAT2 uv;
 			LoadUV(_mesh, controlPointIndex, polygon, polygonVertex, uv);
-			vertex.uv[0] = fabsf(1 - uv.x);
-			vertex.uv[1] = uv.y;
+			vertex.uv[0] = uv.x;
+			vertex.uv[1] = fabsf(1.0f - uv.y);
 
 			DirectX::XMFLOAT3 normal;
 			LoadNormal(_mesh, controlPointIndex, vertexCounter, normal);
 			vertex.normal[0] = normal.x;
 			vertex.normal[1] = normal.y;
 			vertex.normal[2] = normal.z;
+			vertex.normal[3] = 1;
 
 			unsigned int index = -1;
 			if (CheckDuplicates(objectMesh->GetVerts(), vertex, index) == false){
@@ -194,7 +155,6 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 		}
 	}
 
-	Writer::GetInstance()->SaveTextureCoords(_object->GetName().c_str(), objectMesh);
 	_object->SetMesh(objectMesh);
 }
 
