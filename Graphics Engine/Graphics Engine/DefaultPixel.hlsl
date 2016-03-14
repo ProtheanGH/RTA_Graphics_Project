@@ -57,7 +57,6 @@ float4 main( OUTPUT_VERTEX _input ) : SV_TARGET
 	// Ambient lighting
 	float4 ambientDirection = imageColor * directionResult;
 
-
 	// === Create a Greyscale === //
 	float4 greyScale = { 0.25f, 0.25f, 0.25f, 0.25f };
 	greyScale = greyScale * imageColor;
