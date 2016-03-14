@@ -118,6 +118,10 @@ bool Application::Run()
 	Renderer::GetInstance()->Render();
 	return true;
 }
+/*static*/ Camera Application::GetCamera()
+{
+	return m_Camera;
+}
 // ===================== //
 
 // ===== Private Interface ===== //

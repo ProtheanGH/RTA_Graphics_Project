@@ -5,6 +5,8 @@
 // Last Update:		3.10.2016
 //////////////////////////////////////////////////////////////////
 #pragma once
+#include "Camera.h"
+
 #include "Component.h"
 #include <DirectXMath.h>
 using namespace DirectX;
@@ -14,7 +16,6 @@ using namespace DirectX;
 class SkyboxComponent : public Component
 {
 private:
-	XMFLOAT4X4 m_localMatrix;
 
 public:
 	// Defaults
