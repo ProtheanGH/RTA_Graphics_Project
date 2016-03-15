@@ -54,6 +54,38 @@ public:
 	// ================= //
 };
 
+// === Lighting Structures
+struct AmbientLight
+{
+	XMFLOAT4 color;
+};
+
+struct DirectionalLight
+{
+	XMFLOAT4 direction;
+	XMFLOAT4 color;
+};
+
+struct PointLight
+{
+	XMFLOAT4 position;
+	XMFLOAT4 color;
+	float radius;
+
+	XMFLOAT3 padding;
+};
+
+struct SpotLight
+{
+	XMFLOAT4 position;
+	XMFLOAT4 direction;
+	XMFLOAT4 color;
+	XMFLOAT2 coneRatio;
+
+	XMFLOAT2 padding;
+};
+// ===
+
 // === ToShaderObjects
 struct ToShaderObject {
 	XMFLOAT4X4 ObjectWorldMatrix;
@@ -65,13 +97,9 @@ struct ToShaderScene {
 };
 
 struct ToShaderLight {
-	XMFLOAT4 diffuseDirection;
-	XMFLOAT4 diffuseColor;
-	XMFLOAT4 pointPosition;
-	XMFLOAT4 pointColor;
-	XMFLOAT4 spotPosition;
-	XMFLOAT4 spotDirection;
-	XMFLOAT4 spotColor;
-	XMFLOAT4 spotConeRatio;
+	AmbientLight ambientLight;
+	DirectionalLight directionalLight;
+	PointLight pointLight;
+	SpotLight spotLight;
 };
 

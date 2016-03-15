@@ -3,12 +3,12 @@
 // Description:	Nothing special about this shader. Just the default.
 // 
 // Created By:		Doug Berg
-// Last Edited:		3.9.2016
+// Last Edited:		3.15.2016
 //////////////////////////////////////////////////////////////////////////
 #ifndef DEFAULT_PIXEL_HLSL
 #define DEFAULT_PIXEL_HLSL
 
-// === Globals === //
+// === Shader Input Structures === //
 struct OUTPUT_VERTEX
 {
 	float4 projectedCoordinate : SV_POSITION;
@@ -16,41 +16,62 @@ struct OUTPUT_VERTEX
 	float4 normals : NORMALS;
 	float2 uv : UV;
 };
-// ===
+// =============================== //
 
+// === Additional Structures === //
+struct AmbientLight
+{
+	float4 color;
+};
+
+struct DirectionalLight
+{
+	float4 direction;
+	float4 color;
+};
+
+struct PointLight
+{
+	float4 position;
+	float4 color;
+	float radius;
+
+	float3 padding;
+};
+
+struct SpotLight
+{
+	float4 position;
+	float4 direction;
+	float4 color;
+	float2 coneRatio;
+
+	float padding;
+};
+// ============================= //
+
+// === Buffer Registers === //
+cbuffer LIGHT_BUFFER : register(b0)
+{
+	AmbientLight ambientLight;
+	DirectionalLight directionalLight;
+	PointLight pointLight;
+	SpotLight spotLight;
+}
+// ======================== //
 
 texture2D image : register(t0);
 
 SamplerState filter : register(s0);
 
-
-// === BUFFERS === //
-cbuffer LIGHT_BUFFER : register(b0)
-{
-	// Directional
-	float4 diffuseLightDirection : DF_DIRECTION;
-	float4 diffuseLightColor : DF_COLOR;
-
-	// Point
-	float4 pointLightLocation : PT_LOCATION;
-	float4 pointLightColor : PT_COLOR;
-
-	// Spot
-	float4 spotLightLocation : SP_LOCATION;
-	float4 spotLightDirection : SP_DIRECTION;
-	float4 spotLightColor : SP_COLOR;
-	float4 spotLightConeRatio : SP_RATIO;
-}
-// ===
-
-
-float4 main( OUTPUT_VERTEX _input ) : SV_TARGET
+// === Main Function
+float4 main(OUTPUT_VERTEX _input) : SV_TARGET
 {
 	float4 imageColor = image.Sample(filter, _input.uv);
 
 	// === Directional Light === //
-	float directionRatio = saturate(dot(-diffuseLightDirection, _input.normals));
-	float4 directionResult = directionRatio * diffuseLightColor * imageColor;
+	float directionRatio = saturate(dot(-directionalLight.direction, _input.normals));
+	float4 directionResult = directionRatio * directionalLight.color * imageColor;
 	directionResult.w = 1;
 	// ===
 
@@ -61,31 +82,30 @@ float4 main( OUTPUT_VERTEX _input ) : SV_TARGET
 
 
 	// === Point Light === //
-	float4 pointDirection = pointLightLocation - _input.worldPosition;
-	float  pointRatio     = saturate(dot(pointDirection, _input.normals));
-	float4 pointResult    = pointRatio * pointLightColor * imageColor;
+	float4 pointDirection = pointLight.position - _input.worldPosition;
+	float  pointRatio = saturate(dot(pointDirection, _input.normals));
+	float4 pointResult = pointRatio * pointLight.color * imageColor;
 	// ===
 
 
 	// === Spot Light === //
-	float4 coneDirection = normalize(spotLightLocation - _input.worldPosition);
-	float  coneRatio = saturate(dot(spotLightDirection, -coneDirection));
-	float  spotFactor = (coneRatio > spotLightConeRatio.y) ? 1.0f : 0.0f;
-	float  spotlightRatio = saturate(dot(coneDirection.y, _input.normals)); // spotlightRatio - To be used for specular lighting
-	float attenuation = 1.0f - saturate((spotLightConeRatio.x - coneRatio) / (spotLightConeRatio.x - spotLightConeRatio.y));
+	float4 coneDirection = normalize(spotLight.position - _input.worldPosition);
+	float  coneRatio = saturate(dot(spotLight.direction, -coneDirection));
+	float  spotFactor = (coneRatio > spotLight.coneRatio.y) ? 1.0f : 0.0f;
+	float  spotRatio = saturate(dot(coneDirection.y, _input.normals)); // spotRatio - To be used for specular lighting
+	float attenuation = 1.0f - saturate((spotLight.coneRatio.x - coneRatio) / (spotLight.coneRatio.x - spotLight.coneRatio.y));
 	attenuation *= attenuation;
-	float4 spotResult = spotFactor * coneRatio * spotLightColor * imageColor * attenuation;
+	float4 spotResult = spotFactor * coneRatio * spotLight.color * imageColor * attenuation;
 	// ===
 
 
 	// === Create a Greyscale === //
-	float4 greyScale = { 0.25f, 0.25f, 0.25f, 1.0f };
-	greyScale = greyScale * imageColor;
+	float4 greyScale = ambientLight.color * imageColor;
 	// ===
 
 	return saturate(greyScale + directionResult + ambientDirection + pointResult + spotResult);
 }
-
+// ===
 
 #endif	// DEFAULT_PIXEL_HLSL
 

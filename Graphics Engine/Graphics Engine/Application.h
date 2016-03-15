@@ -18,6 +18,7 @@ private:
 
 	// === Private Interface
 	void SetupScene();
+	void UpdateLighting();
 	// ===
 	
 public:

@@ -28,8 +28,8 @@ void RenderMaterial::Apply()
 {
 	SampleStateManager::GetInstance()->Apply(m_SampleState);
 
-	unsigned int count = m_ShaderResourceIDs.size();
-	for (unsigned int i = 0; i < count; i++) {
+	size_t count = m_ShaderResourceIDs.size();
+	for (size_t i = 0; i < count; i++) {
 		ShaderResourceManager::GetInstance()->ApplyShaderResource(m_ShaderResourceIDs[i], i);
 	}
 }
