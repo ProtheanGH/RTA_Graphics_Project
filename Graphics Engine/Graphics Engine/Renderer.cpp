@@ -81,7 +81,7 @@ void Renderer::AddForRendering(RenderContext* _rContext, RenderMaterial* _rMater
 // === Private Interface === //
 XMFLOAT4X4 Renderer::CreateProjectionMatrix(float _fov, float _width, float _height) 
 {
-	float nearPlane = 0.1f, farPlane = 100;
+	float nearPlane = 0.1f, farPlane = 500;
 	float verticalFOV = XMConvertToRadians(_fov), aspectRatio = _width / _height;
 	float yScale = (1 / tan(verticalFOV * 0.5f)), xScale = yScale / aspectRatio;
 

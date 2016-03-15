@@ -11,6 +11,7 @@ private:
 	XMFLOAT4X4 m_Transform;
 	POINT m_CursorPosition;
 	float m_MovementSpeed;
+	float m_FastMovementSpeed;
 	float m_RotationSpeed;
 
 public:
