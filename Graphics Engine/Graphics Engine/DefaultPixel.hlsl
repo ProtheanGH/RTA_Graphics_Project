@@ -8,7 +8,7 @@
 #ifndef DEFAULT_PIXEL_HLSL
 #define DEFAULT_PIXEL_HLSL
 
-// === Globals === //
+// === Shader Input Structures === //
 struct OUTPUT_VERTEX
 {
 	float4 projectedCoordinate : SV_POSITION;
@@ -18,40 +18,62 @@ struct OUTPUT_VERTEX
 };
 // ===
 
+// === Additional Structures === //
+struct AmbientLight
+{
+	float4 color;
+};
+
+struct DirectionalLight
+{
+	float4 direction;
+	float4 color;
+};
+
+struct PointLight
+{
+	float4 position;
+	float4 color;
+	float radius;
+
+	float3 padding;
+};
+
+struct SpotLight
+{
+	float4 position;
+	float4 direction;
+	float4 color;
+	float coneRatio;
+	float radius;
+
+	float3 padding;
+};
+// ============================= //
+
+// === BUFFERS === //
+cbuffer LIGHT_BUFFER : register(b0)
+{
+	AmbientLight ambientLight;
+	DirectionalLight directionalLight;
+	PointLight pointLight;
+	SpotLight spotLight;
+}
+// ===
 
 texture2D image : register(t0);
 
 SamplerState filter : register(s0);
 
-
-// === BUFFERS === //
-cbuffer LIGHT_BUFFER : register(b0)
-{
-	// Directional
-	float4 diffuseLightDirection : DF_DIRECTION;
-	float4 diffuseLightColor : DF_COLOR;
-
-	// Point
-	float4 pointLightLocation : PT_LOCATION;
-	float4 pointLightColor : PT_COLOR;
-
-	// Spot
-	float4 spotLightLocation : SP_LOCATION;
-	float4 spotLightDirection : SP_DIRECTION;
-	float4 spotLightColor : SP_COLOR;
-	float4 spotLightConeRatio : SP_RATIO;
-}
-// ===
-
-
+// === Main Function
 float4 main( OUTPUT_VERTEX _input ) : SV_TARGET
 {
 	float4 imageColor = image.Sample(filter, _input.uv);
 
 	// === Directional Light === //
 	float directionRatio = saturate(dot(-diffuseLightDirection, _input.normals));
-	float4 directionResult = directionRatio * diffuseLightColor * imageColor;
-	directionResult.w = 1;
+	float4 directionalResult = directionRatio * diffuseLightColor * imageColor;
+	directionalResult.w = 1;
 
 	// Ambient lighting
 	float4 ambientDirection = imageColor * directionResult;
@@ -64,7 +86,7 @@ float4 main( OUTPUT_VERTEX _input ) : SV_TARGET
 
 	return saturate(greyScale + directionResult + ambientDirection);
 }
-
+// ===
 
 #endif	// DEFAULT_PIXEL_HLSL
 

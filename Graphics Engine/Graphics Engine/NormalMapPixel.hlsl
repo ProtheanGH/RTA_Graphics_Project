@@ -12,22 +12,46 @@ struct PixelInput {
 };
 // =============================== //
 
+// === Additional Structures === //
+struct AmbientLight
+{
+	float4 color;
+};
+
+struct DirectionalLight
+{
+	float4 direction;
+	float4 color;
+};
+
+struct PointLight
+{
+	float4 position;
+	float4 color;
+	float radius;
+
+	float3 padding;
+};
+
+struct SpotLight
+{
+	float4 position;
+	float4 direction;
+	float4 color;
+	float coneRatio;
+	float radius;
+
+	float3 padding;
+};
+// ============================= //
+
 // === Buffer Registers === //
 cbuffer LIGHT_BUFFER : register(b0)
 {
-	// Directional
-	float4 diffuseLightDirection : DF_DIRECTION;
-	float4 diffuseLightColor : DF_COLOR;
-
-	// Point
-	float4 pointLightLocation : PT_LOCATION;
-	float4 pointLightColor : PT_COLOR;
-
-	// Spot
-	float4 spotLightLocation : SP_LOCATION;
-	float4 spotLightDirection : SP_DIRECTION;
-	float4 spotLightColor : SP_COLOR;
-	float4 spotLightConeRatio : SP_RATIO;
+	AmbientLight ambientLight;
+	DirectionalLight directionalLight;
+	PointLight pointLight;
+	SpotLight spotLight;
 }
 // ======================== //
 
@@ -58,8 +82,8 @@ float4 main(PixelInput _input) : SV_TARGET
 	normal = normalize(normal);
 
 	// === Handle Directional Lighting
-	lightIntensity = saturate(dot(normal, -diffuseLightDirection));
-	color = saturate(diffuseLightColor * lightIntensity);
+	lightIntensity = saturate(dot(normal, -directionalLight.direction));
+	color = saturate(directionalLight.color * lightIntensity);
 	color = color * textureColor;
 	color.w = 1.0;
 

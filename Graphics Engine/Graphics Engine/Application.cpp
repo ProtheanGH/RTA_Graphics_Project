@@ -133,18 +133,28 @@ bool Application::Run()
 // ===== Private Interface ===== //
 void Application::SetupScene()
 {
+	FBXConverter* fbxConverter = FBXConverter::GetInstance();
+	Object* object;
+	RenderContext* context;
+	RenderMaterial* material;
+	RenderShape* shape;
+
 	// === Skybox === //
 	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
 	skybox->AddComponent(new SkyboxComponent(skybox));
-	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
+	fbxConverter->LoadFBX("BasicCube", skybox);
+
+	context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
 	context->SetRasterizerState(RasterizerStates::Front_Culling);
-	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
-	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-	FBXConverter* fbxConverter = FBXConverter::GetInstance();
-	assert(fbxConverter->LoadFBX("BasicCube", skybox) == true);
-	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Skybox.dds"));
+
+	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
+	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Skybox.dds"));
+
+	shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(skybox);
+
 	Renderer::GetInstance()->AddForRendering(context, material, shape);
+
 	for (unsigned int i = 0; i < skybox->GetChildren().size(); ++i) {
 		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 		shape->SetObject(skybox->GetChildren()[i]);
@@ -153,16 +163,21 @@ void Application::SetupScene()
 	// ============== //
 
 
-	// === Cube === //
-	Object* object = ObjectManager::GetInstance()->CreateNewObject();
+	// === Teddy === //
+	object = ObjectManager::GetInstance()->CreateNewObject();
 	fbxConverter->LoadFBX("Teddy_Idle", object);
-	context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
+
+	context = RenderNodeDirectory::GetInstance()->CreateRenderContext(VertexShaderEnum::NormalMap_Vertex, PixelShaderEnum::NormalMap_Pixel, BlendStates::BlendState_Default, RasterizerStates::RasterizerState_Default, InputLayouts::NormalMapped_InputLayout);
+
 	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
-	//material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("WindowedBox.dds"));
-	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_D.dds"));
+	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_D.dds"));
+	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_Normal.dds"));
+
 	shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(object);
+
 	Renderer::GetInstance()->AddForRendering(context, material, shape);
+
 	for (unsigned int i = 0; i < object->GetChildren().size(); ++i) {
 		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 		shape->SetObject(object->GetChildren()[i]);
@@ -170,8 +185,5 @@ void Application::SetupScene()
 		Renderer::GetInstance()->AddForRendering(context, material, shape);
 	}
 	// ============ //
-
-
-	
 }
 // ============================= //
