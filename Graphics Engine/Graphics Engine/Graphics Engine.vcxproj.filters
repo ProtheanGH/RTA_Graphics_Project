@@ -255,6 +255,12 @@
     <ClInclude Include="DDSTextureLoader.h">
       <Filter>Utilities\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NormalMapPixel.h">
+      <Filter>Shaders\Pixel Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalMapVertex.h">
+      <Filter>Shaders\Vertex Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">

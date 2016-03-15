@@ -1,3 +1,8 @@
+#ifndef NormalMapVertex_HLSL
+#define NormalMapVertex_HLSL
+
+#pragma pack_matrix(row_major)
+
 // === Shader Input Structures === //
 struct VertexInput 
 {
@@ -10,10 +15,11 @@ struct VertexInput
 
 struct PixelInput {
 	float4 position : SV_POSITION;
+	float4 worldPosition : WORLDPOS;
 	float2 texCoords : UV;
-	float3 normal : NORMALS;
-	float3 tangent : TANGENT;
-	float3 binormal : BINORMAL;
+	float4 normal : NORMALS;
+	float4 tangent : TANGENT;
+	float4 binormal : BINORMAL;
 };
 // =============================== //
 
@@ -43,16 +49,20 @@ PixelInput main( VertexInput _input )
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projection);
 
+	output.worldPosition = _input.position;
+
 	output.texCoords = _input.texCoords;
 
 	// === Convert the Normal, Tangent, and Binormal into world space
-	output.normal = mul(_input.normal, (float3x3)worldMatrix);
+	output.normal = mul(_input.normal, worldMatrix);
 	output.normal = normalize(output.normal);
-	output.tangent = mul(_input.tangent, (float3x3)worldMatrix);
+	output.tangent = mul(_input.tangent, worldMatrix);
 	output.tangent = normalize(output.tangent);
-	output.binormal = mul(_input.binormal, (float3x3)worldMatrix);
+	output.binormal = mul(_input.binormal, worldMatrix);
 	output.binormal = normalize(output.binormal);
 
 	return output;
 }
 // ===
+
+#endif

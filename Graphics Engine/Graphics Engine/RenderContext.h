@@ -36,6 +36,7 @@ public:
 
 	// === Interface === //
 	virtual void Add(RenderNode* _rMaterial, RenderNode* _rShape);
+	virtual bool Compare(RenderNode* _otherNode);
 	// ================= //
 
 	// === Mutators === //

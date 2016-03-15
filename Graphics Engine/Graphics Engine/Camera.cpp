@@ -10,7 +10,7 @@ Camera::Camera()
 	XMStoreFloat4x4(&m_Transform, matrix);
 
 	m_CursorPosition.x = -1;
-	m_MovementSpeed = 3.0;
+	m_MovementSpeed = 12.0;
 	m_RotationSpeed = 0.5;
 }
 

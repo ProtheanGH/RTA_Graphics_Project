@@ -1,10 +1,14 @@
+#ifndef NormalMapPixel_HLSL
+#define NormalMapPixel_HLSL
+
 // === Shader Input Structures === //
 struct PixelInput {
 	float4 position : SV_POSITION;
-	float2 texCoords : TEXTURECOORDS;
-	float3 normal : NORMAL;
-	float3 tangent : TANGENT;
-	float3 binormal : BINORMAL;
+	float4 worldPosition : WORLDPOS;
+	float2 texCoords : UV;
+	float4 normal : NORMALS;
+	float4 tangent : TANGENT;
+	float4 binormal : BINORMAL;
 };
 // =============================== //
 
@@ -32,6 +36,7 @@ Texture2D diffuseTexture : register(t0);
 Texture2D normalTexture : register(t1);
 SamplerState filter : register(s0);
 
+// === Main Function
 float4 main(PixelInput _input) : SV_TARGET
 {
 	float4 textureColor;
@@ -48,13 +53,18 @@ float4 main(PixelInput _input) : SV_TARGET
 	normalMap = (normalMap * 2.0f) - 1.0f;
 
 	// === Calculate the Normal
-	normal = (normalMap.x * _input.tangent) + (normalMap.y * _input.binormal) + (normalMap.z * _input.normal);
+	float3x3 TBNMatrix = float3x3((float3)_input.tangent, (float3)_input.binormal, (float3)_input.normal);
+	normal = mul(normalMap, TBNMatrix);
 	normal = normalize(normal);
 
 	// === Handle Directional Lighting
-	lightIntensity = saturate(dot(normalMap, -diffuseLightDirection));
+	lightIntensity = saturate(dot(normal, -diffuseLightDirection));
 	color = saturate(diffuseLightColor * lightIntensity);
 	color = color * textureColor;
+	color.w = 1.0;
 
 	return color;
 }
+// ===
+
+#endif

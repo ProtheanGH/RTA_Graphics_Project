@@ -22,11 +22,21 @@ RenderNodeDirectory* RenderNodeDirectory::GetInstance()
 // ============================ //
 
 // ===== Interface ===== //
-RenderContext* RenderNodeDirectory::CreateRenderContext()
+RenderContext* RenderNodeDirectory::CreateRenderContext(VertexShaderEnum _vertexShader, PixelShaderEnum _pixelShader, BlendStates _blendState, RasterizerStates _rasterizerState, InputLayouts _inputLayout)
 {
 	RenderContext* newRContext = new RenderContext();
-	m_RenderContextes.push_back(newRContext);
-	return newRContext;
+	newRContext->SetSetting(_vertexShader, _pixelShader, _blendState, _rasterizerState, _inputLayout);
+
+	int result = ContainsRenderContext(newRContext);
+	if (result == -1) {
+		m_RenderContextes.push_back(newRContext);
+		return newRContext;
+	}
+	else {
+		delete newRContext;
+		return m_RenderContextes[result];
+	}
+	
 }
 
 RenderMaterial* RenderNodeDirectory::CreateRenderMaterial()
@@ -69,5 +79,24 @@ void RenderNodeDirectory::Terminate()
 void RenderNodeDirectory::Initialize()
 {
 
+}
+
+// === ContainsRenderContext
+//  - Searches through the already existing RenderContextes and compares them to the given rContext. Returns the index of the matching context, otherwise, 
+//    returns -1.
+int RenderNodeDirectory::ContainsRenderContext(RenderContext* _context)
+{
+	unsigned int count = m_RenderContextes.size();
+	for (unsigned int i = 0; i < count; ++i) {
+		if (m_RenderContextes[i]->Compare(_context))
+			return i;
+	}
+
+	return -1;
+}
+
+int RenderNodeDirectory::ContainsRenderMaterial(RenderMaterial* _material)
+{
+	return -1;
 }
 // ============================= //

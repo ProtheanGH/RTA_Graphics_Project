@@ -27,7 +27,11 @@ void RenderMaterial::Add(RenderNode* _rMaterial, RenderNode* _rShape)
 void RenderMaterial::Apply()
 {
 	SampleStateManager::GetInstance()->Apply(m_SampleState);
-	ShaderResourceManager::GetInstance()->ApplyShaderResource(m_ShaderResourceID);
+
+	unsigned int count = m_ShaderResourceIDs.size();
+	for (unsigned int i = 0; i < count; i++) {
+		ShaderResourceManager::GetInstance()->ApplyShaderResource(m_ShaderResourceIDs[i], i);
+	}
 }
 
 void RenderMaterial::Revert()
