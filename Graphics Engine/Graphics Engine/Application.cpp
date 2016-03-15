@@ -104,19 +104,12 @@ bool Application::Run()
 
 	// === Update the Scene 
 	ToShaderScene toShaderScene;
-	ToShaderLight toShaderLight;
 	toShaderScene.SceneViewMatrix = m_Camera.GetViewMatrix();
 	toShaderScene.SceneProjectionMatrix = Renderer::GetInstance()->GetProjectionMatrix();
-	toShaderLight.diffuseColor     = XMFLOAT4( 0.78823f, 0.88627f, 1.0f, 1.0f );	// Color of overcast sky
-	toShaderLight.diffuseDirection = XMFLOAT4( 1.0f,  -1.0f,   1.0f,   1.0f );
-	toShaderLight.pointColor       = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
-	toShaderLight.pointPosition    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
-	toShaderLight.spotPosition     = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
-	toShaderLight.spotDirection    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
-	toShaderLight.spotColor        = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
-	toShaderLight.spotConeRatio    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
 	ConstantBufferManager::GetInstance()->ApplySceneBuffer(&toShaderScene);
-	ConstantBufferManager::GetInstance()->ApplyLightBuffer(&toShaderLight);
+
+	UpdateLighting();
+	
 	
 	Renderer::GetInstance()->Render();
 
@@ -185,5 +178,25 @@ void Application::SetupScene()
 		Renderer::GetInstance()->AddForRendering(context, material, shape);
 	}
 	// ============ //
+}
+
+void Application::UpdateLighting()
+{
+	ToShaderLight toShaderLight;
+
+	toShaderLight.ambientLight.color = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
+
+	toShaderLight.directionalLight.color = XMFLOAT4(0.78823f, 0.88627f, 1.0f, 1.0f);	// Color of overcast sky
+	toShaderLight.directionalLight.direction = XMFLOAT4(1.0f, -1.0f, 1.0f, 1.0f);
+	
+	toShaderLight.pointLight.color = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	toShaderLight.pointLight.position = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	
+	toShaderLight.spotLight.position = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	toShaderLight.spotLight.direction = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	toShaderLight.spotLight.color = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	toShaderLight.spotLight.coneRatio = XMFLOAT2(0.0f, 0.0f);
+
+	ConstantBufferManager::GetInstance()->ApplyLightBuffer(&toShaderLight);
 }
 // ============================= //

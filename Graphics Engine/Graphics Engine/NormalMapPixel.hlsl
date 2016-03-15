@@ -41,7 +41,7 @@ struct SpotLight
 	float coneRatio;
 	float radius;
 
-	float3 padding;
+	float2 padding;
 };
 // ============================= //
 
@@ -67,7 +67,7 @@ float4 main(PixelInput _input) : SV_TARGET
 	float4 normalMap;
 	float3 normal;
 	float lightIntensity;
-	float4 color;
+	float4 ambientColor, directionalColor;
 
 	// === Sample out the two textures
 	textureColor = diffuseTexture.Sample(filter, _input.texCoords);
@@ -81,13 +81,16 @@ float4 main(PixelInput _input) : SV_TARGET
 	normal = mul(normalMap, TBNMatrix);
 	normal = normalize(normal);
 
-	// === Handle Directional Lighting
-	lightIntensity = saturate(dot(normal, -directionalLight.direction));
-	color = saturate(directionalLight.color * lightIntensity);
-	color = color * textureColor;
-	color.w = 1.0;
+	// === Ambient Lighting
+	ambientColor = ambientLight.color * textureColor;
 
-	return color;
+	// === Directional Lighting
+	lightIntensity = saturate(dot(normal, -directionalLight.direction));
+	directionalColor = saturate(directionalLight.color * lightIntensity);
+	directionalColor = directionalColor * textureColor;
+	directionalColor.w = 1.0;
+
+	return ambientColor + directionalColor;
 }
 // ===
 
