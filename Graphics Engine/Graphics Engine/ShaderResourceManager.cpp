@@ -51,14 +51,14 @@ std::string ShaderResourceManager::LoadTextureFromFile(std::string _fromFile)
 	return filename;
 }
 
-void ShaderResourceManager::ApplyShaderResource(std::string _resourceID)
+void ShaderResourceManager::ApplyShaderResource(std::string _resourceID, UINT _slot)
 {
 	ID3D11ShaderResourceView* resource = nullptr;
 	unsigned int resourceIndex = ContainsResource(_resourceID);
 
 	if (resourceIndex != -1) {
 		resource = m_Resources[resourceIndex];
-		Renderer::GetInstance()->GetDeviceContext()->PSSetShaderResources(0, 1, &resource);
+		Renderer::GetInstance()->GetDeviceContext()->PSSetShaderResources(_slot, 1, &resource);
 	}
 }
 

@@ -24,6 +24,8 @@ private:
 	RenderNodeDirectory& operator=(const RenderNodeDirectory &&) { }
 
 	void Initialize();
+	int ContainsRenderContext(RenderContext* _context);
+	int ContainsRenderMaterial(RenderMaterial* _material);
 	// ========================= //
 
 public:
@@ -36,7 +38,7 @@ public:
 	// ======================== //
 
 	// === Interface === //
-	RenderContext* CreateRenderContext();
+	RenderContext* CreateRenderContext(VertexShaderEnum _vertexShader = VertexShaderEnum::Vertex_Default, PixelShaderEnum _pixelShader = PixelShaderEnum::Pixel_Default, BlendStates _blendState = BlendStates::BlendState_Default, RasterizerStates _rasterizerState = RasterizerStates::RasterizerState_Default, InputLayouts _inputLayout = InputLayouts::InputLayout_Default);
 	RenderMaterial* CreateRenderMaterial();
 	RenderShape* CreateRenderShape();
 	void Terminate();

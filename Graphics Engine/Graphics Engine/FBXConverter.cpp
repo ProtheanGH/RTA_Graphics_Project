@@ -134,7 +134,7 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 
 			DirectX::XMFLOAT2 uv;
 			LoadUV(_mesh, controlPointIndex, polygon, polygonVertex, uv);
-			vertex.uv[0] = fabsf(1.0f - uv.x);
+			vertex.uv[0] = uv.x; // fabsf(1.0f - uv.x);
 			vertex.uv[1] = fabsf(1.0f - uv.y);
 
 			DirectX::XMFLOAT3 normal;

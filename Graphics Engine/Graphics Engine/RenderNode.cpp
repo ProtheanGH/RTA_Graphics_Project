@@ -17,4 +17,9 @@ void RenderNode::Add(RenderNode* _rMaterial, RenderNode* _rShape)
 {
 
 }
+
+bool RenderNode::Compare(RenderNode* _otherNode)
+{
+	return false;
+}
 // ===================== //

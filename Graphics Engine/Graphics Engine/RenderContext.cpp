@@ -31,6 +31,30 @@ void RenderContext::Add(RenderNode* _rMaterial, RenderNode* _rShape)
 
 	materialNode->Add(nullptr, _rShape);
 }
+
+// === Compare
+//  - Compares two RenderNodes, returns tru if they are the same, false otherwise.
+bool RenderContext::Compare(RenderNode* _otherNode)
+{
+	RenderContext* otherContext = dynamic_cast<RenderContext*>(_otherNode);
+	if (!otherContext)
+		return false;
+
+	if (this->m_BlendState != otherContext->m_BlendState)
+		return false;
+	if (this->m_Func != otherContext->m_Func)
+		return false;
+	if (this->m_InputLayout != otherContext->m_InputLayout)
+		return false;
+	if (this->m_PixelShader != otherContext->m_PixelShader)
+		return false;
+	if (this->m_RasterizerStateType != otherContext->m_RasterizerStateType)
+		return false;
+	if (this->m_VertexShader != otherContext->m_VertexShader)
+		return false;
+
+	return true;
+}
 // ===================== //
 
 // ===== Private Interface ===== //

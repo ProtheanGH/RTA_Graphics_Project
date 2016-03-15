@@ -19,6 +19,7 @@ public:
 	// === Interface === //
 	inline void RenderProcess() { m_Func(*this); }
 	virtual void Add(RenderNode* _rMaterial, RenderNode* _rShape);
+	virtual bool Compare(RenderNode* _otherNode);
 	// ================= //
 
 	// === Mutators === //

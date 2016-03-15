@@ -12,6 +12,8 @@
 // == Shader Files
 #include "DefaultPixel.h"
 #include "DefaultVertex.h"
+#include "NormalMapPixel.h"
+#include "NormalMapVertex.h"
 
 #define SAFE_RELEASE(p) { if(p) { p->Release(); p = nullptr; } }
 
@@ -109,11 +111,13 @@ void ShaderManager::Initialize()
 
 	// === Pixel Shaders === //
 	Renderer::GetInstance()->GetDevice()->CreatePixelShader(DefaultPixel, sizeof(DefaultPixel), nullptr, &m_PixelShaders[Pixel_Default]);
+	Renderer::GetInstance()->GetDevice()->CreatePixelShader(NormalMapPixel, sizeof(NormalMapPixel), nullptr, &m_PixelShaders[NormalMap_Pixel]);
 	// ===
 
 
 	// === Vertex Shaders === //
 	Renderer::GetInstance()->GetDevice()->CreateVertexShader(DefaultVertex, sizeof(DefaultVertex), nullptr, &m_VertexShaders[Vertex_Default]);
+	Renderer::GetInstance()->GetDevice()->CreateVertexShader(NormalMapVertex, sizeof(NormalMapVertex), nullptr, &m_VertexShaders[NormalMap_Vertex]);
 	// ===
 }
 // ============================= //

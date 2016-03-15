@@ -8,8 +8,6 @@
 #ifndef DEFAULT_PIXEL_HLSL
 #define DEFAULT_PIXEL_HLSL
 
-
-
 // === Globals === //
 struct OUTPUT_VERTEX
 {
@@ -58,7 +56,7 @@ float4 main( OUTPUT_VERTEX _input ) : SV_TARGET
 	float4 ambientDirection = imageColor * directionResult;
 
 	// === Create a Greyscale === //
-	float4 greyScale = { 0.25f, 0.25f, 0.25f, 0.25f };
+	float4 greyScale = { 0.25f, 0.25f, 0.25f, 1.0f };
 	greyScale = greyScale * imageColor;
 	// ===
 

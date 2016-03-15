@@ -36,7 +36,7 @@ public:
 
 	// === Interface === //
 	std::string LoadTextureFromFile(std::string _fromFile);
-	void ApplyShaderResource(std::string _resourceID);
+	void ApplyShaderResource(std::string _resourceID, UINT _slot);
 	void Terminate();
 	// ================= // 
 };
