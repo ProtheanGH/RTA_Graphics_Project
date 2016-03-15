@@ -11,12 +11,13 @@ Camera::Camera()
 
 	m_CursorPosition.x = -1;
 	m_MovementSpeed = 12.0;
+	m_FastMovementSpeed = 50.0f;
 	m_RotationSpeed = 0.5;
 }
 
 Camera::~Camera()
 {
-
+	
 }
 // ==================================== //
 
@@ -29,26 +30,56 @@ void Camera::Update(float _deltaTime)
 
 	// === Forward / Backward Movement (Z-Axis)
 	if (GetAsyncKeyState('W')) {
-		matrix = XMMatrixMultiply(XMMatrixTranslation(0, 0, _deltaTime * m_MovementSpeed), matrix);
+		if (GetAsyncKeyState(VK_SHIFT)) {
+			matrix = XMMatrixMultiply(XMMatrixTranslation(0, 0, _deltaTime * m_FastMovementSpeed), matrix);
+		}
+		else {
+			matrix = XMMatrixMultiply(XMMatrixTranslation(0, 0, _deltaTime * m_MovementSpeed), matrix);
+		}
 	}
 	else if (GetAsyncKeyState('S')) {
-		matrix = XMMatrixMultiply(XMMatrixTranslation(0, 0, _deltaTime * -m_MovementSpeed), matrix);
+		if (GetAsyncKeyState(VK_SHIFT)) {
+			matrix = XMMatrixMultiply(XMMatrixTranslation(0, 0, _deltaTime * -m_FastMovementSpeed), matrix);
+		}
+		else {
+			matrix = XMMatrixMultiply(XMMatrixTranslation(0, 0, _deltaTime * -m_MovementSpeed), matrix);
+		}
 	}
 
 	// === Sidewards Movement (X-Axis)
 	if (GetAsyncKeyState('A')) {
-		matrix = XMMatrixMultiply(XMMatrixTranslation(_deltaTime * -m_MovementSpeed, 0, 0), matrix);
+		if (GetAsyncKeyState(VK_SHIFT)) {
+			matrix = XMMatrixMultiply(XMMatrixTranslation(_deltaTime * -m_FastMovementSpeed, 0, 0), matrix);
+		}
+		else {
+			matrix = XMMatrixMultiply(XMMatrixTranslation(_deltaTime * -m_MovementSpeed, 0, 0), matrix);
+		}
 	}
 	else if (GetAsyncKeyState('D')) {
-		matrix = XMMatrixMultiply(XMMatrixTranslation(_deltaTime * m_MovementSpeed, 0, 0), matrix);
+		if (GetAsyncKeyState(VK_SHIFT)) {
+			matrix = XMMatrixMultiply(XMMatrixTranslation(_deltaTime * m_FastMovementSpeed, 0, 0), matrix);
+		}
+		else {
+			matrix = XMMatrixMultiply(XMMatrixTranslation(_deltaTime * m_MovementSpeed, 0, 0), matrix);
+		}
 	}
 
 	// === Fly Up / Down (Y-Axis)
 	if (GetAsyncKeyState('E')) {
-		matrix = XMMatrixMultiply(matrix, XMMatrixTranslation(0, _deltaTime * m_MovementSpeed, 0));
+		if (GetAsyncKeyState(VK_SHIFT)) {
+			matrix = XMMatrixMultiply(XMMatrixTranslation(0, _deltaTime * m_FastMovementSpeed, 0), matrix);
+		}
+		else {
+			matrix = XMMatrixMultiply(XMMatrixTranslation(0, _deltaTime * m_MovementSpeed, 0), matrix);
+		}
 	}
 	else if (GetAsyncKeyState('Q')) {
-		matrix = XMMatrixMultiply(matrix, XMMatrixTranslation(0, _deltaTime * -m_MovementSpeed, 0));
+		if (GetAsyncKeyState(VK_SHIFT)) {
+			matrix = XMMatrixMultiply(XMMatrixTranslation(0, _deltaTime * -m_FastMovementSpeed, 0), matrix);
+		}
+		else {
+			matrix = XMMatrixMultiply(XMMatrixTranslation(0, _deltaTime * -m_FastMovementSpeed, 0), matrix);
+		}
 	}
 
 	// Camera Rotation
