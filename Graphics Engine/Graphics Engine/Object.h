@@ -7,6 +7,7 @@
 #include "Bone.h"
 #include "Component.h"
 #include <vector>
+#include <cmath>
 
 class Object{
 
@@ -29,7 +30,9 @@ private:
 
 	void SetBuffers();
 	void ReleaseBuffers();
-	
+
+	// Matrix Helpers
+	DirectX::XMFLOAT4X4 CreateZeroMatrix ( void ) const;
 
 public:
 
@@ -62,6 +65,14 @@ public:
 	inline ID3D11Buffer* GetIndexBuffer(){ return indexBuffer; }
 
 	DirectX::XMFLOAT4X4& GetWorld();
+	void SetWorld(const DirectX::XMFLOAT4X4& _mat);
+
+	// Matrix Manipulations
+	void RotateX  ( const float& _degree );
+	void RotateY  ( const float& _degree );
+	void RotateZ  ( const float& _degree );
+	void Translate( const float& _x, const float& _y, const float& _z );
+	void Scale    ( const float& _x, const float& _y, const float& _z );
 
 	static void CreateObjectFromSkeleton(Bone*, Object&, Mesh*);
 };
