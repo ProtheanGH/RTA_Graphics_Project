@@ -109,6 +109,23 @@ void Object::Update()
 	}
 }
 
+DirectX::XMFLOAT4X4& Object::GetWorld(){
+	if (parent != nullptr){
+		DirectX::XMMATRIX local_mat = DirectX::XMLoadFloat4x4(&transform.GetLocalMatrix());
+		DirectX::XMStoreFloat4x4(&worldMatrix, local_mat);
+	}
+	else{
+		DirectX::XMMATRIX local_mat = DirectX::XMLoadFloat4x4(&transform.GetLocalMatrix());
+		DirectX::XMMATRIX world_mat = DirectX::XMLoadFloat4x4(&parent->GetWorld());
+
+		local_mat = local_mat * world_mat;
+
+		DirectX::XMStoreFloat4x4(&worldMatrix, local_mat);
+	}
+
+	return worldMatrix;
+}
+
 void Object::CreateObjectFromSkeleton(Bone* _rootBone, Object& _object, Mesh* _mesh){
 	unsigned int child_count = _rootBone->GetChildren().size();
 	for (unsigned int i = 0; i < child_count; ++i){

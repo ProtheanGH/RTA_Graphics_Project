@@ -11,6 +11,7 @@
 class Object{
 
 private:
+	DirectX::XMFLOAT4X4 worldMatrix;
 	Transform transform;
 	Mesh* mesh;
 	Object* parent;
@@ -59,6 +60,8 @@ public:
 
 	inline ID3D11Buffer* GetVertexBuffer() { return vertexBuffer; }
 	inline ID3D11Buffer* GetIndexBuffer(){ return indexBuffer; }
+
+	DirectX::XMFLOAT4X4& GetWorld();
 
 	static void CreateObjectFromSkeleton(Bone*, Object&, Mesh*);
 };
