@@ -169,67 +169,67 @@ void Object::RotateX(const float& _degree)
 {
 	float r = XMConvertToRadians(_degree);
 
-	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&worldMatrix);
+	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&transform.GetLocalMatrix());
 	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationX(r);
 
 	// Blame Jorge if this doesn't work
 	localMat = rotation * localMat;
 
-	DirectX::XMStoreFloat4x4(&worldMatrix, localMat);
+	DirectX::XMStoreFloat4x4(&transform.GetLocalMatrix(), localMat);
 }
 
 void Object::RotateY(const float& _degree)
 {
 	float r = XMConvertToRadians(_degree);
 
-	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&worldMatrix);
+	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&transform.GetLocalMatrix());
 	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationY(r);
 
 	// Blame Jorge if this doesn't work
 	localMat = rotation * localMat;
 
-	DirectX::XMStoreFloat4x4(&worldMatrix, localMat);
+	DirectX::XMStoreFloat4x4(&transform.GetLocalMatrix(), localMat);
 }
 
 void Object::RotateZ(const float& _degree)
 {
 	float r = XMConvertToRadians(_degree);
 
-	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&worldMatrix);
+	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&transform.GetLocalMatrix());
 	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationZ(r);
 
 	// Blame Jorge if this doesn't work
 	localMat = rotation * localMat;
 
-	DirectX::XMStoreFloat4x4(&worldMatrix, localMat);
+	DirectX::XMStoreFloat4x4(&transform.GetLocalMatrix(), localMat);
 }
 
 void Object::Translate(const float& _x, const float& _y, const float& _z)
 {
-	DirectX::XMMATRIX localMat    = DirectX::XMLoadFloat4x4(&worldMatrix);
+	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&transform.GetLocalMatrix());
 	DirectX::XMMATRIX translation = DirectX::XMMatrixTranslation(_x, _y, _z);
 
 	// Blame Jorge if this doesn't work
 	localMat = translation * localMat;
 
-	DirectX::XMStoreFloat4x4(&worldMatrix, localMat);
+	DirectX::XMStoreFloat4x4(&transform.GetLocalMatrix(), localMat);
 }
 
 void Object::Scale(const float& _x, const float& _y, const float& _z)
 {
-	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&worldMatrix);
+	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&transform.GetLocalMatrix());
 	DirectX::XMMATRIX scale = DirectX::XMMatrixScaling(_x, _y, _z);
 
 	// Blame Jorge if this doesn't work
 	localMat = scale * localMat;
 
-	DirectX::XMStoreFloat4x4(&worldMatrix, localMat);
+	DirectX::XMStoreFloat4x4(&transform.GetLocalMatrix(), localMat);
 }
 
 void Object::SetPositionVector(DirectX::XMFLOAT3 _location)
 {
-	worldMatrix._41 = _location.x;
-	worldMatrix._42 = _location.y;
-	worldMatrix._43 = _location.z;
+	transform.GetLocalMatrix()._41 = _location.x;
+	transform.GetLocalMatrix()._42 = _location.y;
+	transform.GetLocalMatrix()._43 = _location.z;
 }
 

@@ -27,7 +27,7 @@ bool SkyboxComponent::Update() // override
 	if (m_parent != nullptr)
 	{
 		// Set m_parents worldMatrix's location vector to the camera's location
-
+		m_parent->SetPositionVector(Application::GetCamera().GetPosition());
 	}
 	return Component::Update();
 }

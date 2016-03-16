@@ -28,6 +28,7 @@ public:
 	inline XMFLOAT4X4 GetViewMatrix() {
 		return m_Transform;
 	}
+	XMFLOAT3 GetPosition();
 	// ================= //
 };
 

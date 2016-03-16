@@ -115,3 +115,17 @@ void Camera::Update(float _deltaTime)
 	XMStoreFloat4x4(&m_Transform, matrix);
 }
 // ===================== //
+
+// === Accessors === //
+XMFLOAT3 Camera::GetPosition()
+{
+	XMMATRIX matrix = XMLoadFloat4x4(&m_Transform);
+	XMVECTOR determinant = XMMatrixDeterminant(matrix);
+	matrix = XMMatrixInverse(&determinant, matrix);
+
+	XMFLOAT4X4 worldPos;
+	XMStoreFloat4x4(&worldPos, matrix);
+
+	return XMFLOAT3(worldPos._41, worldPos._42, worldPos._43);
+}
+// ================= //

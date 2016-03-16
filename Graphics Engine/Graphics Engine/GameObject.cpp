@@ -25,6 +25,7 @@ void GameObject::LoadGameObject()
 	Object* object = ObjectManager::GetInstance()->CreateNewObject();
 	if (!FBXConverter::GetInstance()->LoadFBX(m_MeshPath.c_str(), object))
 		return;
+	object->SetPositionVector(m_WorldPosition);
 	object->RotateX(m_WorldRotation.x);
 	object->RotateY(m_WorldRotation.y);
 	object->RotateZ(m_WorldRotation.z);
