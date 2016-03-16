@@ -414,8 +414,8 @@ void FBXConverter::ProcessBone(FbxNode* _node, Bone* bone){
 	FbxDouble3 scale = _node->LclScaling.Get();
 
 	DirectX::XMMATRIX matrix = DirectX::XMMatrixIdentity();
-//	matrix = matrix * DirectX::XMMatrixScaling((float)scale.mData[0], (float)scale.mData[0], (float)scale.mData[0]);
-//	matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw((float)rotation.mData[0], (float)rotation.mData[1], (float)rotation.mData[2]);
+	matrix = matrix * DirectX::XMMatrixScaling((float)scale.mData[0], (float)scale.mData[0], (float)scale.mData[0]);
+	matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw((float)rotation.mData[0], (float)rotation.mData[1], (float)rotation.mData[2]);
 	matrix = matrix * DirectX::XMMatrixTranslation((float)translation.mData[0], (float)translation.mData[1], (float)translation.mData[2]);
 
 	DirectX::XMStoreFloat4x4(&bone->GetLocal(), matrix);
