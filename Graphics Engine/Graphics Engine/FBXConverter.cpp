@@ -376,6 +376,36 @@ void FBXConverter::LoadSkeleton(FbxNode* _rootNode, Bone* bone){
 	}
 }
 
+void FBXConverter::LoadSkeleton(const char* _fileName, Bone* bone){
+
+	if (fbxManager == nullptr){
+		fbxManager = FbxManager::Create();
+		FbxIOSettings* ioSettings = FbxIOSettings::Create(fbxManager, IOSROOT);
+		fbxManager->SetIOSettings(ioSettings);
+	}
+
+	FbxImporter* fbxImporter = FbxImporter::Create(fbxManager, "");
+	FbxScene* fbxScene = FbxScene::Create(fbxManager, "");
+
+	std::string file_name("Assets/");
+	file_name.append(_fileName);
+	file_name.append(".fbx");
+	bool result = fbxImporter->Initialize(file_name.c_str(), -1, fbxManager->GetIOSettings());
+
+	if (!result) return;
+
+	result = fbxImporter->Import(fbxScene);
+
+	if (!result) return;
+
+	fbxImporter->Destroy();
+
+	FbxNode* rootNode = fbxScene->GetRootNode();
+
+	if (rootNode)
+		LoadSkeleton(rootNode, bone);
+}
+
 void FBXConverter::ProcessBone(FbxNode* _node, Bone* bone){
 	bone->GetName() = std::string(_node->GetName());
 
