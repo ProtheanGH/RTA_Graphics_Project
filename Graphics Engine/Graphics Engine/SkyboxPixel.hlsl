@@ -4,8 +4,10 @@
 
 struct OUT_VERTEX
 {
-	float4 position : SV_POSITION;
+	float4 worldPosition : W_POSITION;
+	float4 projectedPosition : SV_POSITION;
 	float3 coord : TEXCOORD;
+	float  padding : PAD;
 };
 
 

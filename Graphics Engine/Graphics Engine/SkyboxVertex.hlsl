@@ -10,8 +10,10 @@ struct INPUT_VERTEX
 
 struct OUT_VERTEX
 {
-	float4 position : SV_POSITION;
+	float4 worldPosition : W_POSITION;
+	float4 projectedPosition : SV_POSITION;
 	float3 coord : TEXCOORD;
+	float  padding : PAD;
 };
 
 cbuffer Object : register(b0)
@@ -33,7 +35,9 @@ OUT_VERTEX main( INPUT_VERTEX _input )
 
 	pos = _input.coordinate;
 	pos = mul(pos, worldMatrix);
-	output.position = pos;
+	pos = mul(pos, viewMatrix);
+	pos = mul(pos, projection);
+	output.projectedPosition = pos;
 	_input.coordinate.w = 1;
 
 	// UV

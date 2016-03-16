@@ -105,6 +105,8 @@ bool Application::Run()
 	ConstantBufferManager::GetInstance()->ApplySceneBuffer(&toShaderScene);
 	
 	UpdateLighting();
+
+	ObjectManager::GetInstance()->UpdateObjects();
 	
 	Renderer::GetInstance()->Render();
 	return true;
@@ -125,6 +127,7 @@ void Application::SetupScene()
 	// ===
 
 	// === Bones
+#if 0
 	Object* bones = ObjectManager::GetInstance()->CreateNewObject();
 	fbxConverter->LoadFBX("Bone", bones);
 	Mesh* mesh = new Mesh();
@@ -145,14 +148,15 @@ void Application::SetupScene()
 	Renderer::GetInstance()->AddForRendering(context, material, shape);
 
 	CreateRenderShapes(context, material, bones);
+#endif
 	// ===
 
 	// === Skybox === //
 #pragma region Not_Loading_Correctly
-#if 0
+#if 1
 	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
 	skybox->AddComponent(new SkyboxComponent(skybox));
-	fbxConverter->LoadFBX("BasicCube", skybox);
+	fbxConverter->LoadFBX("Cube", skybox);
 
 	context = RenderNodeDirectory::GetInstance()->CreateRenderContext(
 		VertexShaderEnum::Skybox_Vertex, PixelShaderEnum::Skybox_Pixel, BlendStates::BlendState_Default,

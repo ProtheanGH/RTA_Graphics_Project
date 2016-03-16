@@ -147,3 +147,82 @@ void Object::CreateObjectFromSkeleton(Bone* _rootBone, Object& _object, Mesh* _m
 	_object.SetMesh(_mesh);
 }
 
+void Object::AddComponent(Component* _comp)
+{
+	components.push_back(_comp);
+}
+
+DirectX::XMFLOAT4X4 Object::CreateZeroMatrix() const
+{
+	return DirectX::XMFLOAT4X4(0, 0, 0, 0,
+							   0, 0, 0, 0,
+							   0, 0, 0, 0,
+							   0, 0, 0, 0);
+}
+
+void Object::SetWorld(const DirectX::XMFLOAT4X4& _mat)
+{
+	worldMatrix = _mat;
+}
+
+void Object::RotateX(const float& _degree)
+{
+	float r = XMConvertToRadians(_degree);
+
+	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&worldMatrix);
+	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationX(r);
+
+	// Blame Jorge if this doesn't work
+	localMat = rotation * localMat;
+
+	DirectX::XMStoreFloat4x4(&worldMatrix, localMat);
+}
+
+void Object::RotateY(const float& _degree)
+{
+	float r = XMConvertToRadians(_degree);
+
+	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&worldMatrix);
+	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationY(r);
+
+	// Blame Jorge if this doesn't work
+	localMat = rotation * localMat;
+
+	DirectX::XMStoreFloat4x4(&worldMatrix, localMat);
+}
+
+void Object::RotateZ(const float& _degree)
+{
+	float r = XMConvertToRadians(_degree);
+
+	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&worldMatrix);
+	DirectX::XMMATRIX rotation = DirectX::XMMatrixRotationZ(r);
+
+	// Blame Jorge if this doesn't work
+	localMat = rotation * localMat;
+
+	DirectX::XMStoreFloat4x4(&worldMatrix, localMat);
+}
+
+void Object::Translate(const float& _x, const float& _y, const float& _z)
+{
+	DirectX::XMMATRIX localMat    = DirectX::XMLoadFloat4x4(&worldMatrix);
+	DirectX::XMMATRIX translation = DirectX::XMMatrixTranslation(_x, _y, _z);
+
+	// Blame Jorge if this doesn't work
+	localMat = translation * localMat;
+
+	DirectX::XMStoreFloat4x4(k&worldMatrix, localMat);
+}
+
+void Object::Scale(const float& _x, const float& _y, const float& _z)
+{
+	DirectX::XMMATRIX localMat = DirectX::XMLoadFloat4x4(&worldMatrix);
+	DirectX::XMMATRIX scale = DirectX::XMMatrixScaling(_x, _y, _z);
+
+	// Blame Jorge if this doesn't work
+	localMat = scale * localMat;
+
+	DirectX::XMStoreFloat4x4(&worldMatrix, localMat);
+}
+
