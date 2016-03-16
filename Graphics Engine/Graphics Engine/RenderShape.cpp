@@ -27,7 +27,7 @@ void RenderShape::DefaultShape_RenderProcess(RenderNode& _node)
 	if (rShape.m_pObject->GetMesh() != nullptr) {
 		// == Update the Constant Buffer
 		ToShaderObject toShaderObj;
-		toShaderObj.ObjectWorldMatrix = rShape.m_pObject->GetTransform().GetLocalMatrix();
+		toShaderObj.ObjectWorldMatrix = rShape.m_pObject->GetWorld();
 		ConstantBufferManager::GetInstance()->ApplyObjectBuffer(&toShaderObj);
 
 		// == Set the Topology 

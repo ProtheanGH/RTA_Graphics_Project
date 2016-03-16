@@ -142,7 +142,7 @@ void Application::SetupScene()
 	fbxConverter->LoadSkeleton("Teddy_Idle", newBone);
 
 	Object::CreateObjectFromSkeleton(newBone, *bones, mesh);
-	bones->GetTransform().SetLocalMatrix(XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 30, 0, 10, 1));
+	bones->GetTransform().SetLocalMatrix(XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 200, 0, 0, 1));
 
 	context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
 
