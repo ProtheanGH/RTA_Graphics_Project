@@ -38,10 +38,10 @@ struct SpotLight
 	float4 position;
 	float4 direction;
 	float4 color;
-	float coneRatio;
+	float2 coneRatio;
 	float radius;
 
-	float2 padding;
+	float padding;
 };
 // ============================= //
 
@@ -90,7 +90,25 @@ float4 main(PixelInput _input) : SV_TARGET
 	directionalColor = directionalColor * textureColor;
 	directionalColor.w = 1.0;
 
-	return ambientColor + directionalColor;
+	// === Point Light === //
+	float4 pointDirection = pointLight.position - _input.worldPosition;
+	float  pointRatio = saturate(dot(pointDirection, _input.normal));
+	float  pointAtten = 1.0f - saturate(length(pointLight.position - _input.worldPosition) / pointLight.radius);
+	float4 pointResult = pointAtten * pointRatio * pointLight.color * textureColor;
+	// ===
+
+	// === Spot Light === //
+	float4 spotDirection = normalize(spotLight.position - _input.worldPosition);
+	float  coneRatio = saturate(dot(-spotDirection, spotLight.direction));
+	float  spotFactor = (coneRatio > spotLight.coneRatio.x) ? 1.0f : 0.0f;
+	float  spotRatio = saturate(dot(spotDirection, _input.normal)); // spotRatio - To be used for specular lighting
+	float  attenuation = 1.0f - saturate((spotLight.coneRatio.y - coneRatio) / (spotLight.coneRatio.x - spotLight.coneRatio.y));
+	attenuation *= attenuation;	// Quadratic attenuation
+	float4 spotResult = attenuation * spotFactor * spotRatio * spotLight.color * textureColor;
+	// ===
+
+
+	return ambientColor + directionalColor + pointResult + spotResult;
 }
 // ===
 

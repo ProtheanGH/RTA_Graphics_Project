@@ -17,7 +17,8 @@ public:
 };
 
 // === Layout Enums
-enum InputLayouts { InputLayout_Default, NormalMapped_InputLayout, MAX_INPUT_LAYOUTS };
+enum InputLayouts { InputLayout_Default, NormalMapped_InputLayout, SkyboxMapped_InputLayout,
+	MAX_INPUT_LAYOUTS };
 
 class InputLayoutManager
 {
@@ -101,5 +102,13 @@ struct ToShaderLight {
 	DirectionalLight directionalLight;
 	PointLight pointLight;
 	SpotLight spotLight;
+};
+
+struct ToShaderSkybox {
+	XMFLOAT4X4 coordinate;
+	XMFLOAT4 normals;
+	XMFLOAT2 uv;
+
+	XMFLOAT2 padding;
 };
 
