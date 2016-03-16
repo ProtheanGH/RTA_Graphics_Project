@@ -140,7 +140,7 @@ void Application::SetupScene()
 	context = RenderNodeDirectory::GetInstance()->CreateRenderContext(VertexShaderEnum::Vertex_Default, PixelShaderEnum::Pixel_Default, BlendStates::BlendState_Default, RasterizerStates::Front_Culling);
 
 	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
-	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Skybox.dds"));
+	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Skybox_Texture.dds"));
 
 	shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(skybox);
