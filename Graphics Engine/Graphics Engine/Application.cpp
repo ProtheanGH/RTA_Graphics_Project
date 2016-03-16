@@ -131,13 +131,13 @@ void Application::SetupScene()
 	// Cube
 	Object* object = ObjectManager::GetInstance()->CreateNewObject();
 	FBXConverter* fbxConverter = FBXConverter::GetInstance();
-	fbxConverter->LoadFBX("Box", object);
+	fbxConverter->LoadFBX("Teddy_Idle", object);
 	
 	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
 
 	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
 	//material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("WindowedBox.dds"));
-	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/TestCube.dds"));
+	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_D.dds"));
 
 	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(object);

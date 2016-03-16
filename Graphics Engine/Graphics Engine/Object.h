@@ -58,4 +58,6 @@ public:
 
 	inline ID3D11Buffer* GetVertexBuffer() { return vertexBuffer; }
 	inline ID3D11Buffer* GetIndexBuffer(){ return indexBuffer; }
+
+	static void CreateObjectFromSkeleton(Bone*, Object&, Mesh*);
 };
