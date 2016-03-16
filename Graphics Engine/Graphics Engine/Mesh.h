@@ -19,14 +19,14 @@ public:
 
 	void copy(Mesh* _rhs){
 		vertices.clear();
-		unsigned int vertCount = _rhs->GetVerts().size();
+		unsigned int vertCount = (unsigned int)_rhs->GetVerts().size();
 		vertices.resize(vertCount);
 		for (unsigned int i = 0; i < vertCount; ++i){
 			vertices[i] = _rhs->GetVerts()[i];
 		}
 
 		indices.clear();
-		unsigned int indicesCount = _rhs->GetIndices().size();
+		unsigned int indicesCount = (unsigned int)_rhs->GetIndices().size();
 		indices.resize(vertCount);
 		for (unsigned int i = 0; i < indicesCount; ++i){
 			indices[i] = _rhs->GetIndices()[i];
