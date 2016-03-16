@@ -109,8 +109,21 @@ void Object::Update()
 	}
 }
 
-void Object::AddComponent(Component* _comp)
-{
-	components.push_back(_comp);
+void Object::CreateObjectFromSkeleton(Bone* _rootBone, Object& _object, Mesh* _mesh){
+	unsigned int child_count = _rootBone->GetChildren().size();
+	for (unsigned int i = 0; i < child_count; ++i){
+		Object* child_object = Object::Create();
+		Bone* child_bone = _rootBone->GetChildren()[i];
+
+		CreateObjectFromSkeleton(child_bone, *child_object, _mesh);
+
+		child_object->SetParent(&_object);
+		_object.GetChildren().push_back(child_object);
+	}
+
+	DirectX::XMFLOAT4X4 world_matrix = _rootBone->GetWorld();
+	_object.GetTransform().SetLocalMatrix(world_matrix);
+
+	_object.SetMesh(_mesh);
 }
 

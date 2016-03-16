@@ -16,8 +16,6 @@
 
 #include <ctime>
 
-class SkyboxComponent;
-
 // ==== TEMP
 #include "RenderContext.h"
 #include "RenderMaterial.h"
@@ -104,17 +102,21 @@ bool Application::Run()
 
 	// === Update the Scene 
 	ToShaderScene toShaderScene;
+	ToShaderLight toShaderLight;
 	toShaderScene.SceneViewMatrix = m_Camera.GetViewMatrix();
 	toShaderScene.SceneProjectionMatrix = Renderer::GetInstance()->GetProjectionMatrix();
+	toShaderLight.diffuseColor     = XMFLOAT4( 201.0f, 226.0f, 255.0f, 1.0f );	// Color of overcast sky
+	toShaderLight.diffuseDirection = XMFLOAT4( 1.0f,  -1.0f,   1.0f,   1.0f );
+	toShaderLight.pointColor       = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
+	toShaderLight.pointPosition    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
+	toShaderLight.spotPosition     = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
+	toShaderLight.spotDirection    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
+	toShaderLight.spotColor        = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
+	toShaderLight.spotConeRatio    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
 	ConstantBufferManager::GetInstance()->ApplySceneBuffer(&toShaderScene);
-
-	UpdateLighting();
-	
+	ConstantBufferManager::GetInstance()->ApplyLightBuffer(&toShaderLight);
 	
 	Renderer::GetInstance()->Render();
-
-	ObjectManager::GetInstance()->UpdateObjects();
-
 	return true;
 }
 /*static*/ Camera Application::GetCamera()
@@ -126,49 +128,31 @@ bool Application::Run()
 // ===== Private Interface ===== //
 void Application::SetupScene()
 {
+	// Cube
+	Object* object = ObjectManager::GetInstance()->CreateNewObject();
 	FBXConverter* fbxConverter = FBXConverter::GetInstance();
-	Object* object;
-	RenderContext* context;
-	RenderMaterial* material;
-	RenderShape* shape;
-
-	// === Skybox === //
-	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
-	skybox->AddComponent(new SkyboxComponent(skybox));
-	fbxConverter->LoadFBX("BasicCube", skybox);
-
-	context = RenderNodeDirectory::GetInstance()->CreateRenderContext(VertexShaderEnum::Vertex_Default, PixelShaderEnum::Pixel_Default, BlendStates::BlendState_Default, RasterizerStates::Front_Culling);
-
-	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
-	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Skybox.dds"));
-
-	shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-	shape->SetObject(skybox);
-
-	Renderer::GetInstance()->AddForRendering(context, material, shape);
-
-	for (unsigned int i = 0; i < skybox->GetChildren().size(); ++i) {
-		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-		shape->SetObject(skybox->GetChildren()[i]);
-		Renderer::GetInstance()->AddForRendering(context, material, shape);
-	}
-	// ============== //
-
-
-	// === Teddy === //
-	object = ObjectManager::GetInstance()->CreateNewObject();
 	fbxConverter->LoadFBX("Teddy_Idle", object);
+	
+	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
 
-	context = RenderNodeDirectory::GetInstance()->CreateRenderContext(VertexShaderEnum::NormalMap_Vertex, PixelShaderEnum::NormalMap_Pixel, BlendStates::BlendState_Default, RasterizerStates::RasterizerState_Default, InputLayouts::NormalMapped_InputLayout);
+	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
+	//material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("WindowedBox.dds"));
+	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_D.dds"));
 
-	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
-	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_D.dds"));
-	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_Normal.dds"));
-
-	shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(object);
 
 	Renderer::GetInstance()->AddForRendering(context, material, shape);
+
+	// Skybox
+	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
+	fbxConverter->LoadFBX("Cube.fbx", skybox);
+	RenderContext* skybox_context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
+	RenderMaterial* skybox_mat = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
+	RenderShape* skybox_shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+	skybox_shape->SetObject(skybox);
+	Renderer::GetInstance()->AddForRendering(skybox_context, skybox_mat, skybox_shape);
+
 
 	for (unsigned int i = 0; i < object->GetChildren().size(); ++i) {
 		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
@@ -176,26 +160,5 @@ void Application::SetupScene()
 
 		Renderer::GetInstance()->AddForRendering(context, material, shape);
 	}
-	// ============ //
-}
-
-void Application::UpdateLighting()
-{
-	ToShaderLight toShaderLight;
-
-	toShaderLight.ambientLight.color = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
-
-	toShaderLight.directionalLight.color = XMFLOAT4(0.78823f, 0.88627f, 1.0f, 1.0f);	// Color of overcast sky
-	toShaderLight.directionalLight.direction = XMFLOAT4(1.0f, -1.0f, 1.0f, 1.0f);
-	
-	toShaderLight.pointLight.color = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	toShaderLight.pointLight.position = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	
-	toShaderLight.spotLight.position = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	toShaderLight.spotLight.direction = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	toShaderLight.spotLight.color = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	toShaderLight.spotLight.coneRatio = XMFLOAT2(0.0f, 0.0f);
-
-	ConstantBufferManager::GetInstance()->ApplyLightBuffer(&toShaderLight);
 }
 // ============================= //

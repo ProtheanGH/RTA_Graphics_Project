@@ -136,7 +136,7 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 
 			DirectX::XMFLOAT2 uv;
 			LoadUV(_mesh, controlPointIndex, polygon, polygonVertex, uv);
-			vertex.uv[0] = uv.x; // fabsf(1.0f - uv.x);
+			vertex.uv[0] = uv.x;
 			vertex.uv[1] = fabsf(1.0f - uv.y);
 
 			DirectX::XMFLOAT3 normal;
@@ -443,13 +443,13 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxScene* _scene, Animation& _a
 	
 			std::string anim_name(anim_stack->GetName());
 			_animation.GetName() = anim_name;
-	
+
 			int anim_layer_count = anim_stack->GetMemberCount<FbxAnimLayer>();
 	
 			for (int j = 0; j < anim_layer_count; ++j){
 	
 				FbxAnimLayer* anim_layer = anim_stack->GetMember< FbxAnimLayer >(j);
-	
+				
 				LoadAnimation(_node, anim_layer, _scene, _animation, _rootBone);
 			}
 		}
@@ -458,9 +458,49 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxScene* _scene, Animation& _a
 }
 
 void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxScene* _scene, Animation& _animation, Bone* _rootBone){
-	FbxAnimCurve* translationCurve = _node->LclTranslation.GetCurve(_animLayer, false);
-	FbxAnimCurve* rotationCurve = _node->LclRotation.GetCurve(_animLayer, false);
-	FbxAnimCurve* scalingCurve = _node->LclScaling.GetCurve(_animLayer, false);
+
+	int child_count = _node->GetChildCount();
+	for (int i = 0; i < child_count; ++i){
+		FbxNode* childNode = _node->GetChild(i);
+		LoadAnimation(childNode, _scene, _animation, _rootBone);
+	}
+
+	FbxAnimCurve* translationCurve = _node->LclTranslation.GetCurve(_animLayer);
+	FbxAnimCurve* rotationCurve = _node->LclRotation.GetCurve(_animLayer);
+	FbxAnimCurve* scalingCurve = _node->LclScaling.GetCurve(_animLayer);
+
+	Bone* _bone = Bone::FindBone(_rootBone, std::string(_node->GetName()));
+	if (_bone) return;
+
+	if (translationCurve != nullptr){
+		int keyCount = translationCurve->KeyGetCount();
+		for (int i = 0; i < keyCount; ++i){
+			FbxTime frameTime = translationCurve->KeyGetTime(i);
+			FbxDouble3 translation = _node->EvaluateLocalTranslation(frameTime);
+			float frameSeconds = (float)frameTime.GetSecondDouble();
+		}
+	}
+
+
+	if (rotationCurve != nullptr){
+		int keyCount = rotationCurve->KeyGetCount();
+		for (int i = 0; i < keyCount; ++i){
+			FbxTime frameTime = translationCurve->KeyGetTime(i);
+			FbxDouble3 rotation = _node->EvaluateLocalRotation(frameTime);
+			float frameSeconds = (float)frameTime.GetSecondDouble();
+		}
+	}
+
+
+	if (scalingCurve != nullptr){
+		int keyCount = scalingCurve->KeyGetCount();
+		for (int i = 0; i < keyCount; ++i){
+			FbxTime frameTime = translationCurve->KeyGetTime(i);
+			FbxDouble3 translation = _node->EvaluateLocalRotation(frameTime);
+			float frameSeconds = (float)frameTime.GetSecondDouble();
+		}
+	}
+	
 }
 
 
