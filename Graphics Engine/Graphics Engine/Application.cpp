@@ -123,7 +123,9 @@ void Application::SetupScene()
 	FBXConverter* fbxConverter = FBXConverter::GetInstance();
 
 	// === Teddy
-	Teddy_Prefab().LoadGameObject();
+	Teddy_Prefab teddy;
+	teddy.SetWorldRotation(XMFLOAT3(0, -90, 0));
+	teddy.LoadGameObject();
 	// ===
 
 	// === Bones
