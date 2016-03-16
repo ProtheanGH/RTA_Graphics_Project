@@ -74,5 +74,7 @@ public:
 	void Translate( const float& _x, const float& _y, const float& _z );
 	void Scale    ( const float& _x, const float& _y, const float& _z );
 
+	void SetPositionVector( DirectX::XMFLOAT3 _location );
+
 	static void CreateObjectFromSkeleton(Bone*, Object&, Mesh*);
 };

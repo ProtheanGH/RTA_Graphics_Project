@@ -152,8 +152,6 @@ void Application::SetupScene()
 	// ===
 
 	// === Skybox === //
-#pragma region Not_Loading_Correctly
-#if 1
 	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
 	skybox->AddComponent(new SkyboxComponent(skybox));
 	fbxConverter->LoadFBX("Cube", skybox);
@@ -175,8 +173,6 @@ void Application::SetupScene()
 		shape->SetObject(skybox->GetChildren()[i]);
 		Renderer::GetInstance()->AddForRendering(context, material, shape);
 	}
-#endif
-#pragma endregion
 	// ============== //
 }
 

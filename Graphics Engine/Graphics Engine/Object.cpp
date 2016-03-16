@@ -226,3 +226,10 @@ void Object::Scale(const float& _x, const float& _y, const float& _z)
 	DirectX::XMStoreFloat4x4(&worldMatrix, localMat);
 }
 
+void Object::SetPositionVector(DirectX::XMFLOAT3 _location)
+{
+	worldMatrix._41 = _location.x;
+	worldMatrix._42 = _location.y;
+	worldMatrix._43 = _location.z;
+}
+
