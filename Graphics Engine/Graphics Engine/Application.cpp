@@ -158,14 +158,14 @@ void Application::SetupScene()
 	skybox->AddComponent(new SkyboxComponent(skybox));
 	fbxConverter->LoadFBX("Cube", skybox);
 
-	context = RenderNodeDirectory::GetInstance()->CreateRenderContext(
+	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext(
 		VertexShaderEnum::Skybox_Vertex, PixelShaderEnum::Skybox_Pixel, BlendStates::BlendState_Default,
 		RasterizerStates::Front_Culling, InputLayouts::SkyboxMapped_InputLayout);
 
-	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
+	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
 	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Skybox_Texture.dds"));
 
-	shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(skybox);
 
 	Renderer::GetInstance()->AddForRendering(context, material, shape);

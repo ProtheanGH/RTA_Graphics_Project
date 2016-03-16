@@ -212,7 +212,7 @@ void Object::Translate(const float& _x, const float& _y, const float& _z)
 	// Blame Jorge if this doesn't work
 	localMat = translation * localMat;
 
-	DirectX::XMStoreFloat4x4(k&worldMatrix, localMat);
+	DirectX::XMStoreFloat4x4(&worldMatrix, localMat);
 }
 
 void Object::Scale(const float& _x, const float& _y, const float& _z)
