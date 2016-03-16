@@ -14,6 +14,7 @@ class RenderShape : public RenderNode
 
 	// === Private Interface === //
 	static void DefaultShape_RenderProcess(RenderNode& _node);
+	static void Skybox_RenderProcess(RenderNode& _node);
 	// ========================= //
 
 public:
