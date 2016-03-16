@@ -147,8 +147,10 @@ void Application::SetupScene()
 	// === Bones
 	Object* bones = ObjectManager::GetInstance()->CreateNewObject();
 	fbxConverter->LoadFBX("Bone", bones);
+	Bone* newBone = new Bone;
+	fbxConverter->LoadSkeleton("Teddy_Idle", newBone);
 
-	Object::CreateObjectFromSkeleton(object->GetRootBone(), *bones, bones->GetChildren()[0]->GetMesh());
+	Object::CreateObjectFromSkeleton(newBone, *bones, bones->GetChildren()[0]->GetMesh());
 	bones->GetTransform().SetLocalMatrix(XMFLOAT4X4(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 10, 1));
 
 	context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
@@ -176,14 +178,6 @@ void Application::SetupScene()
 	RenderShape* skybox_shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	skybox_shape->SetObject(skybox);
 	Renderer::GetInstance()->AddForRendering(skybox_context, skybox_mat, skybox_shape);
-
-
-	for (unsigned int i = 0; i < object->GetChildren().size(); ++i) {
-		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-		shape->SetObject(object->GetChildren()[i]);
-
-		Renderer::GetInstance()->AddForRendering(context, material, shape);
-	}
 }
 
 void Application::UpdateLighting()
