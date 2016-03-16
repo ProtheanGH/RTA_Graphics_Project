@@ -102,19 +102,11 @@ bool Application::Run()
 
 	// === Update the Scene 
 	ToShaderScene toShaderScene;
-	ToShaderLight toShaderLight;
 	toShaderScene.SceneViewMatrix = m_Camera.GetViewMatrix();
 	toShaderScene.SceneProjectionMatrix = Renderer::GetInstance()->GetProjectionMatrix();
-	toShaderLight.diffuseColor     = XMFLOAT4( 201.0f, 226.0f, 255.0f, 1.0f );	// Color of overcast sky
-	toShaderLight.diffuseDirection = XMFLOAT4( 1.0f,  -1.0f,   1.0f,   1.0f );
-	toShaderLight.pointColor       = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
-	toShaderLight.pointPosition    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
-	toShaderLight.spotPosition     = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
-	toShaderLight.spotDirection    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
-	toShaderLight.spotColor        = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
-	toShaderLight.spotConeRatio    = XMFLOAT4( 0.0f,   0.0f,   0.0f,   0.0f );
 	ConstantBufferManager::GetInstance()->ApplySceneBuffer(&toShaderScene);
-	ConstantBufferManager::GetInstance()->ApplyLightBuffer(&toShaderLight);
+	
+	UpdateLighting();
 	
 	Renderer::GetInstance()->Render();
 	return true;
@@ -128,23 +120,55 @@ bool Application::Run()
 // ===== Private Interface ===== //
 void Application::SetupScene()
 {
-	// Cube
+	// === Teddy
 	Object* object = ObjectManager::GetInstance()->CreateNewObject();
 	FBXConverter* fbxConverter = FBXConverter::GetInstance();
 	fbxConverter->LoadFBX("Teddy_Idle", object);
 	
-	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
+	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext(VertexShaderEnum::NormalMap_Vertex, PixelShaderEnum::NormalMap_Pixel, BlendStates::BlendState_Default, RasterizerStates::RasterizerState_Default, InputLayouts::NormalMapped_InputLayout);
 
 	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
-	//material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("WindowedBox.dds"));
-	material->SetShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_D.dds"));
+	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_D.dds"));
+	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_Normal.dds"));
 
 	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(object);
 
+//	Renderer::GetInstance()->AddForRendering(context, material, shape);
+//
+//	for (unsigned int i = 0; i < object->GetChildren().size(); ++i) {
+//		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+//		shape->SetObject(object->GetChildren()[i]);
+//
+//		Renderer::GetInstance()->AddForRendering(context, material, shape);
+//	}
+	// ===
+
+	// === Bones
+	Object* bones = ObjectManager::GetInstance()->CreateNewObject();
+	fbxConverter->LoadFBX("Bone", bones);
+
+	Object::CreateObjectFromSkeleton(object->GetRootBone(), *bones, bones->GetChildren()[0]->GetMesh());
+	bones->GetTransform().SetLocalMatrix(XMFLOAT4X4(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 10, 1));
+
+	context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
+
+	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
+
+	shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+	shape->SetObject(bones);
+
 	Renderer::GetInstance()->AddForRendering(context, material, shape);
 
-	// Skybox
+	for (unsigned int i = 0; i < bones->GetChildren().size(); ++i) {
+		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+		shape->SetObject(bones->GetChildren()[i]);
+
+		Renderer::GetInstance()->AddForRendering(context, material, shape);
+	}
+	// ===
+
+	// === Skybox
 	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
 	fbxConverter->LoadFBX("Cube.fbx", skybox);
 	RenderContext* skybox_context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
@@ -160,5 +184,25 @@ void Application::SetupScene()
 
 		Renderer::GetInstance()->AddForRendering(context, material, shape);
 	}
+}
+
+void Application::UpdateLighting()
+{
+	ToShaderLight toShaderLight;
+
+	toShaderLight.ambientLight.color = XMFLOAT4(0.2, 0.2, 0.2, 1.0);
+
+	toShaderLight.directionalLight.direction = XMFLOAT4(1.0f, -1.0f, 1.0f, 1.0f);
+	toShaderLight.directionalLight.color = XMFLOAT4(201.0f, 226.0f, 255.0f, 1.0f);
+
+	toShaderLight.pointLight.color = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	toShaderLight.pointLight.position = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	
+	toShaderLight.spotLight.position = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	toShaderLight.spotLight.direction = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	toShaderLight.spotLight.coneRatio = XMFLOAT2(0.0f, 0.0f);
+	toShaderLight.spotLight.color = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);;
+
+	ConstantBufferManager::GetInstance()->ApplyLightBuffer(&toShaderLight);
 }
 // ============================= //

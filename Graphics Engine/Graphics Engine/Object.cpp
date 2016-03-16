@@ -121,7 +121,7 @@ void Object::CreateObjectFromSkeleton(Bone* _rootBone, Object& _object, Mesh* _m
 		_object.GetChildren().push_back(child_object);
 	}
 
-	DirectX::XMFLOAT4X4 world_matrix = _rootBone->GetWorld();
+	DirectX::XMFLOAT4X4 world_matrix = _rootBone->GetLocal();
 	_object.GetTransform().SetLocalMatrix(world_matrix);
 
 	_object.SetMesh(_mesh);
