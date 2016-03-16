@@ -113,9 +113,11 @@ void Object::CreateObjectFromSkeleton(Bone* _rootBone, Object& _object, Mesh* _m
 	unsigned int child_count = _rootBone->GetChildren().size();
 	for (unsigned int i = 0; i < child_count; ++i){
 		Object* child_object = Object::Create();
+		Mesh* child_mesh = new Mesh();
+		child_mesh->copy(_mesh);
 		Bone* child_bone = _rootBone->GetChildren()[i];
 
-		CreateObjectFromSkeleton(child_bone, *child_object, _mesh);
+		CreateObjectFromSkeleton(child_bone, *child_object, child_mesh);
 
 		child_object->SetParent(&_object);
 		_object.GetChildren().push_back(child_object);

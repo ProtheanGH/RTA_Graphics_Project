@@ -34,6 +34,7 @@ private:
 public:
 	
 	bool LoadFBX(const char* fileName, Object* object);
+	void LoadSkeleton(const char* fileName, Bone* rootBone);
 
 	static FBXConverter* GetInstance();
 	static void Terminate();
