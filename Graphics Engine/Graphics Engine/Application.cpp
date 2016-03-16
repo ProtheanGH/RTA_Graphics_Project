@@ -16,11 +16,6 @@
 
 #include <ctime>
 
-// ==== TEMP
-#include "RenderContext.h"
-#include "RenderMaterial.h"
-#include "RenderShape.h"
-
 #define DEFAULT_WIDTH 1024
 #define DEFAULT_HEIGHT 780
 
@@ -134,24 +129,20 @@ void Application::SetupScene()
 	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(object);
 
-//	Renderer::GetInstance()->AddForRendering(context, material, shape);
-//
-//	for (unsigned int i = 0; i < object->GetChildren().size(); ++i) {
-//		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-//		shape->SetObject(object->GetChildren()[i]);
-//
-//		Renderer::GetInstance()->AddForRendering(context, material, shape);
-//	}
+	Renderer::GetInstance()->AddForRendering(context, material, shape);
+	CreateRenderShapes(context, material, object);
 	// ===
 
 	// === Bones
 	Object* bones = ObjectManager::GetInstance()->CreateNewObject();
 	fbxConverter->LoadFBX("Bone", bones);
+	Mesh* mesh = new Mesh();
+	mesh->copy(bones->GetChildren()[0]->GetMesh());
 	Bone* newBone = new Bone;
 	fbxConverter->LoadSkeleton("Teddy_Idle", newBone);
 
-	Object::CreateObjectFromSkeleton(newBone, *bones, bones->GetChildren()[0]->GetMesh());
-	bones->GetTransform().SetLocalMatrix(XMFLOAT4X4(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 10, 1));
+	Object::CreateObjectFromSkeleton(newBone, *bones, mesh);
+	bones->GetTransform().SetLocalMatrix(XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 30, 0, 10, 1));
 
 	context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
 
@@ -162,12 +153,7 @@ void Application::SetupScene()
 
 	Renderer::GetInstance()->AddForRendering(context, material, shape);
 
-	for (unsigned int i = 0; i < bones->GetChildren().size(); ++i) {
-		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-		shape->SetObject(bones->GetChildren()[i]);
-
-		Renderer::GetInstance()->AddForRendering(context, material, shape);
-	}
+	CreateRenderShapes(context, material, bones);
 	// ===
 
 	// === Skybox
@@ -198,5 +184,18 @@ void Application::UpdateLighting()
 	toShaderLight.spotLight.color = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);;
 
 	ConstantBufferManager::GetInstance()->ApplyLightBuffer(&toShaderLight);
+}
+
+void Application::CreateRenderShapes(RenderContext* _context, RenderMaterial* _material, Object* _object)
+{
+	RenderShape* shape;
+	for (unsigned int i = 0; i < _object->GetChildren().size(); ++i) {
+		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+		shape->SetObject(_object->GetChildren()[i]);
+
+		Renderer::GetInstance()->AddForRendering(_context, _material, shape);
+
+		CreateRenderShapes(_context, _material, _object->GetChildren()[i]);
+	}
 }
 // ============================= //

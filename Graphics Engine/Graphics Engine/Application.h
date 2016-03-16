@@ -5,6 +5,11 @@
 #include <D3D11SDKLayers.h>
 #include "SkyboxComponent.h"
 
+// ==== TEMP
+#include "RenderContext.h"
+#include "RenderMaterial.h"
+#include "RenderShape.h"
+
 static Camera m_Camera;
 
 class Application
@@ -19,6 +24,7 @@ private:
 	// === Private Interface
 	void SetupScene();
 	void UpdateLighting();
+	void CreateRenderShapes(RenderContext* _context, RenderMaterial* _material, Object* _object);
 	// ===
 	
 public:
