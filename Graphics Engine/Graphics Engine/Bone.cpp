@@ -3,6 +3,14 @@
 const DirectX::XMFLOAT4X4& Bone::GetWorld(){
 
 	if (parent != nullptr){
+		DirectX::XMMATRIX local_mat = DirectX::XMLoadFloat4x4(&localMatrix);
+		DirectX::XMMATRIX world_mat = DirectX::XMLoadFloat4x4(&parent->GetWorld());
+
+		local_mat = local_mat * world_mat;
+
+		DirectX::XMStoreFloat4x4(&worldMatrix, local_mat);
+	}
+	else{
 		//set world matrix to local matrix
 		DirectX::XMMATRIX local_mat = DirectX::XMLoadFloat4x4(&localMatrix);
 		DirectX::XMStoreFloat4x4(&worldMatrix, local_mat);
