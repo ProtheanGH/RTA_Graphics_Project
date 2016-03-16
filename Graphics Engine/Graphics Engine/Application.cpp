@@ -137,8 +137,7 @@ void Application::SetupScene()
 	skybox->AddComponent(new SkyboxComponent(skybox));
 	fbxConverter->LoadFBX("BasicCube", skybox);
 
-	context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
-	context->SetRasterizerState(RasterizerStates::Front_Culling);
+	context = RenderNodeDirectory::GetInstance()->CreateRenderContext(VertexShaderEnum::Vertex_Default, PixelShaderEnum::Pixel_Default, BlendStates::BlendState_Default, RasterizerStates::Front_Culling);
 
 	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
 	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Skybox.dds"));
