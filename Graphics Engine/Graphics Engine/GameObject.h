@@ -7,7 +7,10 @@
 #include "ShaderManager.h"
 #include "VertexFormats.h"
 
+#include <DirectXMath.h>
 #include <vector>
+
+using DirectX::XMFLOAT3;
 
 class GameObject
 {
@@ -28,6 +31,9 @@ protected:
 	std::string				 m_MeshPath;
 
 	// === Object Settings
+	XMFLOAT3				 m_WorldPosition   = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	XMFLOAT3				 m_WorldRotation   = XMFLOAT3(0.0f, 0.0f, 0.0f);
+	XMFLOAT3				 m_WorldScale      = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
 	// === Private Interface === //
 	void AddToRenderer(RenderContext* _context, RenderMaterial* _material, RenderShape* _shape);
@@ -68,6 +74,15 @@ public:
 	}
 	inline void SetMeshPath(std::string _path) {
 		m_MeshPath = _path;
+	}
+	inline void SetWorldPosition(XMFLOAT3 _position) {
+		m_WorldPosition = _position;
+	}
+	inline void SetWorldRotation(XMFLOAT3 _rotation) {
+		m_WorldRotation = _rotation;
+	}
+	inline void SetWorldScale(XMFLOAT3 _scale) {
+		m_WorldScale = _scale;
 	}
 	// ================= //
 };
