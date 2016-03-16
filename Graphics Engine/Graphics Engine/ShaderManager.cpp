@@ -14,6 +14,8 @@
 #include "DefaultVertex.h"
 #include "NormalMapPixel.h"
 #include "NormalMapVertex.h"
+#include "SkyboxVertex.h"
+#include "SkyboxPixel.h"
 
 #define SAFE_RELEASE(p) { if(p) { p->Release(); p = nullptr; } }
 
@@ -112,12 +114,14 @@ void ShaderManager::Initialize()
 	// === Pixel Shaders === //
 	Renderer::GetInstance()->GetDevice()->CreatePixelShader(DefaultPixel, sizeof(DefaultPixel), nullptr, &m_PixelShaders[Pixel_Default]);
 	Renderer::GetInstance()->GetDevice()->CreatePixelShader(NormalMapPixel, sizeof(NormalMapPixel), nullptr, &m_PixelShaders[NormalMap_Pixel]);
+	Renderer::GetInstance()->GetDevice()->CreatePixelShader(SkyboxPixel, sizeof(SkyboxPixel), nullptr, &m_PixelShaders[Skybox_Pixel]);
 	// ===
 
 
 	// === Vertex Shaders === //
-	Renderer::GetInstance()->GetDevice()->CreateVertexShader(DefaultVertex, sizeof(DefaultVertex), nullptr, &m_VertexShaders[Vertex_Default]);
+	Renderer::GetInstance()->GetDevice()->CreateVertexShader(DefaultVertex,   sizeof(DefaultVertex),   nullptr, &m_VertexShaders[Vertex_Default]);
 	Renderer::GetInstance()->GetDevice()->CreateVertexShader(NormalMapVertex, sizeof(NormalMapVertex), nullptr, &m_VertexShaders[NormalMap_Vertex]);
+	Renderer::GetInstance()->GetDevice()->CreateVertexShader(SkyboxVertex,    sizeof(SkyboxVertex),    nullptr, &m_VertexShaders[Skybox_Vertex]);
 	// ===
 }
 // ============================= //

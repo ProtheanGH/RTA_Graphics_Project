@@ -261,6 +261,12 @@
     <ClInclude Include="NormalMapVertex.h">
       <Filter>Shaders\Vertex Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="SkyboxVertex.h">
+      <Filter>Shaders\Vertex Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyboxPixel.h">
+      <Filter>Shaders\Pixel Shaders</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">
@@ -273,6 +279,12 @@
       <Filter>Shaders\Pixel Shaders</Filter>
     </FxCompile>
     <FxCompile Include="NormalMapVertex.hlsl">
+      <Filter>Shaders\Vertex Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="SkyboxPixel.hlsl">
+      <Filter>Shaders\Pixel Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="SkyboxVertex.hlsl">
       <Filter>Shaders\Vertex Shaders</Filter>
     </FxCompile>
   </ItemGroup>

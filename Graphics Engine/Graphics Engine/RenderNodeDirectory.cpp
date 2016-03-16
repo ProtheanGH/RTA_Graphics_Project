@@ -89,7 +89,7 @@ int RenderNodeDirectory::ContainsRenderContext(RenderContext* _context)
 	size_t count = m_RenderContextes.size();
 	for (size_t i = 0; i < count; ++i) {
 		if (m_RenderContextes[i]->Compare(_context))
-			return i;
+			return (int)i;
 	}
 
 	return -1;

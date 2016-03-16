@@ -109,8 +109,7 @@ bool Application::Run()
 	ConstantBufferManager::GetInstance()->ApplySceneBuffer(&toShaderScene);
 
 	UpdateLighting();
-	
-	
+
 	Renderer::GetInstance()->Render();
 
 	ObjectManager::GetInstance()->UpdateObjects();
@@ -126,22 +125,26 @@ bool Application::Run()
 // ===== Private Interface ===== //
 void Application::SetupScene()
 {
-	FBXConverter* fbxConverter = FBXConverter::GetInstance();
-	Object* object;
-	RenderContext* context;
+	FBXConverter*   fbxConverter = FBXConverter::GetInstance();
+	Object*         object;
+	RenderContext*  context;
 	RenderMaterial* material;
-	RenderShape* shape;
+	RenderShape*    shape;
 
 	// === Skybox === //
+#pragma region Not_Loading_Correctly
+#if 0
 	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
 	skybox->AddComponent(new SkyboxComponent(skybox));
 	fbxConverter->LoadFBX("BasicCube", skybox);
 
-	context = RenderNodeDirectory::GetInstance()->CreateRenderContext(VertexShaderEnum::Vertex_Default, PixelShaderEnum::Pixel_Default, BlendStates::BlendState_Default, RasterizerStates::Front_Culling);
-
+	context = RenderNodeDirectory::GetInstance()->CreateRenderContext(
+		VertexShaderEnum::Skybox_Vertex, PixelShaderEnum::Skybox_Pixel, BlendStates::BlendState_Default,
+		RasterizerStates::Front_Culling, InputLayouts::SkyboxMapped_InputLayout );
+	
 	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
 	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Skybox_Texture.dds"));
-
+	
 	shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(skybox);
 
@@ -152,6 +155,8 @@ void Application::SetupScene()
 		shape->SetObject(skybox->GetChildren()[i]);
 		Renderer::GetInstance()->AddForRendering(context, material, shape);
 	}
+#endif
+#pragma endregion
 	// ============== //
 
 
@@ -159,7 +164,9 @@ void Application::SetupScene()
 	object = ObjectManager::GetInstance()->CreateNewObject();
 	fbxConverter->LoadFBX("Teddy_Idle", object);
 
-	context = RenderNodeDirectory::GetInstance()->CreateRenderContext(VertexShaderEnum::NormalMap_Vertex, PixelShaderEnum::NormalMap_Pixel, BlendStates::BlendState_Default, RasterizerStates::RasterizerState_Default, InputLayouts::NormalMapped_InputLayout);
+	context = RenderNodeDirectory::GetInstance()->CreateRenderContext(
+		VertexShaderEnum::NormalMap_Vertex, PixelShaderEnum::NormalMap_Pixel, BlendStates::BlendState_Default,
+		RasterizerStates::RasterizerState_Default, InputLayouts::NormalMapped_InputLayout);
 
 	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
 	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_D.dds"));
@@ -185,16 +192,17 @@ void Application::UpdateLighting()
 
 	toShaderLight.ambientLight.color = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
 
-	toShaderLight.directionalLight.color = XMFLOAT4(0.78823f, 0.88627f, 1.0f, 1.0f);	// Color of overcast sky
-	toShaderLight.directionalLight.direction = XMFLOAT4(1.0f, -1.0f, 1.0f, 1.0f);
+	toShaderLight.directionalLight.color     = XMFLOAT4( 0.78823f, 0.88627f, 1.0f, 1.0f);	// Color of overcast sky
+	toShaderLight.directionalLight.direction = XMFLOAT4( 1.0f,    -1.0f,     1.0f, 1.0f);
 	
-	toShaderLight.pointLight.color = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	toShaderLight.pointLight.position = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	
-	toShaderLight.spotLight.position = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	toShaderLight.spotLight.direction = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	toShaderLight.spotLight.color = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	toShaderLight.spotLight.coneRatio = XMFLOAT2(0.0f, 0.0f);
+	toShaderLight.pointLight.color    = XMFLOAT4( 0.0f, 0.0f, 1.0f, 1.0f );	// Blue
+	toShaderLight.pointLight.position = XMFLOAT4( 0.0f, 100.0f, 40.0f, 0.0f );
+	toShaderLight.pointLight.radius   = 20.0f;
+												
+	toShaderLight.spotLight.position  = XMFLOAT4( 0.0f,  200.0f, 100.0f, 0.0f );
+	toShaderLight.spotLight.direction = XMFLOAT4( 0.0f, -1.0f, 1.0f, 0.0f );
+	toShaderLight.spotLight.color     = XMFLOAT4( 0.0f,  1.0f, 0.0f, 1.0f );	// Green
+	toShaderLight.spotLight.coneRatio = XMFLOAT2( 0.1f,  0.2f );
 
 	ConstantBufferManager::GetInstance()->ApplyLightBuffer(&toShaderLight);
 }

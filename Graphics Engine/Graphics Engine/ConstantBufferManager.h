@@ -13,6 +13,7 @@ private:
 	ID3D11Buffer* m_pObjectCBuffer;
 	ID3D11Buffer* m_pSceneCBuffer;
 	ID3D11Buffer* m_pLightsCBuffer;
+	ID3D11Buffer* m_pSkyboxCBuffer;
 
 	// === Private Interface === //
 	ConstantBufferManager() { }
@@ -37,6 +38,7 @@ public:
 	void ApplyObjectBuffer(ToShaderObject* _toShaderObject);
 	void ApplySceneBuffer(ToShaderScene* _toShaderScene);
 	void ApplyLightBuffer(ToShaderLight* _toShaderLight);
+	void ApplySkyboxBuffer(ToShaderSkybox* _toShaderSkybox);
 	void Terminate();
 	// ================= //
 };

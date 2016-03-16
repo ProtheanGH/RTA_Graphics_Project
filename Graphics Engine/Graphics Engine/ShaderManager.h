@@ -26,11 +26,11 @@ enum DomainShaderEnum {
 enum GeometryShaderEnum {
 	GEOMETRY_MAX };
 
-enum PixelShaderEnum { Pixel_Default, NormalMap_Pixel,
+enum PixelShaderEnum { Pixel_Default, NormalMap_Pixel, Skybox_Pixel,
 	PIXEL_MAX
 };
 
-enum VertexShaderEnum { Vertex_Default, NormalMap_Vertex,
+enum VertexShaderEnum { Vertex_Default, NormalMap_Vertex, Skybox_Vertex,
 	VERTEX_MAX
 };
 

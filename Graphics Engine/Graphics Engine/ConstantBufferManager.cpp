@@ -59,11 +59,23 @@ void ConstantBufferManager::ApplyLightBuffer(ToShaderLight* _toShaderLight)
 	deviceContext->PSSetConstantBuffers(0, 1, &m_pLightsCBuffer);
 }
 
+void ConstantBufferManager::ApplySkyboxBuffer(ToShaderSkybox* _toShaderSkybox)
+{
+	ID3D11DeviceContext* deviceContext = Renderer::GetInstance()->GetDeviceContext();
+
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	deviceContext->Map(m_pSkyboxCBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	memcpy(subResource.pData, _toShaderSkybox, sizeof(ToShaderSkybox));
+	deviceContext->Unmap(m_pSkyboxCBuffer, 0);
+	deviceContext->PSSetConstantBuffers(0, 1, &m_pSkyboxCBuffer);
+}
+
 void ConstantBufferManager::Terminate()
 {
 	SAFE_RELEASE(m_pObjectCBuffer);
 	SAFE_RELEASE(m_pSceneCBuffer);
 	SAFE_RELEASE(m_pLightsCBuffer);
+	SAFE_RELEASE(m_pSkyboxCBuffer);
 
 	delete s_Instance;
 	s_Instance = nullptr;
@@ -84,15 +96,22 @@ void ConstantBufferManager::Initialize()
 
 	// == Object Buffer
 	bufferDesc.ByteWidth = sizeof(ToShaderObject);
-	Renderer::GetInstance()->GetDevice()->CreateBuffer(&bufferDesc, NULL, &m_pObjectCBuffer);
+	hr = Renderer::GetInstance()->GetDevice()->CreateBuffer(&bufferDesc, NULL, &m_pObjectCBuffer);
+	assert(hr == S_OK);
 
 	// == Scene Buffer
 	bufferDesc.ByteWidth = sizeof(ToShaderScene);
-	Renderer::GetInstance()->GetDevice()->CreateBuffer(&bufferDesc, NULL, &m_pSceneCBuffer);
+	hr = Renderer::GetInstance()->GetDevice()->CreateBuffer(&bufferDesc, NULL, &m_pSceneCBuffer);
+	assert(hr == S_OK);
 
 	// == Light Buffer
 	bufferDesc.ByteWidth = sizeof(ToShaderLight);
 	hr = Renderer::GetInstance()->GetDevice()->CreateBuffer(&bufferDesc, nullptr, &m_pLightsCBuffer);
+	assert(hr == S_OK);
+
+	// == Skybox Buffer
+	bufferDesc.ByteWidth = sizeof(ToShaderSkybox);
+	hr = Renderer::GetInstance()->GetDevice()->CreateBuffer(&bufferDesc, nullptr, &m_pSkyboxCBuffer);
 	assert(hr == S_OK);
 }
 // ============================= //

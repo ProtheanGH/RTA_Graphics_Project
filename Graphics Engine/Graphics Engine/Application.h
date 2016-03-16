@@ -15,6 +15,7 @@ private:
 	WNDPROC m_WindProc;
 	HWND m_Window;
 	long m_Time;
+	
 
 	// === Private Interface
 	void SetupScene();

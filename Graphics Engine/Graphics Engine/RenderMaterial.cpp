@@ -30,7 +30,7 @@ void RenderMaterial::Apply()
 
 	size_t count = m_ShaderResourceIDs.size();
 	for (size_t i = 0; i < count; i++) {
-		ShaderResourceManager::GetInstance()->ApplyShaderResource(m_ShaderResourceIDs[i], i);
+		ShaderResourceManager::GetInstance()->ApplyShaderResource(m_ShaderResourceIDs[i], (UINT)i);
 	}
 }
 
