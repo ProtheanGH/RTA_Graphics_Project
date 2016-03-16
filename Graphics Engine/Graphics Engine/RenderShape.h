@@ -22,6 +22,12 @@ public:
 	virtual ~RenderShape();
 	// ================================ //
 
+	// === Accessors === //
+	inline Object* GetShapeObject() {
+		return m_pObject;
+	}
+	// ================= //
+
 	// === Mutators === //
 	inline void SetObject(Object* _object) {
 		m_pObject = _object;

@@ -68,6 +68,15 @@
     <Filter Include="Components\Source Files">
       <UniqueIdentifier>{c3ae4870-7745-43a0-87ce-5b941044735e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObjects">
+      <UniqueIdentifier>{9cf98dd4-37e0-4bab-b5ff-ce2f9b1d3bab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Header Files">
+      <UniqueIdentifier>{6050dc84-c1c5-4005-91e5-04381b17678e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects\Source Files">
+      <UniqueIdentifier>{57f49607-8bd9-49cb-90e4-4492478d5127}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -154,6 +163,10 @@
     <ClCompile Include="DDSTextureLoader.cpp">
       <Filter>Utilities\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObjects\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Teddy_Prefab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -267,6 +280,10 @@
     <ClInclude Include="SkyboxPixel.h">
       <Filter>Shaders\Pixel Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObjects\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Teddy_Prefab.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">

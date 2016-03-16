@@ -39,11 +39,19 @@ RenderContext* RenderNodeDirectory::CreateRenderContext(VertexShaderEnum _vertex
 	
 }
 
-RenderMaterial* RenderNodeDirectory::CreateRenderMaterial()
+RenderMaterial* RenderNodeDirectory::CreateRenderMaterial(SampleStates _sampleState, std::vector<std::string> _Textures)
 {
 	RenderMaterial* newRMaterial = new RenderMaterial();
-	m_RenderMaterials.push_back(newRMaterial);
-	return newRMaterial;
+	newRMaterial->SetSettings(_sampleState, _Textures);
+	int result = ContainsRenderMaterial(newRMaterial);
+	if (result == -1) {
+		m_RenderMaterials.push_back(newRMaterial);
+		return newRMaterial;
+	}
+	else {
+		delete newRMaterial;
+		return m_RenderMaterials[result];
+	}
 }
 
 RenderShape* RenderNodeDirectory::CreateRenderShape()
@@ -97,6 +105,12 @@ int RenderNodeDirectory::ContainsRenderContext(RenderContext* _context)
 
 int RenderNodeDirectory::ContainsRenderMaterial(RenderMaterial* _material)
 {
+	size_t count = m_RenderMaterials.size();
+	for (size_t i = 0; i < count; ++i) {
+		if (m_RenderMaterials[i]->Compare(_material))
+			return (int)i;
+	}
+
 	return -1;
 }
 // ============================= //

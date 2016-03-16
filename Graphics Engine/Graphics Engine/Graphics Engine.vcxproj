@@ -162,6 +162,7 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="FBXConverter.cpp" />
     <ClCompile Include="Bone.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -179,6 +180,7 @@
     <ClCompile Include="ShaderResourceManager.cpp" />
     <ClCompile Include="SkyboxComponent.cpp" />
     <ClCompile Include="SortedRenderSet.cpp" />
+    <ClCompile Include="Teddy_Prefab.cpp" />
     <ClCompile Include="VertexFormats.cpp" />
     <ClCompile Include="Writer.cpp" />
   </ItemGroup>
@@ -195,6 +197,7 @@
     <ClInclude Include="DefaultVertex.h" />
     <ClInclude Include="FBXConverter.h" />
     <ClInclude Include="Bone.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshManager.h" />
     <ClInclude Include="NormalMapPixel.h" />
@@ -216,6 +219,7 @@
     <ClInclude Include="SkyboxPixel.h" />
     <ClInclude Include="SkyboxVertex.h" />
     <ClInclude Include="SortedRenderSet.h" />
+    <ClInclude Include="Teddy_Prefab.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="VertexFormats.h" />
     <ClInclude Include="VertexTypes.h" />

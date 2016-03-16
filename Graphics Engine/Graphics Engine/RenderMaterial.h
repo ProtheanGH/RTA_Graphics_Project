@@ -32,12 +32,13 @@ public:
 
 	// === Interface === //
 	virtual void Add(RenderNode* _rMaterial, RenderNode* _rShape);
+	virtual bool Compare(RenderNode* _otherNode);
 	// ================= //
 
 	// === Mutators === //
-	inline void SetSettings(SampleStates _sampleState, std::string _shaderResourceID) {
+	inline void SetSettings(SampleStates _sampleState, std::vector<std::string> _shaderResourceIDs) {
 		m_SampleState = _sampleState;
-		m_ShaderResourceIDs.push_back(_shaderResourceID);
+		m_ShaderResourceIDs = _shaderResourceIDs;
 	}
 	inline void SetSampleState(SampleStates _sampleState) {
 		m_SampleState = _sampleState;

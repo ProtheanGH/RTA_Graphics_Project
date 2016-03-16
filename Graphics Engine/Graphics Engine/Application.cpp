@@ -16,6 +16,9 @@
 
 #include <ctime>
 
+// === Prefabs
+#include "Teddy_Prefab.h"
+
 #define DEFAULT_WIDTH 1024
 #define DEFAULT_HEIGHT 780
 
@@ -115,22 +118,10 @@ bool Application::Run()
 // ===== Private Interface ===== //
 void Application::SetupScene()
 {
-	// === Teddy
-	Object* object = ObjectManager::GetInstance()->CreateNewObject();
 	FBXConverter* fbxConverter = FBXConverter::GetInstance();
-	fbxConverter->LoadFBX("Teddy_Idle", object);
-	
-	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext(VertexShaderEnum::NormalMap_Vertex, PixelShaderEnum::NormalMap_Pixel, BlendStates::BlendState_Default, RasterizerStates::RasterizerState_Default, InputLayouts::NormalMapped_InputLayout);
 
-	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
-	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_D.dds"));
-	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Teddy_Normal.dds"));
-
-	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-	shape->SetObject(object);
-
-	Renderer::GetInstance()->AddForRendering(context, material, shape);
-	CreateRenderShapes(context, material, object);
+	// === Teddy
+	Teddy_Prefab().LoadGameObject();
 	// ===
 
 	// === Bones
@@ -144,11 +135,11 @@ void Application::SetupScene()
 	Object::CreateObjectFromSkeleton(newBone, *bones, mesh);
 	bones->GetTransform().SetLocalMatrix(XMFLOAT4X4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 200, 0, 0, 1));
 
-	context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
+	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
 
-	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
+	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
 
-	shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(bones);
 
 	Renderer::GetInstance()->AddForRendering(context, material, shape);

@@ -21,6 +21,31 @@ void RenderMaterial::Add(RenderNode* _rMaterial, RenderNode* _rShape)
 {
 	m_RShapesSet.Add(_rShape);
 }
+
+// === Compare
+//  - Compares two RenderNodes, returns tru if they are the same, false otherwise.
+bool RenderMaterial::Compare(RenderNode* _otherNode)
+{
+	RenderMaterial* otherMaterial = dynamic_cast<RenderMaterial*>(_otherNode);
+
+	if (otherMaterial == nullptr)
+		return false;
+	if (m_SampleState != otherMaterial->m_SampleState)
+		return false;
+
+	if (m_ShaderResourceIDs.size() != otherMaterial->m_ShaderResourceIDs.size()) {
+		return false;
+	}
+	else {
+		size_t count = m_ShaderResourceIDs.size();
+		for (size_t i = 0; i < count; ++i) {
+			if (m_ShaderResourceIDs[i] != otherMaterial->m_ShaderResourceIDs[i])
+				return false;
+		}
+	}
+
+	return true;
+}
 // ===================== //
 
 // ===== Private Interface ===== //

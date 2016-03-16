@@ -39,7 +39,7 @@ public:
 
 	// === Interface === //
 	RenderContext* CreateRenderContext(VertexShaderEnum _vertexShader = VertexShaderEnum::Vertex_Default, PixelShaderEnum _pixelShader = PixelShaderEnum::Pixel_Default, BlendStates _blendState = BlendStates::BlendState_Default, RasterizerStates _rasterizerState = RasterizerStates::RasterizerState_Default, InputLayouts _inputLayout = InputLayouts::InputLayout_Default);
-	RenderMaterial* CreateRenderMaterial();
+	RenderMaterial* CreateRenderMaterial(SampleStates _sampleState = SampleStates::SampleState_Default, std::vector<std::string> _Textures = std::vector<std::string>());
 	RenderShape* CreateRenderShape();
 	void Terminate();
 	// ================= //
