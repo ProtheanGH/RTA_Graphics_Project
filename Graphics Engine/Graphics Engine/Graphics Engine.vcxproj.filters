@@ -154,6 +154,9 @@
     <ClCompile Include="DDSTextureLoader.cpp">
       <Filter>Utilities\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Interpolater.cpp">
+      <Filter>Utilities\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -266,6 +269,9 @@
     </ClInclude>
     <ClInclude Include="SkyboxPixel.h">
       <Filter>Shaders\Pixel Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Interpolater.h">
+      <Filter>Utilities\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

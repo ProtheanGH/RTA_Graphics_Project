@@ -11,7 +11,6 @@ const DirectX::XMFLOAT4X4& Bone::GetWorld(){
 		DirectX::XMStoreFloat4x4(&worldMatrix, local_mat);
 	}
 	else{
-		//set world matrix to local matrix
 		DirectX::XMMATRIX local_mat = DirectX::XMLoadFloat4x4(&localMatrix);
 		DirectX::XMStoreFloat4x4(&worldMatrix, local_mat);
 	}
@@ -37,4 +36,13 @@ Bone* Bone::FindBone(Bone* _Bone, std::string& _BoneName){
 			return temp;
 	}
 	return nullptr;
+}
+
+void Bone::CreateBoneList(Bone* _bone, std::vector<Bone*>& boneList){
+	
+	boneList.push_back(_bone);
+
+	for (unsigned int i = 0; i < _bone->GetChildren().size(); ++i){
+		CreateBoneList(_bone->GetChildren()[i], boneList);
+	}
 }
