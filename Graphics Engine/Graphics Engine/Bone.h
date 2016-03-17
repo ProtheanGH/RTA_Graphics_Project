@@ -39,4 +39,5 @@ public:
 	void Destroy();
 
 	static Bone* FindBone(Bone* _Bone, std::string& _BoneName);
+	static void CreateBoneList(Bone* _bone, std::vector<Bone*>& boneList);
 };

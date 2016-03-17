@@ -1,5 +1,6 @@
 #include "FBXConverter.h"
 #include "Writer.h"
+#include "Animation.h"
 
 #pragma region Singleton
 
@@ -402,8 +403,12 @@ void FBXConverter::LoadSkeleton(const char* _fileName, Bone* bone){
 
 	FbxNode* rootNode = fbxScene->GetRootNode();
 
-	if (rootNode)
+	if (rootNode){
 		LoadSkeleton(rootNode, bone);
+		LoadJoints(rootNode, bone);
+		Animation animation;
+		LoadAnimation(rootNode, fbxScene, animation, bone);
+	}
 }
 
 void FBXConverter::ProcessBone(FbxNode* _node, Bone* bone){
@@ -447,7 +452,7 @@ void FBXConverter::ProcessJoints(FbxNode* _node, Bone* _rootBone){
 
 		unsigned int cluster_count = currSkin->GetClusterCount();
 		for (unsigned int cluster_index = 0; cluster_index < cluster_count; ++cluster_index){
-			FbxCluster* currCluster = currSkin->GetCluster(0);
+			FbxCluster* currCluster = currSkin->GetCluster(cluster_index);
 			std::string bone_name(currCluster->GetLink()->GetName());
 			Bone* curr_bone = Bone::FindBone(_rootBone, bone_name);
 			if (curr_bone == nullptr) continue;
@@ -492,22 +497,42 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxSc
 	int child_count = _node->GetChildCount();
 	for (int i = 0; i < child_count; ++i){
 		FbxNode* childNode = _node->GetChild(i);
-		LoadAnimation(childNode, _scene, _animation, _rootBone);
+		LoadAnimation(childNode, _animLayer, _scene, _animation, _rootBone);
 	}
 
 	FbxAnimCurve* translationCurve = _node->LclTranslation.GetCurve(_animLayer);
 	FbxAnimCurve* rotationCurve = _node->LclRotation.GetCurve(_animLayer);
 	FbxAnimCurve* scalingCurve = _node->LclScaling.GetCurve(_animLayer);
 
-	Bone* _bone = Bone::FindBone(_rootBone, std::string(_node->GetName()));
-	if (_bone) return;
+	if (translationCurve == nullptr && rotationCurve == nullptr && scalingCurve == nullptr) return;
 
+	Bone* _bone = Bone::FindBone(_rootBone, std::string(_node->GetName()));
+
+	if (_bone == nullptr) return;
+
+	Animation::KeyFrame* keyFrame = _animation.FindKeyFrame(_bone->GetName());
+	if (keyFrame == nullptr){
+		keyFrame = new Animation::KeyFrame();
+		keyFrame->name = _bone->GetName();
+		_animation.GetKeyFrames().push_back(keyFrame);
+	}
+
+	
 	if (translationCurve != nullptr){
 		int keyCount = translationCurve->KeyGetCount();
 		for (int i = 0; i < keyCount; ++i){
+			Animation::Key key;
 			FbxTime frameTime = translationCurve->KeyGetTime(i);
 			FbxDouble3 translation = _node->EvaluateLocalTranslation(frameTime);
 			float frameSeconds = (float)frameTime.GetSecondDouble();
+			key.time = frameSeconds;
+			if (keyFrame->FindKey(frameSeconds, key) == false){
+				key.translation = DirectX::XMFLOAT4(translation.mData[0], translation.mData[1], translation.mData[2], 1.0f);
+				keyFrame->keys.push_back(key);
+			}
+			else{
+				key.translation = DirectX::XMFLOAT4(translation.mData[0], translation.mData[1], translation.mData[2], 1.0f);
+			}
 		}
 	}
 
@@ -515,22 +540,38 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxSc
 	if (rotationCurve != nullptr){
 		int keyCount = rotationCurve->KeyGetCount();
 		for (int i = 0; i < keyCount; ++i){
-			FbxTime frameTime = translationCurve->KeyGetTime(i);
+			FbxTime frameTime = rotationCurve->KeyGetTime(i);
 			FbxDouble3 rotation = _node->EvaluateLocalRotation(frameTime);
 			float frameSeconds = (float)frameTime.GetSecondDouble();
+			Animation::Key key;
+			key.time = frameSeconds;
+			if (keyFrame->FindKey(frameSeconds, key) == false){
+				key.rotation = DirectX::XMFLOAT4(rotation.mData[0], rotation.mData[1], rotation.mData[2], 1.0f);
+				keyFrame->keys.push_back(key);
+			}
+			else{
+				key.rotation = DirectX::XMFLOAT4(rotation.mData[0], rotation.mData[1], rotation.mData[2], 1.0f);
+			}
 		}
 	}
-
 
 	if (scalingCurve != nullptr){
 		int keyCount = scalingCurve->KeyGetCount();
 		for (int i = 0; i < keyCount; ++i){
-			FbxTime frameTime = translationCurve->KeyGetTime(i);
-			FbxDouble3 translation = _node->EvaluateLocalRotation(frameTime);
+			FbxTime frameTime = scalingCurve->KeyGetTime(i);
+			FbxDouble3 scaling = _node->EvaluateLocalScaling(frameTime);
 			float frameSeconds = (float)frameTime.GetSecondDouble();
+			Animation::Key key;
+			key.time = frameSeconds;
+			if (keyFrame->FindKey(frameSeconds, key) == false){
+				key.scale = DirectX::XMFLOAT4(scaling.mData[0], scaling.mData[1], scaling.mData[2], 1.0f);
+				keyFrame->keys.push_back(key);
+			}
+			else{
+				key.scale = DirectX::XMFLOAT4(scaling.mData[0], scaling.mData[1], scaling.mData[2], 1.0f);
+			}
 		}
 	}
-	
 }
 
 
