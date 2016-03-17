@@ -157,6 +157,7 @@ void Application::SetupScene()
 	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
 	skybox->AddComponent(new SkyboxComponent(skybox));
 	fbxConverter->LoadFBX("Cube", skybox);
+	skybox->RotateX(115);
 
 	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext(
 		VertexShaderEnum::Skybox_Vertex, PixelShaderEnum::Skybox_Pixel, BlendStates::BlendState_Default,
