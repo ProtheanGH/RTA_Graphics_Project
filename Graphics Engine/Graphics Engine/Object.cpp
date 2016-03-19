@@ -128,7 +128,7 @@ DirectX::XMFLOAT4X4& Object::GetWorld(){
 }
 
 void Object::CreateObjectFromSkeleton(Bone* _rootBone, Object& _object, Mesh* _mesh){
-	unsigned int child_count = _rootBone->GetChildren().size();
+	unsigned int child_count = (unsigned int)_rootBone->GetChildren().size();
 	for (unsigned int i = 0; i < child_count; ++i){
 		Object* child_object = Object::Create();
 		Mesh* child_mesh = new Mesh();

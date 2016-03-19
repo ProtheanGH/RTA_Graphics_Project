@@ -78,14 +78,14 @@ float4 main(PixelInput _input) : SV_TARGET
 
 	// === Calculate the Normal
 	float3x3 TBNMatrix = float3x3((float3)_input.tangent, (float3)_input.binormal, (float3)_input.normal);
-	normal = mul(normalMap, TBNMatrix);
+	normal = mul((float3)normalMap, TBNMatrix);
 	normal = normalize(normal);
 
 	// === Ambient Lighting
 	ambientColor = ambientLight.color * textureColor;
 
 	// === Directional Lighting
-	lightIntensity = saturate(dot(normal, -directionalLight.direction));
+	lightIntensity = saturate(dot(normal, (float)-directionalLight.direction));
 	directionalColor = saturate(directionalLight.color * lightIntensity);
 	directionalColor = directionalColor * textureColor;
 	directionalColor.w = 1.0;

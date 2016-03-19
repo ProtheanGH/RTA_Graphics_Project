@@ -527,11 +527,11 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxSc
 			float frameSeconds = (float)frameTime.GetSecondDouble();
 			key.time = frameSeconds;
 			if (keyFrame->FindKey(frameSeconds, key) == false){
-				key.translation = DirectX::XMFLOAT4(translation.mData[0], translation.mData[1], translation.mData[2], 1.0f);
+				key.translation = DirectX::XMFLOAT4((float)translation.mData[0], (float)translation.mData[1], (float)translation.mData[2], 1.0f);
 				keyFrame->keys.push_back(key);
 			}
 			else{
-				key.translation = DirectX::XMFLOAT4(translation.mData[0], translation.mData[1], translation.mData[2], 1.0f);
+				key.translation = DirectX::XMFLOAT4((float)translation.mData[0], (float)translation.mData[1], (float)translation.mData[2], 1.0f);
 			}
 		}
 	}
@@ -546,11 +546,11 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxSc
 			Animation::Key key;
 			key.time = frameSeconds;
 			if (keyFrame->FindKey(frameSeconds, key) == false){
-				key.rotation = DirectX::XMFLOAT4(rotation.mData[0], rotation.mData[1], rotation.mData[2], 1.0f);
+				key.rotation = DirectX::XMFLOAT4((float)rotation.mData[0], (float)rotation.mData[1], (float)rotation.mData[2], 1.0f);
 				keyFrame->keys.push_back(key);
 			}
 			else{
-				key.rotation = DirectX::XMFLOAT4(rotation.mData[0], rotation.mData[1], rotation.mData[2], 1.0f);
+				key.rotation = DirectX::XMFLOAT4((float)rotation.mData[0], (float)rotation.mData[1], (float)rotation.mData[2], 1.0f);
 			}
 		}
 	}
@@ -564,11 +564,11 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxSc
 			Animation::Key key;
 			key.time = frameSeconds;
 			if (keyFrame->FindKey(frameSeconds, key) == false){
-				key.scale = DirectX::XMFLOAT4(scaling.mData[0], scaling.mData[1], scaling.mData[2], 1.0f);
+				key.scale = DirectX::XMFLOAT4((float)scaling.mData[0], (float)scaling.mData[1], (float)scaling.mData[2], 1.0f);
 				keyFrame->keys.push_back(key);
 			}
 			else{
-				key.scale = DirectX::XMFLOAT4(scaling.mData[0], scaling.mData[1], scaling.mData[2], 1.0f);
+				key.scale = DirectX::XMFLOAT4((float)scaling.mData[0], (float)scaling.mData[1], (float)scaling.mData[2], 1.0f);
 			}
 		}
 	}
