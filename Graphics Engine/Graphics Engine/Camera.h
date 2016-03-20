@@ -18,6 +18,7 @@ private:
 
 	void SetCursorMiddle(HWND _hwnd);
 	void MouseLook(HWND _hwnd, DirectX::XMMATRIX& _matrix);
+	void HandleCursorVisible(const bool _buttonDown);
 
 public:
 	// === Constructor / Destructor === //

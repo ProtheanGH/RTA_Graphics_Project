@@ -89,8 +89,10 @@ void Camera::Update(HWND _hwnd, float _deltaTime)
 
 	// === Camera Rotation
 	static bool resetMouse = true;
+	static bool buttonDown = false;
 	if (GetAsyncKeyState(VK_RBUTTON))
 	{
+		buttonDown = true;
 		if (resetMouse == true)
 		{
 			SetCursorMiddle(_hwnd);
@@ -103,8 +105,10 @@ void Camera::Update(HWND _hwnd, float _deltaTime)
 	}
 	else
 	{
+		buttonDown = false;
 		resetMouse = true;
 	}
+	HandleCursorVisible(buttonDown);
 	// ===
 
 	determinant = XMMatrixDeterminant(matrix);
@@ -150,6 +154,31 @@ void Camera::MouseLook(HWND _hwnd, DirectX::XMMATRIX& _matrix)
 	_matrix = XMMatrixMultiply( _matrix, DirectX::XMMatrixRotationY( radX ) );
 
 	_matrix.r[3] = localPosition;
+}
+
+void Camera::HandleCursorVisible(const bool _buttonDown)
+{
+	static int refCount = 0;
+
+	if (_buttonDown)
+	{
+		if (refCount == 0)
+		{
+			ShowCursor(false);
+			++refCount;
+		}
+		if (refCount > 1)
+			refCount = 1;
+	}
+	else
+	{
+		if (refCount > 0)
+		{
+			ShowCursor(true);
+			--refCount;
+		}
+		if (refCount < 0) refCount = 0;
+	}
 }
 // ===================== //
 
