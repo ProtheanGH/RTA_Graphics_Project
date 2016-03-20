@@ -4,6 +4,8 @@
 
 using namespace DirectX;
 
+class Renderer;
+
 class Camera
 {
 private:
@@ -14,6 +16,9 @@ private:
 	float m_FastMovementSpeed;
 	float m_RotationSpeed;
 
+	void SetCursorMiddle(HWND _hwnd);
+	void MouseLook(HWND _hwnd, DirectX::XMMATRIX& _matrix);
+
 public:
 	// === Constructor / Destructor === //
 	Camera();
@@ -21,7 +26,7 @@ public:
 	// ================================ //
 
 	// === Interface === //
-	void Update(float _deltaTime);
+	void Update(HWND _hwnd, float _deltaTime);
 	// ================= //
 
 	// === Accessors === //

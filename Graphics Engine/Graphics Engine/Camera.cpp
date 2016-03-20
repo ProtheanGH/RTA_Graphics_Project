@@ -1,4 +1,9 @@
 #include "Camera.h"
+#include "Renderer.h"
+
+#ifndef ROTATION_MODIFIER
+#define ROTATION_MODIFIER	0.2f
+#endif
 
 // ===== Constructor / Destructor ===== //
 Camera::Camera()
@@ -22,7 +27,7 @@ Camera::~Camera()
 // ==================================== //
 
 // ===== Interface ===== //
-void Camera::Update(float _deltaTime)
+void Camera::Update(HWND _hwnd, float _deltaTime)
 {
 	XMMATRIX matrix = XMLoadFloat4x4(&m_Transform);
 	XMVECTOR determinant = XMMatrixDeterminant(matrix);
@@ -82,37 +87,69 @@ void Camera::Update(float _deltaTime)
 		}
 	}
 
-	// Camera Rotation
-	if (GetAsyncKeyState(VK_RBUTTON)) {
-		if (m_CursorPosition.x == -1)
-			GetCursorPos(&m_CursorPosition);
-		// == Get the New Cursor Position
-		POINT newCursorPos;
-		GetCursorPos(&newCursorPos);
-		float distance;
-		// === Left / Right Rotation
-		if (newCursorPos.x != m_CursorPosition.x) {
-			XMVECTOR position = matrix.r[3];
-			matrix = XMMatrixMultiply(matrix, XMMatrixTranslation(0, 0, 0));
-			distance = (float)m_CursorPosition.x - (float)newCursorPos.x;
-			matrix = XMMatrixMultiply(matrix, XMMatrixRotationY(-distance * 0.0174532925f));
-			matrix.r[3] = position;
+	// === Camera Rotation
+	static bool resetMouse = true;
+	if (GetAsyncKeyState(VK_RBUTTON))
+	{
+		if (resetMouse == true)
+		{
+			SetCursorMiddle(_hwnd);
+			resetMouse = false;
 		}
-		// === Up / Down Rotation
-		if (newCursorPos.y != m_CursorPosition.y) {
-			distance = (float)m_CursorPosition.y - (float)newCursorPos.y;
-			matrix = XMMatrixMultiply(XMMatrixRotationX(-distance * 0.0174532925f), matrix);
+		else
+		{
+			MouseLook(_hwnd, matrix);
 		}
-
-		m_CursorPosition = newCursorPos;
 	}
-	else {
-		m_CursorPosition.x = -1;
+	else
+	{
+		resetMouse = true;
 	}
+	// ===
 
 	determinant = XMMatrixDeterminant(matrix);
 	matrix = XMMatrixInverse(&determinant, matrix);
 	XMStoreFloat4x4(&m_Transform, matrix);
+}
+
+void Camera::SetCursorMiddle(HWND _hwnd)
+{
+	D3D11_VIEWPORT view = Renderer::GetInstance()->GetViewport();
+	POINT temp;
+	temp.x = (int)view.TopLeftX + ((int)view.Width / 2);
+	temp.y = (int)view.TopLeftY + ((int)view.Height / 2);
+	ClientToScreen(_hwnd, &temp);
+	SetCursorPos(temp.x, temp.y);
+}
+
+void Camera::MouseLook(HWND _hwnd, DirectX::XMMATRIX& _matrix)
+{
+	D3D11_VIEWPORT view = Renderer::GetInstance()->GetViewport();
+
+	// GetThe center of the client window
+	POINT centerClientWindow;
+	centerClientWindow.x = (int)view.TopLeftX + ((int)view.Width / 2);
+	centerClientWindow.y = (int)view.TopLeftY + ((int)view.Height / 2);
+
+	// Convert mouse to client space
+	POINT cursorPositionInScreenSpace;
+	GetCursorPos(&cursorPositionInScreenSpace);
+	ScreenToClient(_hwnd, &cursorPositionInScreenSpace);
+
+	// Convert the difference into radians
+	float radX = DirectX::XMConvertToRadians((float)cursorPositionInScreenSpace.x - (float)centerClientWindow.x);
+	float radY = DirectX::XMConvertToRadians((float)cursorPositionInScreenSpace.y - (float)centerClientWindow.y);
+	radX *= ROTATION_MODIFIER;
+	radY *= ROTATION_MODIFIER;
+
+	SetCursorMiddle(_hwnd);
+
+	XMVECTOR localPosition = _matrix.r[3];
+
+	_matrix = XMMatrixMultiply( DirectX::XMMatrixRotationX( radY ), _matrix );
+	_matrix = XMMatrixMultiply( _matrix, DirectX::XMMatrixRotationY( radX ) );
+
+	_matrix.r[3] = localPosition;
 }
 // ===================== //
 
