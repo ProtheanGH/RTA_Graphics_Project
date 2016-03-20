@@ -154,6 +154,7 @@ void Application::SetupScene()
 	// ===
 
 	// === Skybox === //
+#if 1
 	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
 	skybox->AddComponent(new SkyboxComponent(skybox));
 	fbxConverter->LoadFBX("Cube", skybox);
@@ -176,7 +177,30 @@ void Application::SetupScene()
 		shape->SetObject(skybox->GetChildren()[i]);
 		Renderer::GetInstance()->AddForRendering(context, material, shape);
 	}
+#endif
 	// ============== //
+
+
+
+	// === Floor Quad === //
+	Object* floor = ObjectManager::GetInstance()->CreateNewObject();
+	fbxConverter->LoadFBX("FloorQuad", floor);
+
+	context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
+
+	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
+	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/CartoonWood_Texture.dds"));
+
+	shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+	shape->SetObject(floor);
+
+	Renderer::GetInstance()->AddForRendering(context, material, shape);
+	for (unsigned int i = 0; i < floor->GetChildren().size(); ++i) {
+		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
+		shape->SetObject(floor->GetChildren()[i]);
+		Renderer::GetInstance()->AddForRendering(context, material, shape);
+	}
+	// ================== //
 }
 
 void Application::UpdateLighting()
@@ -186,17 +210,18 @@ void Application::UpdateLighting()
 
 	toShaderLight.ambientLight.color = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
 
-	toShaderLight.directionalLight.color     = XMFLOAT4(0.78823f, 0.88627f, 1.0f, 1.0f);	// Color of overcast sky
+	// toShaderLight.directionalLight.color = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	toShaderLight.directionalLight.color = XMFLOAT4(0.78823f, 0.88627f, 1.0f, 1.0f);	// Color of overcast sky
 	toShaderLight.directionalLight.direction = XMFLOAT4(1.0f, -1.0f, 1.0f, 1.0f);
 
-	toShaderLight.pointLight.color    = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);	// Blue
-	toShaderLight.pointLight.position = XMFLOAT4(0.0f, 100.0f, 40.0f, 0.0f);
-	toShaderLight.pointLight.radius   = 20.0f;
-
-	toShaderLight.spotLight.position  = XMFLOAT4(0.0f, 200.0f, 100.0f, 0.0f);
-	toShaderLight.spotLight.direction = XMFLOAT4(0.0f, -1.0f, 1.0f, 0.0f);
-	toShaderLight.spotLight.color     = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);	// Green
-	toShaderLight.spotLight.coneRatio = XMFLOAT2(0.1f, 0.2f);
+	toShaderLight.pointLight.position = XMFLOAT4(-0.8f, 115.0f, 26.0f, 1.0f);
+	toShaderLight.pointLight.color    = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);		// Blue
+	toShaderLight.pointLight.radius   = 10.0f;
+	
+	toShaderLight.spotLight.position  = XMFLOAT4(-20.0f, 25.0f, 15.0f, 0.0f);
+	toShaderLight.spotLight.direction = XMFLOAT4(0.0f, -1.0f, 0.0f, 0.0f);
+	toShaderLight.spotLight.color     = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);		// Red
+	toShaderLight.spotLight.coneRatio = XMFLOAT2(0.707f, 0.5f);
 
 	ConstantBufferManager::GetInstance()->ApplyLightBuffer(&toShaderLight);
 }

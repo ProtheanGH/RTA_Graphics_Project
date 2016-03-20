@@ -82,20 +82,22 @@ float4 main(OUTPUT_VERTEX _input) : SV_TARGET
 
 
 	// === Point Light === //
-	float4 pointDirection = pointLight.position - _input.worldPosition;
+	float4 pointDirection = normalize(pointLight.position - _input.worldPosition);
 	float  pointRatio = saturate(dot(pointDirection, _input.normals));
-	float4 pointResult = pointRatio * pointLight.color * imageColor;
+	float  pointAtten = 0.001f;// 1.0f - saturate(length(pointLight.position - _input.worldPosition) / pointLight.radius);
+	pointAtten *= pointAtten;
+	float4 pointResult = pointAtten * pointRatio * pointLight.color * imageColor;
+	pointResult.w = 1.0f;
 	// ===
 
-
 	// === Spot Light === //
-	float4 coneDirection = normalize(spotLight.position - _input.worldPosition);
-	float  coneRatio = saturate(dot(spotLight.direction, -coneDirection));
-	float  spotFactor = (coneRatio > spotLight.coneRatio.y) ? 1.0f : 0.0f;
-	float  spotRatio = saturate(dot(coneDirection.y, _input.normals)); // spotRatio - To be used for specular lighting
-	float attenuation = 1.0f - saturate((spotLight.coneRatio.x - coneRatio) / (spotLight.coneRatio.x - spotLight.coneRatio.y));
-	attenuation *= attenuation;
-	float4 spotResult = spotFactor * coneRatio * spotLight.color * imageColor * attenuation;
+	float4 spotDirection = normalize(spotLight.position - _input.worldPosition);
+	float  coneRatio = saturate(dot(-spotDirection, spotLight.direction));
+	float  spotFactor = (coneRatio > spotLight.coneRatio.x) ? 1.0f : 0.0f;
+	float  spotRatio = saturate(dot(spotDirection.y, _input.normals)); // spotRatio - To be used for specular lighting
+	float  attenuation = 1.0f - saturate((spotLight.coneRatio.x - coneRatio) / (spotLight.coneRatio.x - spotLight.coneRatio.y));
+	attenuation *= attenuation;	// Quadratic attenuation
+	float4 spotResult = attenuation * spotFactor * spotRatio * spotLight.color * imageColor;
 	// ===
 
 
@@ -103,7 +105,7 @@ float4 main(OUTPUT_VERTEX _input) : SV_TARGET
 	float4 greyScale = ambientLight.color * imageColor;
 	// ===
 
-	return saturate(greyScale + directionResult + ambientDirection + pointResult + spotResult);
+	return saturate(greyScale + directionResult + ambientDirection /*+ pointResult*/ + spotResult);
 }
 // ===
 
