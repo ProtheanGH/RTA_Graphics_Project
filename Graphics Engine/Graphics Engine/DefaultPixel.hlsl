@@ -46,7 +46,7 @@ struct SpotLight
 	float4 color;
 	float2 coneRatio;
 
-	float padding;
+	float2 padding;
 };
 // ============================= //
 

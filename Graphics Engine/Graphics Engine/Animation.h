@@ -25,16 +25,26 @@ public:
 
 			return nullptr;
 		}
+
+		~KeyFrame() {
+			Destroy();
+		}
+
+	private :
+		void Destroy() {
+			unsigned int size = keys.size();
+			for (unsigned int i = 0; i < size; ++i) {
+				delete keys[i];
+			}
+
+			keys.clear();
+		}
 	};
 
 public:
 	Animation() = default;
 	~Animation(){
-		for (unsigned int i = 0; i < keyFrames.size(); ++i){
-			delete keyFrames[i];
-		}
-
-		keyFrames.clear();
+		Destroy();
 	}
 
 	inline float GetDuration() const { return duration; }
@@ -65,4 +75,13 @@ private:
 	std::vector< KeyFrame* > keyFrames;
 
 	std::vector<Bone*> bones;
+
+	void Destroy() {
+		unsigned int size = keyFrames.size();
+		for (unsigned int i = 0; i < size; ++i) {
+			delete keyFrames[i];
+		}
+
+		keyFrames.clear();
+	}
 };
