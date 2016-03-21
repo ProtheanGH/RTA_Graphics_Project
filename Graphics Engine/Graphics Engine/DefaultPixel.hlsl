@@ -84,7 +84,7 @@ float4 main(OUTPUT_VERTEX _input) : SV_TARGET
 	// === Point Light === //
 	float4 pointDirection = normalize(pointLight.position - _input.worldPosition);
 	float  pointRatio = saturate(dot(pointDirection, _input.normals));
-	float  pointAtten = 0.001f;// 1.0f - saturate(length(pointLight.position - _input.worldPosition) / pointLight.radius);
+	float pointAtten = 1.0f - saturate(length(pointLight.position - _input.worldPosition) / pointLight.radius);
 	pointAtten *= pointAtten;
 	float4 pointResult = pointAtten * pointRatio * pointLight.color * imageColor;
 	pointResult.w = 1.0f;
@@ -105,7 +105,7 @@ float4 main(OUTPUT_VERTEX _input) : SV_TARGET
 	float4 greyScale = ambientLight.color * imageColor;
 	// ===
 
-	return saturate(greyScale + directionResult + ambientDirection /*+ pointResult*/ + spotResult);
+	return saturate(greyScale + directionResult + ambientDirection + pointResult + spotResult);
 }
 // ===
 

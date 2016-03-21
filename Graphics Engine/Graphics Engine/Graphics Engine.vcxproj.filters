@@ -314,6 +314,9 @@
     <FxCompile Include="SkyboxVertex.hlsl">
       <Filter>Shaders\Vertex Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="AnimationVertex.hlsl">
+      <Filter>Shaders\Vertex Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="chest.epic.fbx">
