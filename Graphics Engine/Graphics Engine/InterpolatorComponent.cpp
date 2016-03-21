@@ -16,7 +16,8 @@ InterpolatorComponent::~InterpolatorComponent()
 // ===== Interface ===== //
 bool InterpolatorComponent::Update(float _deltaTime)
 {
-	if (animation == nullptr) return;
+	if (animation == nullptr)
+		return false;
 
 	AddTime(_deltaTime);
 
@@ -78,7 +79,7 @@ bool InterpolatorComponent::Update(float _deltaTime)
 		local_mat = local_mat * matrix;
 		DirectX::XMStoreFloat4x4(&bones[i].GetLocal(), local_mat);
 	}
-
+	return true;
 }
 
 void InterpolatorComponent::Destroy(void)

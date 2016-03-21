@@ -29,12 +29,12 @@ Object* ObjectManager::CreateNewObject()
 	return newObject;
 }
 
-void ObjectManager::UpdateObjects()
+void ObjectManager::UpdateObjects(float _deltaTime)
 {
 	unsigned int objCount = (unsigned int)m_Objects.size();
 	for (unsigned int i = 0; i < objCount; ++i) {
 		// === ADD IN UPDATE CODE
-		m_Objects[i]->Update();
+		m_Objects[i]->Update(_deltaTime);
 	}
 }
 

@@ -33,7 +33,7 @@ public:
 
 	// === Interface === //
 	Object* CreateNewObject();
-	void UpdateObjects();
+	void UpdateObjects(float _deltaTime);
 	void Terminate();
 	// ================= //
 };

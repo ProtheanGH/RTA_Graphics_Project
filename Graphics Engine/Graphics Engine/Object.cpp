@@ -96,16 +96,16 @@ void Object::Destroy(){
 	delete mesh;
 }
 
-void Object::Update()
+void Object::Update(float _deltaTime)
 {
 	for (unsigned int i = 0; i < children.size(); ++i)
 	{
-		children[i]->Update();
+		children[i]->Update(_deltaTime);
 	}
 
 	for (unsigned int i = 0; i < components.size(); ++i)
 	{
-		components[i]->Update();
+		components[i]->Update(_deltaTime);
 	}
 }
 

@@ -43,7 +43,7 @@ public:
 
 	void Destroy();
 
-	void Update();
+	void Update(float _deltaTime);
 	void AddComponent(Component* _comp);
 
 	inline Transform& GetTransform()  { return transform; }

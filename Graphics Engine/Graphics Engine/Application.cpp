@@ -109,7 +109,7 @@ bool Application::Run()
 	
 	UpdateLighting();
 
-	ObjectManager::GetInstance()->UpdateObjects();
+	ObjectManager::GetInstance()->UpdateObjects(deltaTime);
 	
 	Renderer::GetInstance()->Render();
 	return true;
