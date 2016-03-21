@@ -31,6 +31,8 @@ void Renderer::Initialize(HWND _window, const int _samplerCount, const float _sc
 	// === Float4x4 Initialization (Probably will be moved later)
 	CreateViewMatrix();
 	m_ProjectionMatrix = CreateProjectionMatrix(65.0f, _screenWidth, _screenHeight);
+
+	m_Skybox = nullptr;
 }
 
 void Renderer::Terminate()
@@ -54,6 +56,12 @@ void Renderer::Render()
 	deviceContext->ClearRenderTargetView(RTV, Colors::BLACK.RGBA);
 	deviceContext->ClearDepthStencilView(DSV, D3D11_CLEAR_DEPTH, 1, NULL);
 
+	// === Render the Skybox
+	if (m_Skybox != nullptr) {
+		m_Skybox->RenderProcess();
+		deviceContext->ClearDepthStencilView(DSV, D3D11_CLEAR_DEPTH, 1, NULL);
+	}
+
 	// === Render the Stuff in the Scene
 	RenderNode* currNode = m_RenderSet.GetFront();
 	while (currNode != nullptr) {
@@ -75,6 +83,12 @@ void Renderer::AddForRendering(RenderContext* _rContext, RenderMaterial* _rMater
 		m_RenderSet.Add(_rContext);
 		_rContext->Add(_rMaterial, _rShape);
 	}
+}
+
+void Renderer::SetSkybox(RenderContext* _skyboxContext, RenderMaterial* _skyboxMaterial, RenderShape* _skyboxShape)
+{
+	_skyboxContext->Add(_skyboxMaterial, _skyboxShape);
+	m_Skybox = _skyboxContext;
 }
 // ===================== //
 

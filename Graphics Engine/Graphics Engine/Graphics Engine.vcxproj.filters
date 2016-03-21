@@ -169,6 +169,10 @@
     <ClCompile Include="Teddy_Prefab.cpp">
       <Filter>GameObjects\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestCube_Prefab.cpp">
+      <Filter>GameObjects\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox_Prefab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -288,6 +292,10 @@
     <ClInclude Include="Teddy_Prefab.h">
       <Filter>GameObjects\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TestCube_Prefab.h">
+      <Filter>GameObjects\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox_Prefab.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">

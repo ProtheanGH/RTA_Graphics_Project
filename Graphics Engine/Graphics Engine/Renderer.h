@@ -34,6 +34,7 @@ private:
 	XMFLOAT4X4                m_ProjectionMatrix;
 
 	// === Members
+	RenderContext* m_Skybox;
 	RenderSet m_RenderSet;
 
 	// === Private Interface === //
@@ -65,6 +66,7 @@ public:
 	void Terminate();
 	void Render();
 	void AddForRendering(RenderContext* _rContext, RenderMaterial* _rMaterial, RenderShape* _rShape);
+	void SetSkybox(RenderContext* _skyboxContext, RenderMaterial* _skyboxMaterial, RenderShape* _skyboxShape);
 	// ================= //
 
 	// === Accessors === //

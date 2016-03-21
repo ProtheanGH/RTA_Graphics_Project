@@ -43,8 +43,8 @@ void RenderShape::DefaultShape_RenderProcess(RenderNode& _node)
 		Renderer::GetInstance()->GetDeviceContext()->IASetIndexBuffer(rShape.m_pObject->GetIndexBuffer(), DXGI_FORMAT_R32_UINT, 0);
 
 		// == Draw
-		unsigned int size = (unsigned int)rShape.m_pObject->GetMesh()->GetIndices().size();
-		Renderer::GetInstance()->GetDeviceContext()->DrawIndexed((UINT)rShape.m_pObject->GetMesh()->GetIndices().size(), 0, 0);
+		UINT size = (UINT)rShape.m_pObject->GetMesh()->GetIndices().size();
+		Renderer::GetInstance()->GetDeviceContext()->DrawIndexed(size, 0, 0);
 	}
 }
 
