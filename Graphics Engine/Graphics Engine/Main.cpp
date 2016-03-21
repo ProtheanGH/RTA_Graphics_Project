@@ -2,7 +2,6 @@
 
 #include "Application.h"
 #include "FBXConverter.h"
-#include <vld.h>
 
 // Leak detection
 #define _CRTDBG_MAP_ALLOC

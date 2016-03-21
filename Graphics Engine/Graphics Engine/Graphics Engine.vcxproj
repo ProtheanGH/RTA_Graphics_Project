@@ -293,7 +293,6 @@
     <None Include="chest.epic.fbx" />
     <None Include="chest.epic.mesh" />
     <None Include="Cube.fbx" />
-    <None Include="Test.FBX" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
