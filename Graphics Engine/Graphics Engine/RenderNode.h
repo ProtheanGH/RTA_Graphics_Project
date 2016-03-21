@@ -23,7 +23,9 @@ public:
 	// ================= //
 
 	// === Mutators === //
-	void SetFunc(RenderFunc _func);
+	inline void SetFunc(RenderFunc _func) {
+		m_Func = _func;
+	}
 	// ================ //
 };
 

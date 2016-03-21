@@ -87,6 +87,7 @@ void ConstantBufferManager::Terminate()
 	SAFE_RELEASE(m_pSceneCBuffer);
 	SAFE_RELEASE(m_pLightsCBuffer);
 	SAFE_RELEASE(m_pSkyboxCBuffer);
+	SAFE_RELEASE(m_pAnimatedCBuffer);
 
 	delete s_Instance;
 	s_Instance = nullptr;
