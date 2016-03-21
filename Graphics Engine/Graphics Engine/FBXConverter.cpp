@@ -436,8 +436,8 @@ void FBXConverter::ProcessBone(FbxNode* _node, Bone* bone){
 
 void FBXConverter::LoadBoneInfo(Object* _object, FbxNode* _node, Bone* bone){
 	
-	unsigned int child_count = _object->GetChildren().size();
-	for (int i = 0; i < child_count; ++i){
+	unsigned int child_count = (unsigned int)_object->GetChildren().size();
+	for (unsigned int i = 0; i < child_count; ++i){
 
 		Object* child_obj = _object->GetChildren()[i];
 
@@ -576,7 +576,7 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxSc
 				}
 			}
 
-			key->translation = DirectX::XMFLOAT4(translation.mData[0], translation.mData[1], translation.mData[2], 1.0f);
+			key->translation = DirectX::XMFLOAT4((float)translation.mData[0], (float)translation.mData[1], (float)translation.mData[2], 1.0f);
 		}
 	}
 
@@ -613,7 +613,7 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxSc
 				}
 			}
 
-			key->rotation = DirectX::XMFLOAT4(rotation.mData[0], rotation.mData[1], rotation.mData[2], 1.0f);
+			key->rotation = DirectX::XMFLOAT4((float)rotation.mData[0], (float)rotation.mData[1], (float)rotation.mData[2], 1.0f);
 		}
 	}
 
@@ -649,7 +649,7 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxSc
 				}
 			}
 
-			key->scale = DirectX::XMFLOAT4(scale.mData[0], scale.mData[1], scale.mData[2], 1.0f);
+			key->scale = DirectX::XMFLOAT4((float)scale.mData[0], (float)scale.mData[1], (float)scale.mData[2], 1.0f);
 		}
 	}
 }
