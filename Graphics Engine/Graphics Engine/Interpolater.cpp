@@ -79,19 +79,19 @@ void Interpolater::Update(float deltaTime){
 
 	for (unsigned int i = 0; i < bone_count; ++i){
 		DirectX::XMFLOAT4 translation;
-		translation.x = (keyFrames[nextKey]->keys[i]->translation.x - keyFrames[prevKey]->keys[i]->translation.x) * ratio;
-		translation.y = (keyFrames[nextKey]->keys[i]->translation.y - keyFrames[prevKey]->keys[i]->translation.y) * ratio;
-		translation.z = (keyFrames[nextKey]->keys[i]->translation.z - keyFrames[prevKey]->keys[i]->translation.z) * ratio;
+		translation.x = (keyFrames[nextKey]->keys[i]->translation.x - keyFrames[prevKey]->keys[i]->translation.x) * ratio + keyFrames[prevKey]->keys[i]->translation.x;
+		translation.y = (keyFrames[nextKey]->keys[i]->translation.y - keyFrames[prevKey]->keys[i]->translation.y) * ratio + keyFrames[prevKey]->keys[i]->translation.y;
+		translation.z = (keyFrames[nextKey]->keys[i]->translation.z - keyFrames[prevKey]->keys[i]->translation.z) * ratio + keyFrames[prevKey]->keys[i]->translation.z;
 
 		DirectX::XMFLOAT4 rotation;
-		rotation.x = (keyFrames[nextKey]->keys[i]->rotation.x - keyFrames[prevKey]->keys[i]->rotation.x) * ratio;
-		rotation.y = (keyFrames[nextKey]->keys[i]->rotation.y - keyFrames[prevKey]->keys[i]->rotation.y) * ratio;
-		rotation.z = (keyFrames[nextKey]->keys[i]->rotation.z - keyFrames[prevKey]->keys[i]->rotation.z) * ratio;
+		rotation.x = (keyFrames[nextKey]->keys[i]->rotation.x - keyFrames[prevKey]->keys[i]->rotation.x) * ratio + keyFrames[prevKey]->keys[i]->rotation.x;
+		rotation.y = (keyFrames[nextKey]->keys[i]->rotation.y - keyFrames[prevKey]->keys[i]->rotation.y) * ratio + keyFrames[prevKey]->keys[i]->rotation.y;
+		rotation.z = (keyFrames[nextKey]->keys[i]->rotation.z - keyFrames[prevKey]->keys[i]->rotation.z) * ratio + keyFrames[prevKey]->keys[i]->rotation.z;
 
 		DirectX::XMFLOAT4 scale;
-		scale.x = (keyFrames[nextKey]->keys[i]->scale.x - keyFrames[prevKey]->keys[i]->scale.x) * ratio;
-		scale.y = (keyFrames[nextKey]->keys[i]->scale.y - keyFrames[prevKey]->keys[i]->scale.y) * ratio;
-		scale.z = (keyFrames[nextKey]->keys[i]->scale.z - keyFrames[prevKey]->keys[i]->scale.z) * ratio;
+		scale.x = (keyFrames[nextKey]->keys[i]->scale.x - keyFrames[prevKey]->keys[i]->scale.x) * ratio + keyFrames[prevKey]->keys[i]->scale.x;
+		scale.y = (keyFrames[nextKey]->keys[i]->scale.y - keyFrames[prevKey]->keys[i]->scale.y) * ratio + keyFrames[prevKey]->keys[i]->scale.x;
+		scale.z = (keyFrames[nextKey]->keys[i]->scale.z - keyFrames[prevKey]->keys[i]->scale.z) * ratio + keyFrames[prevKey]->keys[i]->scale.x;
 
 		
 		DirectX::XMMATRIX matrix = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);

@@ -65,8 +65,6 @@ bool FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
 		std::vector<Bone*> boneList;
 		Bone::CreateBoneList(root_bone, boneList);
 
-		//LoadJoints(rootNode, root_bone);
-
 		Animation animation;
 		LoadAnimation(rootNode, fbxScene, animation, root_bone);
 
@@ -94,7 +92,7 @@ bool FBXConverter::LoadFBX(FbxNode* _rootNode, Object* _rootObject){
 	FbxDouble3 scale = _rootNode->LclScaling.Get();
 
 	DirectX::XMMATRIX matrix = DirectX::XMMatrixIdentity();
-	matrix = matrix * DirectX::XMMatrixScaling((float)scale.mData[0], (float)scale.mData[0], (float)scale.mData[0]);
+	matrix = matrix * DirectX::XMMatrixScaling((float)scale.mData[0], (float)scale.mData[1], (float)scale.mData[2]);
 	matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw((float)rotation.mData[0], (float)rotation.mData[1], (float)rotation.mData[2]);
 	matrix = matrix * DirectX::XMMatrixTranslation((float)translation.mData[0], (float)translation.mData[1], (float)translation.mData[2]);
 
