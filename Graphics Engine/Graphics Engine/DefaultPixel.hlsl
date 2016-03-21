@@ -105,7 +105,7 @@ float4 main(OUTPUT_VERTEX _input) : SV_TARGET
 	float4 greyScale = ambientLight.color * imageColor;
 	// ===
 
-	return saturate(greyScale + directionResult + ambientDirection /*+ pointResult*/ + spotResult);
+	return saturate(greyScale + directionResult + ambientDirection + pointResult + spotResult);
 }
 // ===
 

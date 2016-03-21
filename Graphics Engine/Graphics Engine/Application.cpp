@@ -17,6 +17,8 @@
 #include <ctime>
 
 // === Prefabs
+#include "Quad_Prefab.h"
+#include "Skybox_Prefab.h"
 #include "Teddy_Prefab.h"
 #include "TestCube_Prefab.h"
 
@@ -121,16 +123,27 @@ bool Application::Run()
 // ===== Private Interface ===== //
 void Application::SetupScene()
 {
-	FBXConverter* fbxConverter = FBXConverter::GetInstance();
-
 	// === Teddy
 	Teddy_Prefab teddy;
-//	teddy.SetWorldRotation(XMFLOAT3(0, -90, 0));
+	teddy.SetWorldRotation(XMFLOAT3(0, -90, 0));
 	teddy.LoadGameObject();
 	// ===
 
+	// === Skybox === //
+	Skybox_Prefab skybox;
+	skybox.SetWorldRotation(XMFLOAT3(115, 0, 0));
+	skybox.LoadGameObject();
+	// ============== //
+
+	// === Floor Quad === //
+	Quad_Prefab floorQuad;
+	floorQuad.LoadGameObject();
+	// ================== //
+
 	// === Bones
 #if 0
+	FBXConverter* fbxConverter = FBXConverter::GetInstance();
+
 	Object* bones = ObjectManager::GetInstance()->CreateNewObject();
 	fbxConverter->LoadFBX("Bone", bones);
 	Mesh* mesh = new Mesh();
@@ -153,55 +166,6 @@ void Application::SetupScene()
 	CreateRenderShapes(context, material, bones);
 #endif
 	// ===
-
-	// === Skybox === //
-#if 1
-	Object* skybox = ObjectManager::GetInstance()->CreateNewObject();
-	skybox->AddComponent(new SkyboxComponent(skybox));
-	fbxConverter->LoadFBX("Cube", skybox);
-	skybox->RotateX(115);
-
-	RenderContext* context = RenderNodeDirectory::GetInstance()->CreateRenderContext(
-		VertexShaderEnum::Skybox_Vertex, PixelShaderEnum::Skybox_Pixel, BlendStates::BlendState_Default,
-		RasterizerStates::Front_Culling, InputLayouts::SkyboxMapped_InputLayout);
-
-	RenderMaterial* material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
-	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/Skybox_Texture.dds"));
-
-	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-	shape->SetObject(skybox);
-
-	Renderer::GetInstance()->SetSkybox(context, material, shape);
-
-	for (unsigned int i = 0; i < skybox->GetChildren().size(); ++i) {
-		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-		shape->SetObject(skybox->GetChildren()[i]);
-		context->Add(material, shape);
-	}
-#endif
-	// ============== //
-
-
-
-	// === Floor Quad === //
-	Object* floor = ObjectManager::GetInstance()->CreateNewObject();
-	fbxConverter->LoadFBX("FloorQuad", floor);
-
-	context = RenderNodeDirectory::GetInstance()->CreateRenderContext();
-
-	material = RenderNodeDirectory::GetInstance()->CreateRenderMaterial();
-	material->AddShaderResourceID(ShaderResourceManager::GetInstance()->LoadTextureFromFile("Assets/CartoonWood_Texture.dds"));
-
-	shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-	shape->SetObject(floor);
-
-	Renderer::GetInstance()->AddForRendering(context, material, shape);
-	for (unsigned int i = 0; i < floor->GetChildren().size(); ++i) {
-		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
-		shape->SetObject(floor->GetChildren()[i]);
-		Renderer::GetInstance()->AddForRendering(context, material, shape);
-	}
-	// ================== //
 }
 
 void Application::UpdateLighting()
@@ -212,7 +176,7 @@ void Application::UpdateLighting()
 	toShaderLight.ambientLight.color = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
 
 	toShaderLight.directionalLight.color = XMFLOAT4(0.05f, 0.05f, 0.05f, 1.0f);
-	// toShaderLight.directionalLight.color = XMFLOAT4(0.78823f, 0.88627f, 1.0f, 1.0f);	// Color of overcast sky
+//	toShaderLight.directionalLight.color = XMFLOAT4(0.78823f, 0.88627f, 1.0f, 1.0f);	// Color of overcast sky
 	toShaderLight.directionalLight.direction = XMFLOAT4(1.0f, -1.0f, 1.0f, 1.0f);
 
 	toShaderLight.pointLight.position = XMFLOAT4(-45.0f, 10.0f, 50.0f, 0.0f);

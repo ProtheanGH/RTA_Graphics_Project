@@ -172,7 +172,12 @@
     <ClCompile Include="TestCube_Prefab.cpp">
       <Filter>GameObjects\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Skybox_Prefab.cpp" />
+    <ClCompile Include="Skybox_Prefab.cpp">
+      <Filter>GameObjects\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Quad_Prefab.cpp">
+      <Filter>GameObjects\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -295,7 +300,12 @@
     <ClInclude Include="TestCube_Prefab.h">
       <Filter>GameObjects\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Skybox_Prefab.h" />
+    <ClInclude Include="Skybox_Prefab.h">
+      <Filter>GameObjects\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Quad_Prefab.h">
+      <Filter>GameObjects\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DefaultPixel.hlsl">

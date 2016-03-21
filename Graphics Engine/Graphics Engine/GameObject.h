@@ -36,7 +36,7 @@ protected:
 	XMFLOAT3				 m_WorldScale      = XMFLOAT3(1.0f, 1.0f, 1.0f);
 
 	// === Private Interface === //
-	void AddToRenderer(RenderContext* _context, RenderMaterial* _material, RenderShape* _shape);
+	virtual void AddToRenderer(RenderContext* _context, RenderMaterial* _material, RenderShape* _shape);
 	virtual void LoadComponents(Object* _object);
 	// ========================= //
 
