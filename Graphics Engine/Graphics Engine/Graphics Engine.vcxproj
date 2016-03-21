@@ -191,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="AnimationVertex.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="BlendStateManager.h" />
     <ClInclude Include="Camera.h" />

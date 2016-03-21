@@ -93,6 +93,10 @@ void Object::Destroy(){
 		delete components[i];
 	}
 
+	for (size_t i = 0; i < animations.size(); ++i) {
+		delete animations[i];
+	}
+
 	delete mesh;
 }
 
@@ -101,6 +105,10 @@ void Object::Update(float _deltaTime)
 	for (unsigned int i = 0; i < children.size(); ++i)
 	{
 		children[i]->Update(_deltaTime);
+	}
+
+	if (Interpolator != nullptr) {
+		Interpolator->Update(_deltaTime);
 	}
 
 	for (unsigned int i = 0; i < components.size(); ++i)

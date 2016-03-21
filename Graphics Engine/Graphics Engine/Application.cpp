@@ -65,10 +65,11 @@ Application::Application(HINSTANCE _hinst, WNDPROC _proc)
 	SampleStateManager::GetInstance();
 	ShaderManager::GetInstance();
 	ShaderResourceManager::GetInstance();
-	m_Time = (unsigned long)GetTickCount64();
 
 	// === TEMPORARY
 	SetupScene();
+
+	m_Time = (unsigned long)GetTickCount64();
 }
 
 Application::~Application()

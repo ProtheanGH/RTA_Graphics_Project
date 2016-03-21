@@ -87,12 +87,12 @@ void RenderShape::AnimatedShape_RenderProcess(RenderNode& _node)
 	// === Does the Object have a valid Mesh?
 	if (rShape.m_pObject->GetMesh() != nullptr) {
 		// == Update the Constant Buffer
-		std::vector<Bone>& objBones = rShape.m_pObject->GetInterpolator()->GetBones();
+		std::vector<Bone*> objBones = rShape.m_pObject->GetInterpolator()->GetBones();
 		ToShaderAnimated toShaderObj;
 		toShaderObj.ObjectWorldMatrix = rShape.m_pObject->GetWorld();
 		toShaderObj.BoneAmount = (int)objBones.size();
 		for (int i = 0; i < toShaderObj.BoneAmount; ++i) {
-			toShaderObj.Bones[i] = objBones[i].GetWorld();
+			toShaderObj.Bones[i] = objBones[i]->GetWorld();
 		}
 		ConstantBufferManager::GetInstance()->ApplyAnimatedBuffer(&toShaderObj);
 

@@ -20,6 +20,8 @@ private:
 	std::vector<Object*> children;
 	std::string name;
 	Bone* rootBone;
+	std::vector<Animation*> animations;
+
 	std::vector<Component*> components;
 	InterpolatorComponent* Interpolator;
 
@@ -65,6 +67,13 @@ public:
 
 	inline ID3D11Buffer* GetVertexBuffer() { return vertexBuffer; }
 	inline ID3D11Buffer* GetIndexBuffer(){ return indexBuffer; }
+
+	inline void AddAnimation(Animation* _anim) {
+		animations.push_back(_anim);
+	}
+	inline std::vector<Animation*>& GetAnimations() {
+		return animations;
+	}
 
 	inline void AddInterpolator() {
 		Interpolator = new InterpolatorComponent(this);

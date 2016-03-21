@@ -22,6 +22,9 @@ public:
 	inline Object* GetShapeObject() {
 		return m_pObject;
 	}
+	inline RenderFunc GetFunc() {
+		return m_Func;
+	}
 	// ================= //
 
 	// === Mutators === //

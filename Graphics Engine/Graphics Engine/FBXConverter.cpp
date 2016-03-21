@@ -67,8 +67,9 @@ bool FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
 
 		//LoadJoints(rootNode, root_bone);
 
-		Animation animation;
-		LoadAnimation(rootNode, fbxScene, animation, root_bone);
+		Animation* animation = new Animation();
+		LoadAnimation(rootNode, fbxScene, *animation, root_bone);
+		_rootObject->AddAnimation(animation);
 
 		if (LoadFBX(rootNode, _rootObject) == false){
 			_rootObject->Destroy();
