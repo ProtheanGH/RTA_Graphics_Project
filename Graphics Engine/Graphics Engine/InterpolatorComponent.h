@@ -10,7 +10,7 @@ class InterpolatorComponent :
 private:
 	float curTime;
 	Animation* animation;
-	std::vector<Bone> bones;
+	std::vector<Bone*> bones;
 
 public:
 	// === Constructor / Destructor === //
@@ -28,7 +28,7 @@ public:
 	// ================= //
 
 	// === Accessors === //
-	inline std::vector<Bone>& GetBones() {
+	inline std::vector<Bone*>& GetBones() {
 		return bones;
 	}
 	inline float GetTime() const {

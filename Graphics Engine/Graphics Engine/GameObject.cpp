@@ -66,6 +66,7 @@ void GameObject::AddToRenderer(RenderContext* _context, RenderMaterial* _materia
 		childShape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 		childShape->SetObject(_shape->GetShapeObject()->GetChildren()[i]);
 		childShape->SetTopology(m_TopologyType);
+		childShape->SetFunc(_shape->GetFunc());
 
 		AddToRenderer(_context, _material, childShape);
 	}

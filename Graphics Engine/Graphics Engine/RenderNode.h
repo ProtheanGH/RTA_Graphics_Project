@@ -2,6 +2,7 @@
 
 class RenderNode
 {
+public:
 	typedef void(*RenderFunc)(RenderNode& _Node);
 protected:
 	// === Members
