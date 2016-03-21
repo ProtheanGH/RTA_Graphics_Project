@@ -168,6 +168,7 @@
     <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
+    <ClCompile Include="Quad_Prefab.cpp" />
     <ClCompile Include="RasterizerStateManager.cpp" />
     <ClCompile Include="RenderContext.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="NormalMapVertex.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectManager.h" />
+    <ClInclude Include="Quad_Prefab.h" />
     <ClInclude Include="RasterizerStateManager.h" />
     <ClInclude Include="RenderContext.h" />
     <ClInclude Include="Renderer.h" />

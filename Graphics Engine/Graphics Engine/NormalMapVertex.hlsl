@@ -49,7 +49,7 @@ PixelInput main( VertexInput _input )
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projection);
 
-	output.worldPosition = _input.position;
+	output.worldPosition = mul(_input.position, worldMatrix);
 
 	output.texCoords = _input.texCoords;
 

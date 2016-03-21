@@ -50,7 +50,7 @@ OUTPUT_VERTEX main( INPUT_VERTEX _input )
 	_input.coordinate.w = 1;
 	pos = _input.coordinate;
 	pos = mul(pos, worldMatrix);
-	output.worldPosition = pos;
+	output.worldPosition = mul(_input.coordinate, worldMatrix);
 	pos = mul(pos, viewMatrix);
 	pos = mul(pos, projection);
 	output.projectedCoordinate = pos;
