@@ -40,7 +40,7 @@ Bone* Bone::FindBone(Bone* _Bone, std::string& _BoneName){
 
 void Bone::CreateBoneList(Bone* _bone, std::vector<Bone*>& boneList){
 	
-	_bone->SetIndex(boneList.size());
+	_bone->SetIndex((unsigned int)boneList.size());
 	boneList.push_back(_bone);
 
 	for (unsigned int i = 0; i < _bone->GetChildren().size(); ++i){

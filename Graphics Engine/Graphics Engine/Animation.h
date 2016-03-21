@@ -32,7 +32,7 @@ public:
 
 	private :
 		void Destroy() {
-			unsigned int size = keys.size();
+			unsigned int size = (unsigned int)keys.size();
 			for (unsigned int i = 0; i < size; ++i) {
 				delete keys[i];
 			}
@@ -77,7 +77,7 @@ private:
 	std::vector<Bone*> bones;
 
 	void Destroy() {
-		unsigned int size = keyFrames.size();
+		unsigned int size = (unsigned int)keyFrames.size();
 		for (unsigned int i = 0; i < size; ++i) {
 			delete keyFrames[i];
 		}
