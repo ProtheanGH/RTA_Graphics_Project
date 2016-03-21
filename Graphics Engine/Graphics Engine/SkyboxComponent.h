@@ -24,6 +24,6 @@ public:
 	virtual ~SkyboxComponent( void );
 
 	// Interface
-	bool Update( void ) override;
+	bool Update(float _deltaTime) override;
 };
 

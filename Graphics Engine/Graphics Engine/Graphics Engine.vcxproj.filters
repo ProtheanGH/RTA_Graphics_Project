@@ -181,6 +181,9 @@
     <ClCompile Include="TestCube_Prefab.cpp">
       <Filter>GameObjects\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InterpolatorComponent.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -311,6 +314,9 @@
     </ClInclude>
     <ClInclude Include="TestCube_Prefab.h">
       <Filter>GameObjects\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InterpolatorComponent.h">
+      <Filter>Components\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

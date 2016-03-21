@@ -164,6 +164,7 @@
     <ClCompile Include="Bone.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Interpolater.cpp" />
+    <ClCompile Include="InterpolatorComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshManager.cpp" />
     <ClCompile Include="Object.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Bone.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Interpolater.h" />
+    <ClInclude Include="InterpolatorComponent.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshManager.h" />
     <ClInclude Include="NormalMapPixel.h" />

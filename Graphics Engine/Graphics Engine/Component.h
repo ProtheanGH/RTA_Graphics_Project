@@ -29,7 +29,7 @@ public:
 	void SetParent( Object* _parent );
 
 	// Interface
-	virtual bool Update( void );
+	virtual bool Update( float _deltaTime );
 	virtual void Initialize( Object* _parent );
 	virtual void Destroy( void );
 };

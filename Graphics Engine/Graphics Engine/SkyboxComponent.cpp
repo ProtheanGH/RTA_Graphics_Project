@@ -22,13 +22,13 @@ SkyboxComponent::~SkyboxComponent()
 }
 
 // Interface
-bool SkyboxComponent::Update() // override
+bool SkyboxComponent::Update(float _deltaTime) // override
 {
 	if (m_parent != nullptr)
 	{
 		// Set m_parents worldMatrix's location vector to the camera's location
 		m_parent->SetPositionVector(Application::GetCamera().GetPosition());
 	}
-	return Component::Update();
+	return Component::Update(_deltaTime);
 }
 
