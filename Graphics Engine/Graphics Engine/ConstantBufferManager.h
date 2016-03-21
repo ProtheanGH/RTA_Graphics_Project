@@ -39,6 +39,7 @@ public:
 	void ApplySceneBuffer(ToShaderScene* _toShaderScene);
 	void ApplyLightBuffer(ToShaderLight* _toShaderLight);
 	void ApplySkyboxBuffer(ToShaderSkybox* _toShaderSkybox);
+	void ApplyAnimatedBuffer(ToShaderAnimated* _toShaderAnimated);
 	void Terminate();
 	// ================= //
 };

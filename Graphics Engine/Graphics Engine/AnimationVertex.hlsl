@@ -23,17 +23,16 @@ struct PixelInput
 cbuffer Object : register(b0)
 {
 	float4x4 worldMatrix;
+	float4x4 bonesMatrices[50];
+	int boneAmount;
+
+	float3 padding;
 };
 
 cbuffer Scene : register(b1)
 {
 	float4x4 viewMatrix;
 	float4x4 projMatrix;
-};
-
-cbuffer Bone : register(b2)
-{
-	int arr[64];
 };
 
 

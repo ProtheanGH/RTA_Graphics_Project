@@ -112,7 +112,10 @@ struct ToShaderSkybox {
 	XMFLOAT2 padding;
 };
 
-struct ToShaderBone{
-	int arr[64];
+struct ToShaderAnimated {
+	XMFLOAT4X4 ObjectWorldMatrix;
+	XMFLOAT4X4 Bones[50];
+	int BoneAmount;
+	float padding[3];
 };
 
