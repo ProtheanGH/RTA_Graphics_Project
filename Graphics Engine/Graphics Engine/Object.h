@@ -8,6 +8,7 @@
 #include "Component.h"
 #include <vector>
 #include <cmath>
+#include "InterpolatorComponent.h"
 
 class Object{
 
@@ -20,6 +21,7 @@ private:
 	std::string name;
 	Bone* rootBone;
 	std::vector<Component*> components;
+	InterpolatorComponent* Interpolator;
 
 	std::vector<std::string> textureNames;
 
@@ -63,6 +65,13 @@ public:
 
 	inline ID3D11Buffer* GetVertexBuffer() { return vertexBuffer; }
 	inline ID3D11Buffer* GetIndexBuffer(){ return indexBuffer; }
+
+	inline void AddInterpolator() {
+		Interpolator = new InterpolatorComponent(this);
+	}
+	inline InterpolatorComponent* GetInterpolator() {
+		return Interpolator;
+	}
 
 	DirectX::XMFLOAT4X4& GetWorld();
 	void SetWorld(const DirectX::XMFLOAT4X4& _mat);
