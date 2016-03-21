@@ -7,6 +7,7 @@ struct Bone
 	float4 binormal : BINORMAL;
 	float4 weight : WEIGHT;
 	int4 indice : INDICE;
+	int size : SIZE;
 };
 
 struct PixelInput
@@ -28,6 +29,11 @@ cbuffer Scene : register(b1)
 {
 	float4x4 viewMatrix;
 	float4x4 projMatrix;
+};
+
+cbuffer Bone : register(b2)
+{
+	int arr[64];
 };
 
 

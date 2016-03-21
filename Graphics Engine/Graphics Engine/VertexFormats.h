@@ -17,7 +17,7 @@ public:
 };
 
 // === Layout Enums
-enum InputLayouts { InputLayout_Default, NormalMapped_InputLayout, SkyboxMapped_InputLayout,
+enum InputLayouts { InputLayout_Default, NormalMapped_InputLayout, SkyboxMapped_InputLayout, InputLayout_Animation,
 	MAX_INPUT_LAYOUTS };
 
 class InputLayoutManager
@@ -110,5 +110,9 @@ struct ToShaderSkybox {
 	XMFLOAT2 uv;
 
 	XMFLOAT2 padding;
+};
+
+struct ToShaderBone{
+	int arr[64];
 };
 

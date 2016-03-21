@@ -5,6 +5,7 @@
 #include "DefaultVertex.h"
 #include "NormalMapVertex.h"
 #include "SkyboxVertex.h"
+#include "AnimationVertex.h"
 
 #define SAFE_RELEASE(p) { if(p) { p->Release(); p = nullptr; } }
 
@@ -119,10 +120,11 @@ void InputLayoutManager::Initialize()
 			{ "TANGENT",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "BINORMAL", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "WEIGHT",   0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "INDICE",   0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+			{ "INDICE",   0, DXGI_FORMAT_R32G32B32A32_UINT,  0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "SIZE",     0, DXGI_FORMAT_R32_UINT,           0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
 
-		device->CreateInputLayout(layoutDescription, sizeof(layoutDescription) / sizeof(D3D11_INPUT_ELEMENT_DESC), SkyboxVertex, sizeof(SkyboxVertex), &m_InputLayouts[SkyboxMapped_InputLayout]);
+		device->CreateInputLayout(layoutDescription, sizeof(layoutDescription) / sizeof(D3D11_INPUT_ELEMENT_DESC), AnimationVertex, sizeof(AnimationVertex), &m_InputLayouts[InputLayout_Animation]);
 	}
 }
 // ========================= //
