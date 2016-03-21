@@ -2,15 +2,6 @@
 #include <DirectXMath.h>
 #include <vector>
 
-struct BoneInfluence{
-	BoneInfluence(unsigned i, float w){
-		index = i;
-		weight = w;
-	}
-	unsigned int index;
-	float weight;
-};
-
 class Bone{
 
 private:

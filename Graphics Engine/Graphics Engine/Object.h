@@ -57,7 +57,7 @@ public:
 	inline void SetParent(Object* _parent){ parent = _parent; }
 
 	inline std::string& GetName() { return name; }
-	inline void SetName(std::string _name){ name = _name; }
+	inline void SetName(std::string& _name){ name = _name; }
 
 	inline std::vector<std::string>& GetTextureNames(){ return textureNames; }
 
