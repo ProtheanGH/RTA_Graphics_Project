@@ -27,7 +27,7 @@ Camera::~Camera()
 // ==================================== //
 
 // ===== Interface ===== //
-void Camera::Update(HWND _hwnd, float _deltaTime)
+void Camera::Update(float _deltaTime)
 {
 	XMMATRIX matrix = XMLoadFloat4x4(&m_Transform);
 	XMVECTOR determinant = XMMatrixDeterminant(matrix);
@@ -95,12 +95,12 @@ void Camera::Update(HWND _hwnd, float _deltaTime)
 		buttonDown = true;
 		if (resetMouse == true)
 		{
-			SetCursorMiddle(_hwnd);
+			SetCursorMiddle();
 			resetMouse = false;
 		}
 		else
 		{
-			MouseLook(_hwnd, matrix);
+			MouseLook(matrix);
 		}
 	}
 	else
@@ -116,19 +116,22 @@ void Camera::Update(HWND _hwnd, float _deltaTime)
 	XMStoreFloat4x4(&m_Transform, matrix);
 }
 
-void Camera::SetCursorMiddle(HWND _hwnd)
+void Camera::SetCursorMiddle()
 {
+	HWND window = GetActiveWindow();
 	D3D11_VIEWPORT view = Renderer::GetInstance()->GetViewport();
 	POINT temp;
 	temp.x = (int)view.TopLeftX + ((int)view.Width / 2);
 	temp.y = (int)view.TopLeftY + ((int)view.Height / 2);
-	ClientToScreen(_hwnd, &temp);
+	ClientToScreen(window, &temp);
 	SetCursorPos(temp.x, temp.y);
 }
 
-void Camera::MouseLook(HWND _hwnd, DirectX::XMMATRIX& _matrix)
+void Camera::MouseLook(DirectX::XMMATRIX& _matrix)
 {
 	D3D11_VIEWPORT view = Renderer::GetInstance()->GetViewport();
+
+	HWND window = GetActiveWindow();
 
 	// GetThe center of the client window
 	POINT centerClientWindow;
@@ -138,7 +141,7 @@ void Camera::MouseLook(HWND _hwnd, DirectX::XMMATRIX& _matrix)
 	// Convert mouse to client space
 	POINT cursorPositionInScreenSpace;
 	GetCursorPos(&cursorPositionInScreenSpace);
-	ScreenToClient(_hwnd, &cursorPositionInScreenSpace);
+	ScreenToClient(window, &cursorPositionInScreenSpace);
 
 	// Convert the difference into radians
 	float radX = DirectX::XMConvertToRadians((float)cursorPositionInScreenSpace.x - (float)centerClientWindow.x);
@@ -146,7 +149,7 @@ void Camera::MouseLook(HWND _hwnd, DirectX::XMMATRIX& _matrix)
 	radX *= ROTATION_MODIFIER;
 	radY *= ROTATION_MODIFIER;
 
-	SetCursorMiddle(_hwnd);
+	SetCursorMiddle();
 
 	XMVECTOR localPosition = _matrix.r[3];
 

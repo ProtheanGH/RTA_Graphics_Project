@@ -96,7 +96,7 @@ bool Application::Run()
 	m_Time = GetTickCount();
 
 	// === Update the Camera
-	m_Camera.Update(m_Window, deltaTime);
+	m_Camera.Update(deltaTime);
 
 	// === Update the Scene 
 	ToShaderScene toShaderScene;

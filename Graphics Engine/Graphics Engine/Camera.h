@@ -16,8 +16,8 @@ private:
 	float m_FastMovementSpeed;
 	float m_RotationSpeed;
 
-	void SetCursorMiddle(HWND _hwnd);
-	void MouseLook(HWND _hwnd, DirectX::XMMATRIX& _matrix);
+	void SetCursorMiddle();
+	void MouseLook(DirectX::XMMATRIX& _matrix);
 	void HandleCursorVisible(const bool _buttonDown);
 
 public:
@@ -27,7 +27,7 @@ public:
 	// ================================ //
 
 	// === Interface === //
-	void Update(HWND _hwnd, float _deltaTime);
+	void Update(float _deltaTime);
 	// ================= //
 
 	// === Accessors === //

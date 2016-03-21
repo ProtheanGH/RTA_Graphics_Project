@@ -319,6 +319,5 @@
     <None Include="Cube.fbx">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Test.FBX" />
   </ItemGroup>
 </Project>
