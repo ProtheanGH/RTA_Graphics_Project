@@ -19,7 +19,7 @@ private:
 	DirectX::XMFLOAT4X4 worldMatrix;
 	Bone* parent;
 	std::vector<Bone*> children;
-	std::vector<BoneInfluence> boneInfluence;
+	int index;
 
 public:
 	Bone() = default;
@@ -31,10 +31,11 @@ public:
 	inline std::string& GetName(){ return name; }
 	inline std::vector<Bone*>& GetChildren(){ return children; }
 
-	inline std::vector<BoneInfluence>& GetBoneInfluence(){ return boneInfluence; }
-
 	inline Bone* GetParent(){ return parent; }
 	inline void SetParent(Bone* bone){ parent = bone; }
+
+	inline void SetIndex(int _index){ index = _index; }
+	inline int GetIndex()const { return index; }
 
 	void Destroy();
 

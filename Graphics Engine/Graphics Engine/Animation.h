@@ -9,23 +9,21 @@ class Animation{
 public:
 
 	struct Key{
-		float time;
+		std::string name;
 		DirectX::XMFLOAT4 translation, rotation, scale;
 	};
 
 	struct KeyFrame{
-		std::string name;
-		std::vector<Key > keys;
+		float time;
+		std::vector<Key*> keys;
 
-		bool FindKey(float time, Key& key){
+		Key* FindKey(std::string name){
 			for (unsigned int i = 0; i < keys.size(); ++i){
-				if (keys[i].time == time){
-					key = keys[i];
-					return true;
-				}	
+				if (keys[i]->name == name)
+					return keys[i];
 			}
 
-			return false;
+			return nullptr;
 		}
 	};
 
@@ -44,21 +42,20 @@ public:
 	inline std::vector<KeyFrame*>& GetKeyFrames(){ return keyFrames; }
 	inline std::vector<Bone*>& GetBones(){ return bones; }
 
-	KeyFrame* FindKeyFrame(std::string frameName){
+	KeyFrame* FindKeyFrame(float time){
 		for (unsigned int i = 0; i < keyFrames.size(); ++i){
-			if (keyFrames[i]->name == frameName){
+			if (keyFrames[i]->time == time)
 				return keyFrames[i];
-			}
 		}
 
 		return nullptr;
 	}
 
 	void CalculateDuration(){
-		if (keyFrames.size() == 0)
-			duration = 0.0f;
+		if (keyFrames.size() > 0)
+			duration = keyFrames.back()->time;
 		else
-			duration = keyFrames[0]->keys.back().time;
+			duration = 0.0f;
 	}
 
 private:
