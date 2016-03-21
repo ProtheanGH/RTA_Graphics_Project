@@ -124,7 +124,7 @@ void Application::SetupScene()
 
 	// === Teddy
 	Teddy_Prefab teddy;
-	teddy.SetWorldRotation(XMFLOAT3(0, -90, 0));
+	teddy.SetWorldRotation(XMFLOAT3(0, 90, 0));
 	teddy.LoadGameObject();
 	// ===
 
@@ -214,9 +214,9 @@ void Application::UpdateLighting()
 	toShaderLight.directionalLight.color = XMFLOAT4(0.78823f, 0.88627f, 1.0f, 1.0f);	// Color of overcast sky
 	toShaderLight.directionalLight.direction = XMFLOAT4(1.0f, -1.0f, 1.0f, 1.0f);
 
-	toShaderLight.pointLight.position = XMFLOAT4(-0.8f, 115.0f, 26.0f, 1.0f);
-	toShaderLight.pointLight.color    = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);		// Blue
-	toShaderLight.pointLight.radius   = 10.0f;
+	toShaderLight.pointLight.position = XMFLOAT4(-50.0f, 3.0f, -10.0f, 1.0f);
+	toShaderLight.pointLight.color    = XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f);		// Blue
+	toShaderLight.pointLight.radius   = 30.0f;
 	
 	toShaderLight.spotLight.position  = XMFLOAT4(-20.0f, 25.0f, 15.0f, 0.0f);
 	toShaderLight.spotLight.direction = XMFLOAT4(0.0f, -1.0f, 0.0f, 0.0f);
