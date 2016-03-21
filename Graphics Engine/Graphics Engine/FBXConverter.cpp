@@ -62,7 +62,13 @@ bool FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
 
 		LoadSkeleton(rootNode, root_bone);
 
-		LoadJoints(rootNode, root_bone);
+		std::vector<Bone*> boneList;
+		Bone::CreateBoneList(root_bone, boneList);
+
+		//LoadJoints(rootNode, root_bone);
+
+		Animation animation;
+		LoadAnimation(rootNode, fbxScene, animation, root_bone);
 
 		if (LoadFBX(rootNode, _rootObject) == false){
 			_rootObject->Destroy();
@@ -71,6 +77,8 @@ bool FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
 		}
 
 		_rootObject->SetRootBone(root_bone);
+
+		LoadBoneInfo(_rootObject, rootNode, root_bone);
 	}
 
 	return true;
@@ -405,7 +413,7 @@ void FBXConverter::LoadSkeleton(const char* _fileName, Bone* bone){
 
 	if (rootNode){
 		LoadSkeleton(rootNode, bone);
-		LoadJoints(rootNode, bone);
+		//LoadJoints(rootNode, bone);
 		Animation animation;
 		LoadAnimation(rootNode, fbxScene, animation, bone);
 	}
@@ -426,7 +434,22 @@ void FBXConverter::ProcessBone(FbxNode* _node, Bone* bone){
 	DirectX::XMStoreFloat4x4(&bone->GetLocal(), matrix);
 }
 
-void FBXConverter::LoadJoints(FbxNode* _rootNode, Bone* _rootBone){
+void FBXConverter::LoadBoneInfo(Object* _object, FbxNode* _node, Bone* bone){
+	
+	unsigned int child_count = _object->GetChildren().size();
+	for (int i = 0; i < child_count; ++i){
+
+		Object* child_obj = _object->GetChildren()[i];
+
+		if (child_obj->GetMesh() != nullptr)
+			LoadJoints(_node, bone, child_obj->GetMesh());
+
+		LoadBoneInfo(child_obj, _node, bone);
+	}
+}
+
+
+void FBXConverter::LoadJoints(FbxNode* _rootNode, Bone* _rootBone, Mesh* _mesh){
 
 	int child_count = _rootNode->GetChildCount();
 	for (int i = 0; i < child_count; ++i){
@@ -436,13 +459,13 @@ void FBXConverter::LoadJoints(FbxNode* _rootNode, Bone* _rootBone){
 		FbxNodeAttribute::EType attributeType = child_node->GetNodeAttribute()->GetAttributeType();
 		if (attributeType != FbxNodeAttribute::eMesh) continue;
 
-		ProcessJoints(child_node, _rootBone);
+		ProcessJoints(child_node, _rootBone, _mesh);
 
-		LoadJoints(child_node, _rootBone);
+		LoadJoints(child_node, _rootBone, _mesh);
 	}
 }
 
-void FBXConverter::ProcessJoints(FbxNode* _node, Bone* _rootBone){
+void FBXConverter::ProcessJoints(FbxNode* _node, Bone* _rootBone, Mesh* _mesh){
 	FbxMesh* currMesh = _node->GetMesh();
 	unsigned int deformer_count = currMesh->GetDeformerCount();
 
@@ -456,13 +479,21 @@ void FBXConverter::ProcessJoints(FbxNode* _node, Bone* _rootBone){
 			std::string bone_name(currCluster->GetLink()->GetName());
 			Bone* curr_bone = Bone::FindBone(_rootBone, bone_name);
 			if (curr_bone == nullptr) continue;
+			
+			//unsigned int indices_count = currCluster->GetControlPointIndicesCount();
+			//for (unsigned int i = 0; i < indices_count; ++i){
+			//	unsigned int index = currCluster->GetControlPointIndices()[i];
+			//	float weight = (float)currCluster->GetControlPointWeights()[i];
+			//	BoneInfluence bone_influence(index, weight);
+			//	curr_bone->GetBoneInfluence().push_back(bone_influence);
+			//}
 
-			unsigned int indices_count = currCluster->GetControlPointIndicesCount();
-			for (unsigned int i = 0; i < indices_count; ++i){
-				unsigned int index = currCluster->GetControlPointIndices()[i];
+			unsigned int indicesCount = currCluster->GetControlPointIndicesCount();
+			for (unsigned int i = 0; i < indicesCount; ++i){
+				int index = currCluster->GetControlPointIndices()[i];
 				float weight = (float)currCluster->GetControlPointWeights()[i];
-				BoneInfluence bone_influence(index, weight);
-				curr_bone->GetBoneInfluence().push_back(bone_influence);
+
+				_mesh->GetVerts()[index].AddBoneWeightPair(weight, curr_bone->GetIndex());
 			}
 		}
 	}
@@ -509,30 +540,43 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxSc
 	Bone* _bone = Bone::FindBone(_rootBone, std::string(_node->GetName()));
 
 	if (_bone == nullptr) return;
-
-	Animation::KeyFrame* keyFrame = _animation.FindKeyFrame(_bone->GetName());
-	if (keyFrame == nullptr){
-		keyFrame = new Animation::KeyFrame();
-		keyFrame->name = _bone->GetName();
-		_animation.GetKeyFrames().push_back(keyFrame);
-	}
-
 	
+	Animation::KeyFrame* keyFrame;
+	Animation::Key* key;
+
 	if (translationCurve != nullptr){
 		int keyCount = translationCurve->KeyGetCount();
 		for (int i = 0; i < keyCount; ++i){
-			Animation::Key key;
 			FbxTime frameTime = translationCurve->KeyGetTime(i);
 			FbxDouble3 translation = _node->EvaluateLocalTranslation(frameTime);
 			float frameSeconds = (float)frameTime.GetSecondDouble();
-			key.time = frameSeconds;
-			if (keyFrame->FindKey(frameSeconds, key) == false){
-				key.translation = DirectX::XMFLOAT4(translation.mData[0], translation.mData[1], translation.mData[2], 1.0f);
+
+			//find the keyframe
+			keyFrame = _animation.FindKeyFrame(frameSeconds);
+
+			//if there isn't one create a new one and add it to animation's key frames
+			if (keyFrame == nullptr){
+				keyFrame = new Animation::KeyFrame;
+				keyFrame->time = frameSeconds;
+				_animation.GetKeyFrames().push_back(keyFrame);
+
+				key = new Animation::Key;
+				key->name = _bone->GetName();
 				keyFrame->keys.push_back(key);
 			}
 			else{
-				key.translation = DirectX::XMFLOAT4(translation.mData[0], translation.mData[1], translation.mData[2], 1.0f);
+				//find the key 
+				key = keyFrame->FindKey(_bone->GetName());
+				
+				//if there isn't create a new one and add it to keyframe's keys
+				if (key == nullptr){
+					key = new Animation::Key;
+					key->name = _bone->GetName();
+					keyFrame->keys.push_back(key);
+				}
 			}
+
+			key->translation = DirectX::XMFLOAT4(translation.mData[0], translation.mData[1], translation.mData[2], 1.0f);
 		}
 	}
 
@@ -543,15 +587,33 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxSc
 			FbxTime frameTime = rotationCurve->KeyGetTime(i);
 			FbxDouble3 rotation = _node->EvaluateLocalRotation(frameTime);
 			float frameSeconds = (float)frameTime.GetSecondDouble();
-			Animation::Key key;
-			key.time = frameSeconds;
-			if (keyFrame->FindKey(frameSeconds, key) == false){
-				key.rotation = DirectX::XMFLOAT4(rotation.mData[0], rotation.mData[1], rotation.mData[2], 1.0f);
+
+			//find the keyframe
+			keyFrame = _animation.FindKeyFrame(frameSeconds);
+
+			//if there isn't one create a new one and add it to animation's key frames
+			if (keyFrame == nullptr){
+				keyFrame = new Animation::KeyFrame;
+				keyFrame->time = frameSeconds;
+				_animation.GetKeyFrames().push_back(keyFrame);
+
+				key = new Animation::Key;
+				key->name = _bone->GetName();
 				keyFrame->keys.push_back(key);
 			}
 			else{
-				key.rotation = DirectX::XMFLOAT4(rotation.mData[0], rotation.mData[1], rotation.mData[2], 1.0f);
+				//find the key 
+				key = keyFrame->FindKey(_bone->GetName());
+
+				//if there isn't create a new one and add it to keyframe's keys
+				if (key == nullptr){
+					key = new Animation::Key;
+					key->name = _bone->GetName();
+					keyFrame->keys.push_back(key);
+				}
 			}
+
+			key->rotation = DirectX::XMFLOAT4(rotation.mData[0], rotation.mData[1], rotation.mData[2], 1.0f);
 		}
 	}
 
@@ -559,17 +621,35 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxSc
 		int keyCount = scalingCurve->KeyGetCount();
 		for (int i = 0; i < keyCount; ++i){
 			FbxTime frameTime = scalingCurve->KeyGetTime(i);
-			FbxDouble3 scaling = _node->EvaluateLocalScaling(frameTime);
+			FbxDouble3 scale = _node->EvaluateLocalScaling(frameTime);
 			float frameSeconds = (float)frameTime.GetSecondDouble();
-			Animation::Key key;
-			key.time = frameSeconds;
-			if (keyFrame->FindKey(frameSeconds, key) == false){
-				key.scale = DirectX::XMFLOAT4(scaling.mData[0], scaling.mData[1], scaling.mData[2], 1.0f);
+
+			//find the keyframe
+			keyFrame = _animation.FindKeyFrame(frameSeconds);
+
+			//if there isn't one create a new one and add it to animation's key frames
+			if (keyFrame == nullptr){
+				keyFrame = new Animation::KeyFrame;
+				keyFrame->time = frameSeconds;
+				_animation.GetKeyFrames().push_back(keyFrame);
+
+				key = new Animation::Key;
+				key->name = _bone->GetName();
 				keyFrame->keys.push_back(key);
 			}
 			else{
-				key.scale = DirectX::XMFLOAT4(scaling.mData[0], scaling.mData[1], scaling.mData[2], 1.0f);
+				//find the key 
+				key = keyFrame->FindKey(_bone->GetName());
+
+				//if there isn't create a new one and add it to keyframe's keys
+				if (key == nullptr){
+					key = new Animation::Key;
+					key->name = _bone->GetName();
+					keyFrame->keys.push_back(key);
+				}
 			}
+
+			key->scale = DirectX::XMFLOAT4(scale.mData[0], scale.mData[1], scale.mData[2], 1.0f);
 		}
 	}
 }

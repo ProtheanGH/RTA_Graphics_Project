@@ -169,6 +169,9 @@
     <ClCompile Include="Teddy_Prefab.cpp">
       <Filter>GameObjects\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Interpolater.cpp">
+      <Filter>Utilities\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -287,6 +290,9 @@
     </ClInclude>
     <ClInclude Include="Teddy_Prefab.h">
       <Filter>GameObjects\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interpolater.h">
+      <Filter>Utilities\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
