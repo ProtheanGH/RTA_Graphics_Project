@@ -16,6 +16,7 @@
 #include "NormalMapVertex.h"
 #include "SkyboxVertex.h"
 #include "SkyboxPixel.h"
+#include "AnimationVertex.h"
 
 #define SAFE_RELEASE(p) { if(p) { p->Release(); p = nullptr; } }
 
@@ -122,6 +123,7 @@ void ShaderManager::Initialize()
 	Renderer::GetInstance()->GetDevice()->CreateVertexShader(DefaultVertex,   sizeof(DefaultVertex),   nullptr, &m_VertexShaders[Vertex_Default]);
 	Renderer::GetInstance()->GetDevice()->CreateVertexShader(NormalMapVertex, sizeof(NormalMapVertex), nullptr, &m_VertexShaders[NormalMap_Vertex]);
 	Renderer::GetInstance()->GetDevice()->CreateVertexShader(SkyboxVertex,    sizeof(SkyboxVertex),    nullptr, &m_VertexShaders[Skybox_Vertex]);
+	Renderer::GetInstance()->GetDevice()->CreateVertexShader(AnimationVertex, sizeof(AnimationVertex), nullptr, &m_VertexShaders[Animation_Vertex]);
 	// ===
 }
 // ============================= //

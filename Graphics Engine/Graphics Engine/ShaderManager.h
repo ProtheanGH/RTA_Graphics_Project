@@ -30,7 +30,7 @@ enum PixelShaderEnum { Pixel_Default, NormalMap_Pixel, Skybox_Pixel,
 	PIXEL_MAX
 };
 
-enum VertexShaderEnum { Vertex_Default, NormalMap_Vertex, Skybox_Vertex,
+enum VertexShaderEnum { Vertex_Default, NormalMap_Vertex, Skybox_Vertex, Animation_Vertex,
 	VERTEX_MAX
 };
 
