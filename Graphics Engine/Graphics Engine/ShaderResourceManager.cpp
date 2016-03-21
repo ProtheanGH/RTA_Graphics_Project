@@ -29,17 +29,18 @@ ShaderResourceManager* ShaderResourceManager::GetInstance()
 // ============================ //
 
 // ===== Interface ===== //
-std::string ShaderResourceManager::LoadTextureFromFile(std::string _fromFile)
+std::string ShaderResourceManager::LoadTextureFromFile(const char* _fromFile)
 {
-	std::string filename = DropFileExtension(_fromFile);
+	std::string fromFile(_fromFile);
+	std::string filename = DropFileExtension(fromFile);
 
 	unsigned int resourceIndex = ContainsResource(filename);
 	if (resourceIndex == -1) {
 		ID3D11Device* device = Renderer::GetInstance()->GetDevice();
 
-		size_t length = strlen(_fromFile.c_str()) + 1;
+		size_t length = strlen(fromFile.c_str()) + 1;
 		wchar_t path[50];
-		int needed = MultiByteToWideChar(0, 0, _fromFile.c_str(), (int)length + 1, path, (int)length + 1);
+		int needed = MultiByteToWideChar(0, 0, fromFile.c_str(), (int)length + 1, path, (int)length + 1);
 		
 		ID3D11ShaderResourceView* newResource;
 		CreateDDSTextureFromFile(device, path, NULL, &newResource);
@@ -51,7 +52,7 @@ std::string ShaderResourceManager::LoadTextureFromFile(std::string _fromFile)
 	return filename;
 }
 
-void ShaderResourceManager::ApplyShaderResource(std::string _resourceID, UINT _slot)
+void ShaderResourceManager::ApplyShaderResource(std::string& _resourceID, UINT _slot)
 {
 	ID3D11ShaderResourceView* resource = nullptr;
 	unsigned int resourceIndex = ContainsResource(_resourceID);
@@ -87,7 +88,7 @@ void ShaderResourceManager::ConvertFileToDDS(char* _filename)
 
 }
 
-unsigned int ShaderResourceManager::ContainsResource(std::string _resourceID)
+unsigned int ShaderResourceManager::ContainsResource(std::string& _resourceID)
 {
 	unsigned int size = (unsigned int)m_ResourceIDs.size();
 	for (unsigned int i = 0; i < size; ++i) {
@@ -98,7 +99,7 @@ unsigned int ShaderResourceManager::ContainsResource(std::string _resourceID)
 	return -1;
 }
 
-std::string ShaderResourceManager::DropFileExtension(std::string _filepath)
+std::string ShaderResourceManager::DropFileExtension(std::string& _filepath)
 {
 	std::string filename = _filepath;
 

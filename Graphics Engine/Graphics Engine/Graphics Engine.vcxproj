@@ -180,8 +180,10 @@
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="ShaderResourceManager.cpp" />
     <ClCompile Include="SkyboxComponent.cpp" />
+    <ClCompile Include="Skybox_Prefab.cpp" />
     <ClCompile Include="SortedRenderSet.cpp" />
     <ClCompile Include="Teddy_Prefab.cpp" />
+    <ClCompile Include="TestCube_Prefab.cpp" />
     <ClCompile Include="VertexFormats.cpp" />
     <ClCompile Include="Writer.cpp" />
   </ItemGroup>
@@ -220,8 +222,10 @@
     <ClInclude Include="SkyboxComponent.h" />
     <ClInclude Include="SkyboxPixel.h" />
     <ClInclude Include="SkyboxVertex.h" />
+    <ClInclude Include="Skybox_Prefab.h" />
     <ClInclude Include="SortedRenderSet.h" />
     <ClInclude Include="Teddy_Prefab.h" />
+    <ClInclude Include="TestCube_Prefab.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="VertexFormats.h" />
     <ClInclude Include="VertexTypes.h" />

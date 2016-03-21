@@ -21,8 +21,8 @@ private:
 
 	void Initialize();
 	void ConvertFileToDDS(char* _filename);
-	unsigned int ContainsResource(std::string _resourceID);
-	std::string DropFileExtension(std::string _filename);
+	unsigned int ContainsResource(std::string& _resourceID);
+	std::string DropFileExtension(std::string& _filename);
 	// ========================= //
 
 public:
@@ -35,8 +35,8 @@ public:
 	// ======================== //
 
 	// === Interface === //
-	std::string LoadTextureFromFile(std::string _fromFile);
-	void ApplyShaderResource(std::string _resourceID, UINT _slot);
+	std::string LoadTextureFromFile(const char* _fromFile);
+	void ApplyShaderResource(std::string& _resourceID, UINT _slot);
 	void Terminate();
 	// ================= // 
 };

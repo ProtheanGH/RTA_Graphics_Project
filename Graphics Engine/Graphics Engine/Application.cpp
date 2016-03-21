@@ -18,6 +18,7 @@
 
 // === Prefabs
 #include "Teddy_Prefab.h"
+#include "TestCube_Prefab.h"
 
 #define DEFAULT_WIDTH 1024
 #define DEFAULT_HEIGHT 780
@@ -124,7 +125,7 @@ void Application::SetupScene()
 
 	// === Teddy
 	Teddy_Prefab teddy;
-	teddy.SetWorldRotation(XMFLOAT3(0, -90, 0));
+//	teddy.SetWorldRotation(XMFLOAT3(0, -90, 0));
 	teddy.LoadGameObject();
 	// ===
 
@@ -170,12 +171,12 @@ void Application::SetupScene()
 	RenderShape* shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 	shape->SetObject(skybox);
 
-	Renderer::GetInstance()->AddForRendering(context, material, shape);
+	Renderer::GetInstance()->SetSkybox(context, material, shape);
 
 	for (unsigned int i = 0; i < skybox->GetChildren().size(); ++i) {
 		shape = RenderNodeDirectory::GetInstance()->CreateRenderShape();
 		shape->SetObject(skybox->GetChildren()[i]);
-		Renderer::GetInstance()->AddForRendering(context, material, shape);
+		context->Add(material, shape);
 	}
 #endif
 	// ============== //
@@ -210,15 +211,15 @@ void Application::UpdateLighting()
 
 	toShaderLight.ambientLight.color = XMFLOAT4(0.2f, 0.2f, 0.2f, 1.0f);
 
-	// toShaderLight.directionalLight.color = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-	toShaderLight.directionalLight.color = XMFLOAT4(0.78823f, 0.88627f, 1.0f, 1.0f);	// Color of overcast sky
+	toShaderLight.directionalLight.color = XMFLOAT4(0.05f, 0.05f, 0.05f, 1.0f);
+	// toShaderLight.directionalLight.color = XMFLOAT4(0.78823f, 0.88627f, 1.0f, 1.0f);	// Color of overcast sky
 	toShaderLight.directionalLight.direction = XMFLOAT4(1.0f, -1.0f, 1.0f, 1.0f);
 
-	toShaderLight.pointLight.position = XMFLOAT4(-0.8f, 115.0f, 26.0f, 1.0f);
-	toShaderLight.pointLight.color    = XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f);		// Blue
-	toShaderLight.pointLight.radius   = 10.0f;
+	toShaderLight.pointLight.position = XMFLOAT4(-45.0f, 10.0f, 50.0f, 0.0f);
+	toShaderLight.pointLight.color    = XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f);		// Blue
+	toShaderLight.pointLight.radius   = 100.0f;
 	
-	toShaderLight.spotLight.position  = XMFLOAT4(-20.0f, 25.0f, 15.0f, 0.0f);
+	toShaderLight.spotLight.position  = XMFLOAT4(-45.0f, 25.0f, 30.0f, 0.0f);
 	toShaderLight.spotLight.direction = XMFLOAT4(0.0f, -1.0f, 0.0f, 0.0f);
 	toShaderLight.spotLight.color     = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);		// Red
 	toShaderLight.spotLight.coneRatio = XMFLOAT2(0.707f, 0.5f);
