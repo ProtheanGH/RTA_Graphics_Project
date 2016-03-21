@@ -28,7 +28,7 @@ public:
 	// ================= //
 
 	// === Accessors === //
-	inline const std::vector<Bone>& GetBones() const {
+	inline std::vector<Bone>& GetBones() {
 		return bones;
 	}
 	inline float GetTime() const {

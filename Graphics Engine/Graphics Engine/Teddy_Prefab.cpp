@@ -15,6 +15,7 @@ Teddy_Prefab::Teddy_Prefab()
 
 	// === RenderShape Settings
 	m_MeshPath = "Teddy_Idle";
+//	m_RenderFunc = RenderShape::AnimatedShape_RenderProcess;
 }
 
 Teddy_Prefab::~Teddy_Prefab()

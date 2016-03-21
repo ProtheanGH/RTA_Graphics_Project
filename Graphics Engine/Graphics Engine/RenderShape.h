@@ -12,12 +12,6 @@ class RenderShape : public RenderNode
 	Object*						m_pObject;
 	D3D11_PRIMITIVE_TOPOLOGY	m_TopologyType;
 
-	// === Private Interface === //
-	static void DefaultShape_RenderProcess(RenderNode& _node);
-	static void Skybox_RenderProcess(RenderNode& _node);
-	static void AnimatedShape_RenderProcess(RenderNode& _node);
-	// ========================= //
-
 public:
 	// === Constructor / Destructor === //
 	RenderShape();
@@ -38,5 +32,11 @@ public:
 		m_TopologyType = _topology;
 	}
 	// ================ //
+
+	// === RenderProcess Interface === //
+	static void DefaultShape_RenderProcess(RenderNode& _node);
+	static void Skybox_RenderProcess(RenderNode& _node);
+	static void AnimatedShape_RenderProcess(RenderNode& _node);
+	// ============================== //
 };
 
