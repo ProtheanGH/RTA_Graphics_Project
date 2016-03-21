@@ -17,7 +17,7 @@ Camera::Camera()
 	m_CursorPosition.x = -1;
 	m_MovementSpeed = 12.0;
 	m_FastMovementSpeed = 50.0f;
-	m_RotationSpeed = 0.5;
+	m_RotationSpeed = 0.1f;
 }
 
 Camera::~Camera()
@@ -146,8 +146,8 @@ void Camera::MouseLook(DirectX::XMMATRIX& _matrix)
 	// Convert the difference into radians
 	float radX = DirectX::XMConvertToRadians((float)cursorPositionInScreenSpace.x - (float)centerClientWindow.x);
 	float radY = DirectX::XMConvertToRadians((float)cursorPositionInScreenSpace.y - (float)centerClientWindow.y);
-	radX *= ROTATION_MODIFIER;
-	radY *= ROTATION_MODIFIER;
+	radX *= m_RotationSpeed;
+	radY *= m_RotationSpeed;
 
 	SetCursorMiddle();
 
