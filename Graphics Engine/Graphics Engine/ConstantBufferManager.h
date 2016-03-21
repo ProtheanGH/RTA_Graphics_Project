@@ -14,6 +14,7 @@ private:
 	ID3D11Buffer* m_pSceneCBuffer;
 	ID3D11Buffer* m_pLightsCBuffer;
 	ID3D11Buffer* m_pSkyboxCBuffer;
+	ID3D11Buffer* m_pAnimatedCBuffer;
 
 	// === Private Interface === //
 	ConstantBufferManager() { }

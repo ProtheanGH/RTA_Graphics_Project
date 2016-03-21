@@ -18,7 +18,7 @@ RenderShape::~RenderShape()
 }
 // ==================================== //
 
-// === Private Interface === //
+// ===== RenderProcess Interface ===== //
 void RenderShape::DefaultShape_RenderProcess(RenderNode& _node)
 {
 	RenderShape& rShape = (RenderShape&)_node;
@@ -87,9 +87,14 @@ void RenderShape::AnimatedShape_RenderProcess(RenderNode& _node)
 	// === Does the Object have a valid Mesh?
 	if (rShape.m_pObject->GetMesh() != nullptr) {
 		// == Update the Constant Buffer
-		ToShaderObject toShaderObj;
+		std::vector<Bone>& objBones = rShape.m_pObject->GetInterpolator()->GetBones();
+		ToShaderAnimated toShaderObj;
 		toShaderObj.ObjectWorldMatrix = rShape.m_pObject->GetWorld();
-		ConstantBufferManager::GetInstance()->ApplyObjectBuffer(&toShaderObj);
+		toShaderObj.BoneAmount = (int)objBones.size();
+		for (int i = 0; i < toShaderObj.BoneAmount; ++i) {
+			toShaderObj.Bones[i] = objBones[i].GetWorld();
+		}
+		ConstantBufferManager::GetInstance()->ApplyAnimatedBuffer(&toShaderObj);
 
 		// == Set the Topology 
 		Renderer::GetInstance()->GetDeviceContext()->IASetPrimitiveTopology(rShape.m_TopologyType);
@@ -108,4 +113,4 @@ void RenderShape::AnimatedShape_RenderProcess(RenderNode& _node)
 		Renderer::GetInstance()->GetDeviceContext()->DrawIndexed(size, 0, 0);
 	}
 }
-// ========================= //
+// =================================== //

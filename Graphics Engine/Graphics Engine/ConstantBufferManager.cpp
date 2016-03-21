@@ -70,6 +70,17 @@ void ConstantBufferManager::ApplySkyboxBuffer(ToShaderSkybox* _toShaderSkybox)
 	deviceContext->PSSetConstantBuffers(0, 1, &m_pSkyboxCBuffer);
 }
 
+void ConstantBufferManager::ApplyAnimatedBuffer(ToShaderAnimated* _toShaderAnimated)
+{
+	ID3D11DeviceContext* deviceContext = Renderer::GetInstance()->GetDeviceContext();
+
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	deviceContext->Map(m_pAnimatedCBuffer, 0, D3D11_MAP::D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	memcpy(subResource.pData, _toShaderAnimated, sizeof(ToShaderAnimated));
+	deviceContext->Unmap(m_pAnimatedCBuffer, 0);
+	deviceContext->VSSetConstantBuffers(0, 1, &m_pAnimatedCBuffer);
+}
+
 void ConstantBufferManager::Terminate()
 {
 	SAFE_RELEASE(m_pObjectCBuffer);
@@ -112,6 +123,11 @@ void ConstantBufferManager::Initialize()
 	// == Skybox Buffer
 	bufferDesc.ByteWidth = sizeof(ToShaderSkybox);
 	hr = Renderer::GetInstance()->GetDevice()->CreateBuffer(&bufferDesc, nullptr, &m_pSkyboxCBuffer);
+	assert(hr == S_OK);
+
+	// == Animated Buffer
+	bufferDesc.ByteWidth = sizeof(ToShaderAnimated);
+	hr = Renderer::GetInstance()->GetDevice()->CreateBuffer(&bufferDesc, nullptr, &m_pAnimatedCBuffer);
 	assert(hr == S_OK);
 }
 // ============================= //

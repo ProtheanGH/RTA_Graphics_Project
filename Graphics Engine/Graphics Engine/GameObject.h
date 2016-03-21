@@ -14,6 +14,9 @@ using DirectX::XMFLOAT3;
 
 class GameObject
 {
+public:
+	typedef void(*RenderFunc)(RenderNode& _Node);
+
 protected:
 	// === Render Context Settings
 	PixelShaderEnum			 m_PixelShader	   = PixelShaderEnum::Pixel_Default;
@@ -29,6 +32,7 @@ protected:
 	// === Render Shape Settings
 	D3D11_PRIMITIVE_TOPOLOGY m_TopologyType    = D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 	std::string				 m_MeshPath;
+	RenderFunc				 m_RenderFunc	   = RenderShape::DefaultShape_RenderProcess;
 
 	// === Object Settings
 	XMFLOAT3				 m_WorldPosition   = XMFLOAT3(0.0f, 0.0f, 0.0f);

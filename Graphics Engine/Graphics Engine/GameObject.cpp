@@ -44,6 +44,7 @@ void GameObject::LoadGameObject()
 	RenderShape* shape = nodeDirectory->CreateRenderShape();
 	shape->SetObject(object);
 	shape->SetTopology(m_TopologyType);
+	shape->SetFunc(m_RenderFunc);
 
 	// === Add to the Renderer
 	AddToRenderer(context, material, shape);
