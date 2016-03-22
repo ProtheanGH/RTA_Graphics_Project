@@ -6,6 +6,7 @@
 InterpolatorComponent::InterpolatorComponent(Object* _parent)
 {
 	Bone::CreateBoneList(_parent->GetRootBone(), bones);
+	testInt = 12;
 }
 
 InterpolatorComponent::~InterpolatorComponent()
@@ -113,4 +114,3 @@ void InterpolatorComponent::SetAnimation(Animation* _animation)
 	animation = _animation;
 }
 // ===================== //
-

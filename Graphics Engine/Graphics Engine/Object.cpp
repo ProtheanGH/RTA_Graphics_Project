@@ -97,6 +97,8 @@ void Object::Destroy(){
 		delete animations[i];
 	}
 
+	delete Interpolator;
+
 	delete mesh;
 }
 
@@ -222,3 +224,18 @@ void Object::SetPositionVector(DirectX::XMFLOAT3 _location)
 	transform.GetLocalMatrix()._43 = _location.z;
 }
 
+void Object::AddInterpolator() 
+{
+	Interpolator = new InterpolatorComponent(this);
+}
+
+InterpolatorComponent* Object::GetInterpolator() 
+{
+	if (Interpolator != nullptr) {
+		return Interpolator;
+	}
+	else if (parent != nullptr) {
+		return parent->GetInterpolator();
+	}
+	return nullptr;
+}

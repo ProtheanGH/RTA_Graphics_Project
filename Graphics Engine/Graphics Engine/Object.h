@@ -75,12 +75,8 @@ public:
 		return animations;
 	}
 
-	inline void AddInterpolator() {
-		Interpolator = new InterpolatorComponent(this);
-	}
-	inline InterpolatorComponent* GetInterpolator() {
-		return Interpolator;
-	}
+	void AddInterpolator();
+	InterpolatorComponent* GetInterpolator();
 
 	DirectX::XMFLOAT4X4& GetWorld();
 	void SetWorld(const DirectX::XMFLOAT4X4& _mat);

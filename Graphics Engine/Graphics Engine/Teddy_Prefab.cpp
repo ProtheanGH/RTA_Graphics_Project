@@ -9,7 +9,7 @@ Teddy_Prefab::Teddy_Prefab()
 	// === RenderContext Settings
 	m_PixelShader = PixelShaderEnum::NormalMap_Pixel;
 	m_VertexShader = VertexShaderEnum::Animation_Vertex;
-	m_InputLayout = InputLayouts::NormalMapped_InputLayout;
+	m_InputLayout = InputLayouts::InputLayout_Animation;
 
 	// === RenderMaterial Settings
 	ShaderResourceManager* resourceManager = ShaderResourceManager::GetInstance();
@@ -31,6 +31,7 @@ Teddy_Prefab::~Teddy_Prefab()
 void Teddy_Prefab::LoadComponents(Object* _object)
 {
 	_object->AddInterpolator();
+	InterpolatorComponent* component = _object->GetInterpolator();
 	_object->GetInterpolator()->SetAnimation(_object->GetAnimations()[0]);
 }
 // ============================= //
