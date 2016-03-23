@@ -32,7 +32,6 @@ private:
 
 	Object();
 
-	void SetBuffers();
 	void ReleaseBuffers();
 
 	// Matrix Helpers
@@ -56,6 +55,8 @@ public:
 
 	inline Mesh* GetMesh() { return mesh; }
 	void SetMesh(Mesh* mesh);
+
+	void SetBuffers();
 
 	inline Object* GetParent(){ return parent; }
 	inline void SetParent(Object* _parent){ parent = _parent; }

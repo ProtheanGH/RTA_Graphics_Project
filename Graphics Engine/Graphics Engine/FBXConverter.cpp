@@ -65,8 +65,6 @@ bool FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
 		std::vector<Bone*> boneList;
 		Bone::CreateBoneList(root_bone, boneList);
 
-		//LoadJoints(rootNode, root_bone);
-
 		Animation* animation = new Animation();
 		LoadAnimation(rootNode, fbxScene, *animation, root_bone);
 		_rootObject->AddAnimation(animation);
@@ -447,6 +445,8 @@ void FBXConverter::LoadBoneInfo(Object* _object, FbxNode* _node, Bone* bone){
 
 		LoadBoneInfo(child_obj, _node, bone);
 	}
+
+	_object->SetBuffers();
 }
 
 

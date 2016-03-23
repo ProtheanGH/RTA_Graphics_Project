@@ -18,7 +18,6 @@ void Object::SetMesh(Mesh* _mesh){
 
 	if (_mesh != nullptr){
 		mesh = _mesh;
-		SetBuffers();
 	}
 }
 
@@ -31,6 +30,8 @@ void Object::SetRootBone(Bone* _bone){
 }
 
 void Object::SetBuffers(){
+
+	if (mesh == nullptr) return;
 
 	ReleaseBuffers();
 
