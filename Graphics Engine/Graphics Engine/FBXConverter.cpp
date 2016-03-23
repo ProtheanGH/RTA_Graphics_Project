@@ -2,6 +2,8 @@
 #include "Writer.h"
 #include "Animation.h"
 
+void ConvertFBXMatrix(FbxMatrix& _fbxMatrix, DirectX::XMFLOAT4X4& _matrix);
+
 #pragma region Singleton
 
 FBXConverter* FBXConverter::instance = nullptr;
@@ -412,7 +414,6 @@ void FBXConverter::LoadSkeleton(const char* _fileName, Bone* bone){
 
 	if (rootNode){
 		LoadSkeleton(rootNode, bone);
-		//LoadJoints(rootNode, bone);
 		Animation animation;
 		LoadAnimation(rootNode, fbxScene, animation, bone);
 	}
@@ -424,6 +425,11 @@ void FBXConverter::ProcessBone(FbxNode* _node, Bone* bone){
 	FbxDouble3 translation = _node->LclTranslation.Get();
 	FbxDouble3 rotation = _node->LclRotation.Get();
 	FbxDouble3 scale = _node->LclScaling.Get();
+
+	FbxMatrix globalInverseBindPose = _node->EvaluateGlobalTransform();
+	globalInverseBindPose = globalInverseBindPose.Inverse();
+
+	ConvertFBXMatrix(globalInverseBindPose, bone->GetGlobalBindPose());
 
 	DirectX::XMMATRIX matrix = DirectX::XMMatrixIdentity();
 	matrix = matrix * DirectX::XMMatrixScaling((float)scale.mData[0], (float)scale.mData[0], (float)scale.mData[0]);
@@ -481,14 +487,6 @@ void FBXConverter::ProcessJoints(FbxNode* _node, Bone* _rootBone, Mesh* _mesh){
 			Bone* curr_bone = Bone::FindBone(_rootBone, bone_name);
 			if (curr_bone == nullptr) continue;
 			
-			//unsigned int indices_count = currCluster->GetControlPointIndicesCount();
-			//for (unsigned int i = 0; i < indices_count; ++i){
-			//	unsigned int index = currCluster->GetControlPointIndices()[i];
-			//	float weight = (float)currCluster->GetControlPointWeights()[i];
-			//	BoneInfluence bone_influence(index, weight);
-			//	curr_bone->GetBoneInfluence().push_back(bone_influence);
-			//}
-
 			unsigned int indicesCount = currCluster->GetControlPointIndicesCount();
 			for (unsigned int i = 0; i < indicesCount; ++i){
 				int index = currCluster->GetControlPointIndices()[i];
@@ -653,6 +651,29 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxSc
 			key->scale = DirectX::XMFLOAT4((float)scale.mData[0], (float)scale.mData[1], (float)scale.mData[2], 1.0f);
 		}
 	}
+}
+
+void ConvertFBXMatrix(FbxMatrix& fbxMatrix, DirectX::XMFLOAT4X4& matrix){
+
+	matrix._11 = (float)fbxMatrix.Get(0, 0);
+	matrix._12 = (float)fbxMatrix.Get(0, 1);
+	matrix._13 = -(float)fbxMatrix.Get(0, 2);
+	matrix._14 = (float)fbxMatrix.Get(0, 3);
+
+	matrix._21 = (float)fbxMatrix.Get(1, 0);
+	matrix._22 = (float)fbxMatrix.Get(1, 1);
+	matrix._23 = -(float)fbxMatrix.Get(1, 2);
+	matrix._24 = (float)fbxMatrix.Get(1, 3);
+
+	matrix._31 = -(float)fbxMatrix.Get(2, 0);
+	matrix._32 = -(float)fbxMatrix.Get(2, 1);
+	matrix._33 = (float)fbxMatrix.Get(2, 2);
+	matrix._34 = (float)fbxMatrix.Get(2, 3);
+
+	matrix._41 = (float)fbxMatrix.Get(3, 0);
+	matrix._42 = (float)fbxMatrix.Get(3, 1);
+	matrix._43 = -(float)fbxMatrix.Get(3, 2);
+	matrix._44 = (float)fbxMatrix.Get(3, 3);
 }
 
 
