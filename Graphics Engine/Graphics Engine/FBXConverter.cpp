@@ -516,147 +516,71 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxScene* _scene, Animation& _a
 			std::string anim_name(anim_stack->GetName());
 			_animation.GetName() = anim_name;
 
-			int anim_layer_count = anim_stack->GetMemberCount<FbxAnimLayer>();
-	
-			for (int j = 0; j < anim_layer_count; ++j){
-	
-				FbxAnimLayer* anim_layer = anim_stack->GetMember< FbxAnimLayer >(j);
-				
-				LoadAnimation(_node, anim_layer, _scene, _animation, _rootBone);
-			}
+			FbxString animStackName = anim_stack->GetName();
+
+			FbxTakeInfo* takeInfo = _scene->GetTakeInfo(animStackName);
+			
+			LoadAnimation(_node, takeInfo, _animation, _rootBone);
+
 		}
 	
 		_animation.CalculateDuration();
 }
 
-void FBXConverter::LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxScene* _scene, Animation& _animation, Bone* _rootBone){
+void FBXConverter::LoadAnimation(FbxNode* _node, FbxTakeInfo* _takeInfo, Animation& _animation, Bone* _rootBone){
 
 	int child_count = _node->GetChildCount();
 	for (int i = 0; i < child_count; ++i){
 		FbxNode* childNode = _node->GetChild(i);
-		LoadAnimation(childNode, _animLayer, _scene, _animation, _rootBone);
+		LoadAnimation(childNode, _takeInfo, _animation, _rootBone);
 	}
 
-	FbxAnimCurve* translationCurve = _node->LclTranslation.GetCurve(_animLayer);
-	FbxAnimCurve* rotationCurve = _node->LclRotation.GetCurve(_animLayer);
-	FbxAnimCurve* scalingCurve = _node->LclScaling.GetCurve(_animLayer);
+	FbxTime start = _takeInfo->mLocalTimeSpan.GetStart();
+	FbxTime end = _takeInfo->mLocalTimeSpan.GetStop();
+	Bone* bone = Bone::FindBone(_rootBone, std::string(_node->GetName()));
 
-	if (translationCurve == nullptr && rotationCurve == nullptr && scalingCurve == nullptr) return;
+	if (bone == nullptr) return;
 
-	Bone* _bone = Bone::FindBone(_rootBone, std::string(_node->GetName()));
-
-	if (_bone == nullptr) return;
-	
 	Animation::KeyFrame* keyFrame;
 	Animation::Key* key;
 
-	if (translationCurve != nullptr){
-		int keyCount = translationCurve->KeyGetCount();
-		for (int i = 0; i < keyCount; ++i){
-			FbxTime frameTime = translationCurve->KeyGetTime(i);
-			FbxDouble3 translation = _node->EvaluateLocalTranslation(frameTime);
-			float frameSeconds = (float)frameTime.GetSecondDouble();
+	for (FbxLongLong i = start.GetFrameCount(FbxTime::eFrames30); i < end.GetFrameCount(FbxTime::eFrames30); ++i){
+		FbxTime currTime;
+		currTime.SetFrame(i, FbxTime::eFrames30);
+		FbxDouble3 translation = _node->EvaluateLocalTranslation(currTime);
+		FbxDouble3 rotation = _node->EvaluateLocalRotation(currTime);
+		FbxDouble3 scale = _node->EvaluateLocalScaling(currTime);
+		float frameTime = (float)currTime.GetSecondDouble();
 
-			//find the keyframe
-			keyFrame = _animation.FindKeyFrame(frameSeconds);
+		//find the keyframe
+		keyFrame = _animation.FindKeyFrame(frameTime);
 
-			//if there isn't one create a new one and add it to animation's key frames
-			if (keyFrame == nullptr){
-				keyFrame = new Animation::KeyFrame;
-				keyFrame->time = frameSeconds;
-				_animation.GetKeyFrames().push_back(keyFrame);
+		//if there isn't one create a new one and add it to animation's key frames
+		if (keyFrame == nullptr){
+			keyFrame = new Animation::KeyFrame;
+			keyFrame->time = frameTime;
+			_animation.GetKeyFrames().push_back(keyFrame);
 
+			key = new Animation::Key;
+			key->name = bone->GetName();
+			keyFrame->keys.push_back(key);
+		}
+		else{
+			//find the key 
+			key = keyFrame->FindKey(bone->GetName());
+
+			//if there isn't create a new one and add it to keyframe's keys
+			if (key == nullptr){
 				key = new Animation::Key;
-				key->name = _bone->GetName();
+				key->name = bone->GetName();
 				keyFrame->keys.push_back(key);
 			}
-			else{
-				//find the key 
-				key = keyFrame->FindKey(_bone->GetName());
-				
-				//if there isn't create a new one and add it to keyframe's keys
-				if (key == nullptr){
-					key = new Animation::Key;
-					key->name = _bone->GetName();
-					keyFrame->keys.push_back(key);
-				}
-			}
-
-			key->translation = DirectX::XMFLOAT4((float)translation.mData[0], (float)translation.mData[1], (float)translation.mData[2], 1.0f);
 		}
-	}
 
+		key->translation = DirectX::XMFLOAT4(translation.mData[0], translation.mData[1], translation.mData[2], 1.0f);
+		key->rotation = DirectX::XMFLOAT4(rotation.mData[0], rotation.mData[1], rotation.mData[2], 1.0f);
+		key->scale = DirectX::XMFLOAT4(scale.mData[0], scale.mData[1], scale.mData[2], 1.0f);
 
-	if (rotationCurve != nullptr){
-		int keyCount = rotationCurve->KeyGetCount();
-		for (int i = 0; i < keyCount; ++i){
-			FbxTime frameTime = rotationCurve->KeyGetTime(i);
-			FbxDouble3 rotation = _node->EvaluateLocalRotation(frameTime);
-			float frameSeconds = (float)frameTime.GetSecondDouble();
-
-			//find the keyframe
-			keyFrame = _animation.FindKeyFrame(frameSeconds);
-
-			//if there isn't one create a new one and add it to animation's key frames
-			if (keyFrame == nullptr){
-				keyFrame = new Animation::KeyFrame;
-				keyFrame->time = frameSeconds;
-				_animation.GetKeyFrames().push_back(keyFrame);
-
-				key = new Animation::Key;
-				key->name = _bone->GetName();
-				keyFrame->keys.push_back(key);
-			}
-			else{
-				//find the key 
-				key = keyFrame->FindKey(_bone->GetName());
-
-				//if there isn't create a new one and add it to keyframe's keys
-				if (key == nullptr){
-					key = new Animation::Key;
-					key->name = _bone->GetName();
-					keyFrame->keys.push_back(key);
-				}
-			}
-
-			key->rotation = DirectX::XMFLOAT4((float)rotation.mData[0], (float)rotation.mData[1], (float)rotation.mData[2], 1.0f);
-		}
-	}
-
-	if (scalingCurve != nullptr){
-		int keyCount = scalingCurve->KeyGetCount();
-		for (int i = 0; i < keyCount; ++i){
-			FbxTime frameTime = scalingCurve->KeyGetTime(i);
-			FbxDouble3 scale = _node->EvaluateLocalScaling(frameTime);
-			float frameSeconds = (float)frameTime.GetSecondDouble();
-
-			//find the keyframe
-			keyFrame = _animation.FindKeyFrame(frameSeconds);
-
-			//if there isn't one create a new one and add it to animation's key frames
-			if (keyFrame == nullptr){
-				keyFrame = new Animation::KeyFrame;
-				keyFrame->time = frameSeconds;
-				_animation.GetKeyFrames().push_back(keyFrame);
-
-				key = new Animation::Key;
-				key->name = _bone->GetName();
-				keyFrame->keys.push_back(key);
-			}
-			else{
-				//find the key 
-				key = keyFrame->FindKey(_bone->GetName());
-
-				//if there isn't create a new one and add it to keyframe's keys
-				if (key == nullptr){
-					key = new Animation::Key;
-					key->name = _bone->GetName();
-					keyFrame->keys.push_back(key);
-				}
-			}
-
-			key->scale = DirectX::XMFLOAT4((float)scale.mData[0], (float)scale.mData[1], (float)scale.mData[2], 1.0f);
-		}
 	}
 }
 

@@ -21,7 +21,7 @@ private:
 	void LoadSkeleton(FbxNode* _rootNode, Bone* bone);
 	void LoadJoints(FbxNode* _rootNode, Bone* bone, Mesh* _mesh);
 	void LoadAnimation(FbxNode* _node, FbxScene* _scene, Animation& _animation, Bone* _rootBone);
-	void LoadAnimation(FbxNode* _node, FbxAnimLayer* _animLayer, FbxScene* _scene, Animation& _animation, Bone* _rootBone);
+	void LoadAnimation(FbxNode* _node, FbxTakeInfo* _takeInfo, Animation& _animation, Bone* _rootBone);
 
 	void ProcessBone(FbxNode* _node, Bone* bone);
 	void ProcessJoints(FbxNode* _node, Bone* _rootBone, Mesh* _mesh);
