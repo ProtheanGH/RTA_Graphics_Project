@@ -12,12 +12,15 @@ private:
 	std::vector<Bone*> children;
 	int index;
 
+	DirectX::XMFLOAT4X4 globalInverseBindPose;
+
 public:
 	Bone() = default;
 	~Bone() = default;
 
 	const DirectX::XMFLOAT4X4& GetWorld();
 	inline DirectX::XMFLOAT4X4& GetLocal(){ return localMatrix; }
+	inline DirectX::XMFLOAT4X4& GetGlobalBindPose(){ return globalInverseBindPose; }
 
 	inline std::string& GetName(){ return name; }
 	inline std::vector<Bone*>& GetChildren(){ return children; }
