@@ -62,6 +62,8 @@ bool FBXConverter::LoadFBX(const char* _fileName, Object* _rootObject){
 
 		Bone* root_bone = new Bone();
 
+		ProcessBone(rootNode, root_bone);
+
 		LoadSkeleton(rootNode, root_bone);
 
 		std::vector<Bone*> boneList;
@@ -435,6 +437,10 @@ void FBXConverter::ProcessBone(FbxNode* _node, Bone* bone){
 	matrix = matrix * DirectX::XMMatrixScaling((float)scale.mData[0], (float)scale.mData[0], (float)scale.mData[0]);
 	matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw((float)rotation.mData[0], (float)rotation.mData[1], (float)rotation.mData[2]);
 	matrix = matrix * DirectX::XMMatrixTranslation((float)translation.mData[0], (float)translation.mData[1], (float)translation.mData[2]);
+
+	DirectX::XMMATRIX xMat = DirectX::XMLoadFloat4x4(&bone->GetGlobalBindPose());
+
+	matrix = matrix * xMat;
 
 	DirectX::XMStoreFloat4x4(&bone->GetLocal(), matrix);
 }
