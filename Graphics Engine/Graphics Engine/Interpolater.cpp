@@ -73,7 +73,7 @@ void Interpolater::Update(float deltaTime){
 		ratio = (curTime / keyFrames[nextKey]->time);
 	}
 
-	unsigned int bone_count = (unsigned int)animation->GetKeyFrames().size();
+	unsigned int bone_count = (unsigned int)keyFrames[prevKey]->keys.size();
 	bones.clear(); 
 	bones.resize(bone_count);
 
