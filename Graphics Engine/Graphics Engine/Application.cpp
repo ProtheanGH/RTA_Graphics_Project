@@ -141,6 +141,8 @@ void Application::SetupScene()
 	floorQuad.LoadGameObject();
 	// ================== //
 
+	ObjectManager* test = ObjectManager::GetInstance();
+
 	// === Bones
 #if 0
 	FBXConverter* fbxConverter = FBXConverter::GetInstance();

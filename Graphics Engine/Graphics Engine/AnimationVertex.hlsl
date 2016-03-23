@@ -42,7 +42,29 @@ cbuffer Scene : register(b1)
 
 PixelInput main(Bone _input)
 {
-	PixelInput output = (PixelInput)0;
+	PixelInput output;
+/*
+	// === Make sure the position is in the correct format
+	_input.position.w = 1.0f;
+
+	// === Convert the position into the correct space
+	output.position = mul(_input.position, worldMatrix);
+	output.position = mul(output.position, viewMatrix);
+	output.position = mul(output.position, projMatrix);
+
+	output.worldPosition = mul(_input.position, worldMatrix);
+
+	output.texCoords.xy = _input.texCoords.xy;
+	output.texCoords.z = output.texCoords.w = 0;
+
+	// === Convert the Normal, Tangent, and Binormal into world space
+	output.normal = mul(_input.normal, worldMatrix);
+	output.normal = normalize(output.normal);
+	output.tangent = mul(_input.tangent, worldMatrix);
+	output.tangent = normalize(output.tangent);
+	output.binormal = mul(_input.binormal, worldMatrix);
+	output.binormal = normalize(output.binormal);
+*/
 
 	// Animations
 	float4x4 animationMat;
