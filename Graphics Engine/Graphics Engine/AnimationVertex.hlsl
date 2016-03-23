@@ -6,8 +6,7 @@ struct Bone
 	float4 tangent : TANGENT;
 	float4 binormal : BINORMAL;
 	float4 weight : WEIGHT;
-	unsigned int4 indice : INDICE;
-	unsigned int size : SIZE;
+	int4 indice : INDICE;
 };
 
 struct PixelInput

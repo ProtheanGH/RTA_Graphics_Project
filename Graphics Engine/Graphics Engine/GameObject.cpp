@@ -30,6 +30,7 @@ void GameObject::LoadGameObject()
 	object->RotateY(m_WorldRotation.y);
 	object->RotateZ(m_WorldRotation.z);
 	object->Scale(m_WorldScale.x, m_WorldScale.y, m_WorldScale.z);
+//	std::vector<Vertex_POSNORMUV>& verts = object->GetChildren()[0]->GetMesh()->GetVerts();
 
 	// === Load the Components
 	LoadComponents(object);
