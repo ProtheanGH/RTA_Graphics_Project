@@ -11,6 +11,9 @@ Teddy_Prefab::Teddy_Prefab()
 	m_VertexShader = VertexShaderEnum::Animation_Vertex;
 	m_InputLayout = InputLayouts::InputLayout_Animation;
 
+	/*m_VertexShader = VertexShaderEnum::NormalMap_Vertex;
+	m_InputLayout = InputLayouts::NormalMapped_InputLayout;*/
+
 	// === RenderMaterial Settings
 	ShaderResourceManager* resourceManager = ShaderResourceManager::GetInstance();
 	m_TextureIDs.push_back(resourceManager->LoadTextureFromFile("Assets/Teddy_D.dds"));

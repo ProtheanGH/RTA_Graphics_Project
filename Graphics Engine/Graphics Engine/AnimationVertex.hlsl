@@ -50,6 +50,7 @@ PixelInput main(Bone _input)
 	output.position = mul(output.position, projMatrix);
 	output.normal   = mul( _input.normal, animationMat );
 
+
 	// World Position
 	output.worldPosition = mul(_input.position, worldMatrix);
 
