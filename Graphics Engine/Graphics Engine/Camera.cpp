@@ -83,7 +83,7 @@ void Camera::Update(float _deltaTime)
 			matrix = XMMatrixMultiply(XMMatrixTranslation(0, _deltaTime * -m_FastMovementSpeed, 0), matrix);
 		}
 		else {
-			matrix = XMMatrixMultiply(XMMatrixTranslation(0, _deltaTime * -m_FastMovementSpeed, 0), matrix);
+			matrix = XMMatrixMultiply(XMMatrixTranslation(0, _deltaTime * -m_MovementSpeed, 0), matrix);
 		}
 	}
 
