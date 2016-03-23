@@ -127,7 +127,7 @@ void Application::SetupScene()
 {
 //	// === Teddy
 	Teddy_Prefab teddy;
-	teddy.SetWorldRotation(XMFLOAT3(0, -90, 0));
+//	teddy.SetWorldRotation(XMFLOAT3(0, -90, 0));
 	teddy.LoadGameObject();
 //	// ===
 
