@@ -2,7 +2,7 @@ struct Bone
 {
 	float4 position : POSITION;
 	float4 normal : NORMALS;
-	float2 texCoords : UV;
+	float4 texCoords : UV;					// Changed from Float2 to Float4
 	float4 tangent : TANGENT;
 	float4 binormal : BINORMAL;
 	float4 weight : WEIGHT;
@@ -13,7 +13,7 @@ struct PixelInput
 {
 	float4 position : SV_POSITION;
 	float4 worldPosition : WORLDPOS;
-	float2 texCoords : UV;
+	float4 texCoords : UV;					// Changed from Float2 to Float4
 	float4 normal : NORMALS;
 	float4 tangent : TANGENT;
 	float4 binormal : BINORMAL;
@@ -41,7 +41,7 @@ PixelInput main(Bone _input)
 
 	// Animations
 	float4x4 animationMat;
-	animationMat  = bonesMatrices[ _input.indice.x ] * _input.weight.x;
+	animationMat = bonesMatrices[_input.indice.x] * _input.weight.x;
 	animationMat += bonesMatrices[ _input.indice.y ] * _input.weight.y;
 	animationMat += bonesMatrices[ _input.indice.z ] * _input.weight.z;
 	animationMat += bonesMatrices[ _input.indice.w ] * _input.weight.w;
@@ -49,12 +49,6 @@ PixelInput main(Bone _input)
 	output.position = mul(_input.position, animationMat);
 	output.position = mul(output.position, projMatrix);
 	output.normal   = mul( _input.normal, animationMat );
-
-	// Position
-	// _input.position.w = 1.0f;
-	// output.position = mul(_input.position, worldMatrix);
-	// output.position = mul(_input.position, viewMatrix);
-	// output.position = mul(_input.position, projMatrix);
 
 	// World Position
 	output.worldPosition = mul(_input.position, worldMatrix);

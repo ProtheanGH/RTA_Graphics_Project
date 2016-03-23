@@ -19,6 +19,8 @@ InterpolatorComponent::~InterpolatorComponent()
 // ===== Interface ===== //
 bool InterpolatorComponent::Update(float _deltaTime)
 {
+	return true;
+
 	if (animation == nullptr)
 		return false;
 

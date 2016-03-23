@@ -5,7 +5,7 @@ struct INPUT_VERTEX
 {
 	float4 coordinate : POSITION;
 	float4 normals : NORMALS;
-	float2 uv : UV;
+	float4 uv : UV;						// Changed from Float2 to Float4
 };
 
 struct OUT_VERTEX

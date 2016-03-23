@@ -5,7 +5,7 @@
 struct PixelInput {
 	float4 position : SV_POSITION;
 	float4 worldPosition : WORLDPOS;
-	float2 texCoords : UV;
+	float4 texCoords : UV;					// Changed from Float2 to Float4
 	float4 normal : NORMALS;
 	float4 tangent : TANGENT;
 	float4 binormal : BINORMAL;

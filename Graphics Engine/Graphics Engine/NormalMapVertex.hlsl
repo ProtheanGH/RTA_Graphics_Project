@@ -8,7 +8,7 @@ struct VertexInput
 {
 	float4 position : POSITION;
 	float4 normal : NORMALS;
-	float2 texCoords : UV;
+	float4 texCoords : UV;				// Changed from Float2 to Float4
 	float4 tangent : TANGENT;
 	float4 binormal : BINORMAL;
 };
@@ -16,7 +16,7 @@ struct VertexInput
 struct PixelInput {
 	float4 position : SV_POSITION;
 	float4 worldPosition : WORLDPOS;
-	float2 texCoords : UV;
+	float4 texCoords : UV;				// Changed from Float2 to Float4
 	float4 normal : NORMALS;
 	float4 tangent : TANGENT;
 	float4 binormal : BINORMAL;
@@ -51,7 +51,8 @@ PixelInput main( VertexInput _input )
 
 	output.worldPosition = mul(_input.position, worldMatrix);
 
-	output.texCoords = _input.texCoords;
+	output.texCoords.xy = _input.texCoords.xy;
+	output.texCoords.z = output.texCoords.w = 0;
 
 	// === Convert the Normal, Tangent, and Binormal into world space
 	output.normal = mul(_input.normal, worldMatrix);
