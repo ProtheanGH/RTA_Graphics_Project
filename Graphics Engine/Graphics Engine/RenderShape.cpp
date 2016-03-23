@@ -87,8 +87,6 @@ void RenderShape::AnimatedShape_RenderProcess(RenderNode& _node)
 	// === Does the Object have a valid Mesh?
 	if (rShape.m_pObject->GetMesh() != nullptr) {
 		// == Update the Constant Buffer
-/*		rShape.m_pObject->GetInterpolator()->TEST();		*/
-		InterpolatorComponent* interp = rShape.m_pObject->GetInterpolator();
 		std::vector<Bone*> objBones = rShape.m_pObject->GetInterpolator()->GetBones();
 		ToShaderAnimated toShaderObj;
 		toShaderObj.ObjectWorldMatrix = rShape.m_pObject->GetWorld();
