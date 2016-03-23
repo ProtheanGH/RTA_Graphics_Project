@@ -17,6 +17,7 @@
 #include <ctime>
 
 // === Prefabs
+#include "AnimatedCube_Prefab.h"
 #include "Quad_Prefab.h"
 #include "Skybox_Prefab.h"
 #include "Teddy_Prefab.h"
@@ -124,10 +125,15 @@ bool Application::Run()
 // ===== Private Interface ===== //
 void Application::SetupScene()
 {
-	// === Teddy
-	Teddy_Prefab teddy;
-	teddy.SetWorldRotation(XMFLOAT3(0, -90, 0));
-	teddy.LoadGameObject();
+//	// === Teddy
+//	Teddy_Prefab teddy;
+//	teddy.SetWorldRotation(XMFLOAT3(0, -90, 0));
+//	teddy.LoadGameObject();
+//	// ===
+
+	// === Box
+	AnimatedCube_Prefab cube;
+	cube.LoadGameObject();
 	// ===
 
 	// === Skybox === //

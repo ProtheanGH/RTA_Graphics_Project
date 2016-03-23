@@ -184,6 +184,9 @@
     <ClCompile Include="InterpolatorComponent.cpp">
       <Filter>Components\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AnimatedCube_Prefab.cpp">
+      <Filter>GameObjects\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h">
@@ -320,6 +323,9 @@
     </ClInclude>
     <ClInclude Include="AnimationVertex.h">
       <Filter>Shaders\Vertex Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimatedCube_Prefab.h">
+      <Filter>GameObjects\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

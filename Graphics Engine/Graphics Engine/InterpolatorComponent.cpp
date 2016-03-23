@@ -32,7 +32,7 @@ bool InterpolatorComponent::Update(float _deltaTime)
 			break;
 
 		float prevTime = keyFrames[prevKey]->time;
-		if (keyFrames[prevKey]->time > curTime){
+		if (keyFrames[prevKey]->time >= curTime || curTime >= animation->GetDuration()){
 			prevKey = (unsigned int)keyFrames.size() - 1;
 			nextKey = 0;
 			break;
