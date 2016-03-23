@@ -1,3 +1,8 @@
+#ifndef AnimationVertex_hlsl
+#define AnimationVertex_hlsl
+
+#pragma pack_matrix(row_major)
+
 struct Bone
 {
 	float4 position : POSITION;
@@ -67,3 +72,4 @@ PixelInput main(Bone _input)
 
 	return output;
 }
+#endif

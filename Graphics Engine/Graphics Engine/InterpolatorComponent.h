@@ -11,7 +11,6 @@ private:
 	float curTime;
 	Animation* animation;
 	std::vector<Bone*> bones;
-	int testInt;
 
 public:
 	// === Constructor / Destructor === //

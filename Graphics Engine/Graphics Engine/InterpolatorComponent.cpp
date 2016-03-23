@@ -6,7 +6,6 @@
 InterpolatorComponent::InterpolatorComponent(Object* _parent)
 {
 	Bone::CreateBoneList(_parent->GetRootBone(), bones);
-	testInt = 12;
 }
 
 InterpolatorComponent::~InterpolatorComponent()
@@ -19,8 +18,6 @@ InterpolatorComponent::~InterpolatorComponent()
 // ===== Interface ===== //
 bool InterpolatorComponent::Update(float _deltaTime)
 {
-	return true;
-
 	if (animation == nullptr)
 		return false;
 
