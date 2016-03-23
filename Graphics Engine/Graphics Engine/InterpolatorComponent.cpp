@@ -74,13 +74,17 @@ bool InterpolatorComponent::Update(float _deltaTime)
 		scale.z = (keyFrames[nextKey]->keys[i]->scale.z - keyFrames[prevKey]->keys[i]->scale.z) * ratio + keyFrames[prevKey]->keys[i]->scale.z;
 
 
-		DirectX::XMMATRIX matrix = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
-		matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
-		matrix = matrix * DirectX::XMMatrixTranslation(translation.x, translation.y, translation.z);
+		DirectX::XMMATRIX matrix = DirectX::XMMatrixScaling(keyFrames[prevKey]->keys[i]->scale.x, keyFrames[prevKey]->keys[i]->scale.y, keyFrames[prevKey]->keys[i]->scale.z);
+		matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw(keyFrames[prevKey]->keys[i]->rotation.x, keyFrames[prevKey]->keys[i]->rotation.y, keyFrames[prevKey]->keys[i]->rotation.z);
+		matrix = matrix * DirectX::XMMatrixTranslation(keyFrames[prevKey]->keys[i]->translation.x, keyFrames[prevKey]->keys[i]->translation.y, keyFrames[prevKey]->keys[i]->translation.z);
 
-		DirectX::XMMATRIX local_mat = DirectX::XMLoadFloat4x4(&bones[i]->GetLocal());
-		local_mat = local_mat * matrix;
-		DirectX::XMStoreFloat4x4(&bones[i]->GetLocal(), local_mat);
+//		DirectX::XMMATRIX matrix = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
+//		matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+//		matrix = matrix * DirectX::XMMatrixTranslation(translation.x, translation.y, translation.z);
+
+//		DirectX::XMMATRIX local_mat = DirectX::XMLoadFloat4x4(&bones[i]->GetLocal());
+//		local_mat = local_mat * matrix;
+		DirectX::XMStoreFloat4x4(&bones[i]->GetLocal(), matrix);
 	}
 	return true;
 }

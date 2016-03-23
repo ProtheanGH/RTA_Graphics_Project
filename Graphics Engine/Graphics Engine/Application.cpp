@@ -126,14 +126,14 @@ bool Application::Run()
 void Application::SetupScene()
 {
 //	// === Teddy
-//	Teddy_Prefab teddy;
-//	teddy.SetWorldRotation(XMFLOAT3(0, -90, 0));
-//	teddy.LoadGameObject();
+	Teddy_Prefab teddy;
+	teddy.SetWorldRotation(XMFLOAT3(0, -90, 0));
+	teddy.LoadGameObject();
 //	// ===
 
 	// === Box
-	AnimatedCube_Prefab cube;
-	cube.LoadGameObject();
+//	AnimatedCube_Prefab cube;
+//	cube.LoadGameObject();
 	// ===
 
 	// === Skybox === //

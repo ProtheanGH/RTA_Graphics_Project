@@ -68,12 +68,14 @@ PixelInput main(Bone _input)
 
 	// Animations
 	float4x4 animationMat;
-	animationMat = bonesMatrices[_input.indice.x] * _input.weight.x;
-	animationMat += bonesMatrices[ _input.indice.y ] * _input.weight.y;
-	animationMat += bonesMatrices[ _input.indice.z ] * _input.weight.z;
-	animationMat += bonesMatrices[ _input.indice.w ] * _input.weight.w;
+//	animationMat = bonesMatrices[0] * _input.weight.x;
+//	animationMat += bonesMatrices[0] * _input.weight.y;
+//	animationMat += bonesMatrices[0] * _input.weight.z;
+//	animationMat += bonesMatrices[0] * _input.weight.w;
+	animationMat = bonesMatrices[0];
 
 	output.position = mul(_input.position, animationMat);
+	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projMatrix);
 	output.normal   = mul( _input.normal, animationMat );
 
