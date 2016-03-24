@@ -73,8 +73,8 @@ PixelInput main(Bone _input)
 	animationMat += bonesMatrices[_input.indice.z] * _input.weight.z; // _input.weight.y;
 	animationMat += bonesMatrices[_input.indice.w] * _input.weight.w; // _input.weight.y; 
 //	animationMat = bonesMatrices[0];
-
-	output.position = mul(_input.position, animationMat);
+	output.position = _input.position;
+	output.position = mul(output.position, animationMat);
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projMatrix);
 
