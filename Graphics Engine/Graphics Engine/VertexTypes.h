@@ -8,6 +8,8 @@ struct Vertex_POSNORMUV{
 	float binormal[4];
 	float weights[4];
 	int boneIndices[4];
+	int controlpointIndex;
+	int padding[3];
 
 	Vertex_POSNORMUV(){
 		for (int i = 0; i < 4; ++i){
@@ -44,5 +46,22 @@ struct Vertex_POSNORMUV{
 		}
 
 		return true;
+	}
+
+	bool ComparePositions(const Vertex_POSNORMUV& vertex){
+		for (unsigned int i = 0; i < 4; ++i){
+			float diff = pos[i] - vertex.pos[i];
+			diff = fabsf(diff);
+			if (diff > 0.01) return false;
+		}
+
+		return true;
+	}
+
+	void copyweights(const Vertex_POSNORMUV& vertex){
+		for (unsigned int i = 0; i < 4; ++i){
+			weights[i] = vertex.weights[i];
+			boneIndices[i] = vertex.boneIndices[i];
+		}
 	}
 };
