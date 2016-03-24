@@ -135,6 +135,8 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 	int vertexCounter = 0;
 	Mesh* objectMesh = new Mesh();
 
+	int controlpointcount = _mesh->GetControlPointsCount();
+
 	for (unsigned int polygon = 0; polygon < polygonCount; ++polygon){
 
 		unsigned int polygonVertexCount = _mesh->GetPolygonSize(polygon);
@@ -142,6 +144,7 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 
 			Vertex_POSNORMUV vertex;
 			int controlPointIndex = _mesh->GetPolygonVertex(polygon, polygonVertex);
+			vertex.controlpointIndex = controlPointIndex;
 			vertex.pos[0] = (float)controlPoints[controlPointIndex].mData[0];
 			vertex.pos[1] = (float)controlPoints[controlPointIndex].mData[1];
 			vertex.pos[2] = (float)controlPoints[controlPointIndex].mData[2];
@@ -184,6 +187,7 @@ void FBXConverter::LoadMesh(FbxMesh* _mesh, Object* _object){
 			++vertexCounter;
 		}
 	}
+
 	_object->SetMesh(objectMesh);
 }
 
@@ -499,7 +503,11 @@ void FBXConverter::ProcessJoints(FbxNode* _node, Bone* _rootBone, Mesh* _mesh){
 				int index = currCluster->GetControlPointIndices()[i];
 				float weight = (float)currCluster->GetControlPointWeights()[i];
 
-				_mesh->GetVerts()[index].AddBoneWeightPair(weight, curr_bone->GetIndex());
+				for (unsigned int j = 0; j < _mesh->GetVerts().size(); ++j){
+					if (_mesh->GetVerts()[j].controlpointIndex == index){
+						_mesh->GetVerts()[j].AddBoneWeightPair(weight, curr_bone->GetIndex());
+					}
+				}
 			}
 		}
 	}
@@ -521,19 +529,12 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxScene* _scene, Animation& _a
 			FbxTakeInfo* takeInfo = _scene->GetTakeInfo(animStackName);
 			
 			LoadAnimation(_node, takeInfo, _animation, _rootBone);
-
 		}
 	
 		_animation.CalculateDuration();
 }
 
 void FBXConverter::LoadAnimation(FbxNode* _node, FbxTakeInfo* _takeInfo, Animation& _animation, Bone* _rootBone){
-
-	int child_count = _node->GetChildCount();
-	for (int i = 0; i < child_count; ++i){
-		FbxNode* childNode = _node->GetChild(i);
-		LoadAnimation(childNode, _takeInfo, _animation, _rootBone);
-	}
 
 	FbxTime start = _takeInfo->mLocalTimeSpan.GetStart();
 	FbxTime end = _takeInfo->mLocalTimeSpan.GetStop();
@@ -547,9 +548,11 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxTakeInfo* _takeInfo, Animati
 	for (FbxLongLong i = start.GetFrameCount(FbxTime::eFrames30); i < end.GetFrameCount(FbxTime::eFrames30); ++i){
 		FbxTime currTime;
 		currTime.SetFrame(i, FbxTime::eFrames30);
-		FbxDouble3 translation = _node->EvaluateLocalTranslation(currTime);
-		FbxDouble3 rotation = _node->EvaluateLocalRotation(currTime);
-		FbxDouble3 scale = _node->EvaluateLocalScaling(currTime);
+		FbxMatrix globalMatrix = _node->EvaluateGlobalTransform(currTime);
+		FbxVector4 translation = _node->EvaluateLocalTranslation(currTime);
+		FbxVector4 rotation = _node->EvaluateLocalRotation(currTime);
+		FbxVector4 scale = _node->EvaluateLocalScaling(currTime);
+
 		float frameTime = (float)currTime.GetSecondDouble();
 
 		//find the keyframe
@@ -580,7 +583,12 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxTakeInfo* _takeInfo, Animati
 		key->translation = DirectX::XMFLOAT4(translation.mData[0], translation.mData[1], translation.mData[2], 1.0f);
 		key->rotation = DirectX::XMFLOAT4(rotation.mData[0], rotation.mData[1], rotation.mData[2], 1.0f);
 		key->scale = DirectX::XMFLOAT4(scale.mData[0], scale.mData[1], scale.mData[2], 1.0f);
+	}
 
+	int child_count = _node->GetChildCount();
+	for (int i = 0; i < child_count; ++i){
+		FbxNode* childNode = _node->GetChild(i);
+		LoadAnimation(childNode, _takeInfo, _animation, _rootBone);
 	}
 }
 

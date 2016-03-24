@@ -70,15 +70,15 @@ void Camera::Update(float _deltaTime)
 	}
 
 	// === Fly Up / Down (Y-Axis)
-	if (GetAsyncKeyState('E')) {
+	if (GetAsyncKeyState('Q')) {
 		if (GetAsyncKeyState(VK_SHIFT)) {
 			matrix = XMMatrixMultiply(XMMatrixTranslation(0, _deltaTime * m_FastMovementSpeed, 0), matrix);
 		}
 		else {
-			matrix = XMMatrixMultiply(XMMatrixTranslation(0, _deltaTime * m_MovementSpeed, 0), matrix);
+			matrix = XMMatrixMultiply(XMMatrixTranslation(0, _deltaTime * m_FastMovementSpeed, 0), matrix);
 		}
 	}
-	else if (GetAsyncKeyState('Q')) {
+	else if (GetAsyncKeyState('E')) {
 		if (GetAsyncKeyState(VK_SHIFT)) {
 			matrix = XMMatrixMultiply(XMMatrixTranslation(0, _deltaTime * -m_FastMovementSpeed, 0), matrix);
 		}

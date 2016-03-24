@@ -54,37 +54,26 @@ bool InterpolatorComponent::Update(float _deltaTime)
 	}
 
 	unsigned int bone_count = (unsigned int)animation->GetKeyFrames()[prevKey]->keys.size();
-//	bones.clear();
-//	bones.resize(bone_count);
 
 	for (unsigned int i = 0; i < bone_count; ++i){
-		DirectX::XMFLOAT4 translation;
-		translation.x = (keyFrames[nextKey]->keys[i]->translation.x - keyFrames[prevKey]->keys[i]->translation.x) * ratio + keyFrames[prevKey]->keys[i]->translation.x;
-		translation.y = (keyFrames[nextKey]->keys[i]->translation.y - keyFrames[prevKey]->keys[i]->translation.y) * ratio + keyFrames[prevKey]->keys[i]->translation.y;
-		translation.z = (keyFrames[nextKey]->keys[i]->translation.z - keyFrames[prevKey]->keys[i]->translation.z) * ratio + keyFrames[prevKey]->keys[i]->translation.z;
 
-		DirectX::XMFLOAT4 rotation;
-		rotation.x = (keyFrames[nextKey]->keys[i]->rotation.x - keyFrames[prevKey]->keys[i]->rotation.x) * ratio + keyFrames[prevKey]->keys[i]->rotation.x;
-		rotation.y = (keyFrames[nextKey]->keys[i]->rotation.y - keyFrames[prevKey]->keys[i]->rotation.y) * ratio + keyFrames[prevKey]->keys[i]->rotation.y;
-		rotation.z = (keyFrames[nextKey]->keys[i]->rotation.z - keyFrames[prevKey]->keys[i]->rotation.z) * ratio + keyFrames[prevKey]->keys[i]->rotation.z;
+		DirectX::XMFLOAT4 translation = interpolate(keyFrames[prevKey]->keys[i]->translation, keyFrames[nextKey]->keys[i]->translation, ratio);
 
-		DirectX::XMFLOAT4 scale;
-		scale.x = (keyFrames[nextKey]->keys[i]->scale.x - keyFrames[prevKey]->keys[i]->scale.x) * ratio + keyFrames[prevKey]->keys[i]->scale.x;
-		scale.y = (keyFrames[nextKey]->keys[i]->scale.y - keyFrames[prevKey]->keys[i]->scale.y) * ratio + keyFrames[prevKey]->keys[i]->scale.y;
-		scale.z = (keyFrames[nextKey]->keys[i]->scale.z - keyFrames[prevKey]->keys[i]->scale.z) * ratio + keyFrames[prevKey]->keys[i]->scale.z;
+		DirectX::XMFLOAT4 rotation = interpolate(keyFrames[prevKey]->keys[i]->rotation, keyFrames[nextKey]->keys[i]->rotation, ratio);
 
+		DirectX::XMFLOAT4 scale = interpolate(keyFrames[prevKey]->keys[i]->scale, keyFrames[nextKey]->keys[i]->scale, ratio);
 
-		DirectX::XMMATRIX matrix = DirectX::XMMatrixScaling(keyFrames[prevKey]->keys[i]->scale.x, keyFrames[prevKey]->keys[i]->scale.y, keyFrames[prevKey]->keys[i]->scale.z);
-		matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw(keyFrames[prevKey]->keys[i]->rotation.x, keyFrames[prevKey]->keys[i]->rotation.y, keyFrames[prevKey]->keys[i]->rotation.z);
-		matrix = matrix * DirectX::XMMatrixTranslation(keyFrames[prevKey]->keys[i]->translation.x, keyFrames[prevKey]->keys[i]->translation.y, keyFrames[prevKey]->keys[i]->translation.z);
+		/*int keyFrameIndex = 0;
+		DirectX::XMFLOAT4 translation = keyFrames[keyFrameIndex]->keys[i]->translation;
+		DirectX::XMFLOAT4 rotation = keyFrames[keyFrameIndex]->keys[i]->rotation;
+		DirectX::XMFLOAT4 scale = keyFrames[keyFrameIndex]->keys[i]->scale;*/
+		
+		DirectX::XMMATRIX matrix = DirectX::XMMatrixScaling(scale.x,scale.y,scale.z);
+		matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
+		matrix = matrix * DirectX::XMMatrixTranslation(translation.x, translation.y, translation.z);
 
-//		DirectX::XMMATRIX matrix = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
-//		matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
-//		matrix = matrix * DirectX::XMMatrixTranslation(translation.x, translation.y, translation.z);
-
-//		DirectX::XMMATRIX local_mat = DirectX::XMLoadFloat4x4(&bones[i]->GetLocal());
-//		local_mat = local_mat * matrix;
 		DirectX::XMStoreFloat4x4(&bones[i]->GetLocal(), matrix);
+
 	}
 	return true;
 }
@@ -105,7 +94,7 @@ void InterpolatorComponent::SetTime(float time)
 		curTime = 0.0f;
 	else{
 		curTime = time;
-		if (curTime > animation->GetDuration())
+		if (curTime >= animation->GetDuration())
 			curTime -= animation->GetDuration();
 		else if (curTime < 0.0f)
 			curTime += animation->GetDuration();
@@ -116,4 +105,17 @@ void InterpolatorComponent::SetAnimation(Animation* _animation)
 {
 	animation = _animation;
 }
+
+DirectX::XMFLOAT4 InterpolatorComponent::interpolate(DirectX::XMFLOAT4& start, DirectX::XMFLOAT4& end, float ratio){
+
+	DirectX::XMFLOAT4 result;
+
+	result.x = start.x * (1 - ratio) + end.x * ratio;
+	result.y = start.y * (1 - ratio) + end.y * ratio;
+	result.z = start.z * (1 - ratio) + end.z * ratio;
+	result.w = start.w * (1 - ratio) + end.w * ratio;
+
+	return result;
+}
+
 // ===================== //

@@ -4,9 +4,8 @@
 #include "Animation.h"
 #include "Bone.h"
 
-class InterpolatorComponent :
-	public Component
-{
+class InterpolatorComponent : public Component {
+
 private:
 	float curTime;
 	Animation* animation;
@@ -35,5 +34,8 @@ public:
 		return curTime;
 	}
 	// ================= //
+
+private:
+	DirectX::XMFLOAT4 interpolate(DirectX::XMFLOAT4& start, DirectX::XMFLOAT4& end, float ratio);
 };
 
