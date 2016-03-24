@@ -12,6 +12,7 @@ struct Bone
 	float4 binormal : BINORMAL;
 	float4 weight : WEIGHT;
 	int4 indice : INDICE;
+	int4 cp_Padding : CP_PADDING;
 };
 
 struct PixelInput
@@ -68,11 +69,11 @@ PixelInput main(Bone _input)
 
 	// Animations
 	float4x4 animationMat;
-	animationMat =  bonesMatrices[_input.indice.x] * _input.weight.x; // _input.weight.y; 
-	animationMat += bonesMatrices[_input.indice.y] * _input.weight.y; // _input.weight.y; 
-	animationMat += bonesMatrices[_input.indice.z] * _input.weight.z; // _input.weight.y;
-	animationMat += bonesMatrices[_input.indice.w] * _input.weight.w; // _input.weight.y; 
-//	animationMat = bonesMatrices[0];
+//	animationMat =  bonesMatrices[_input.indice.x] * _input.weight.x; // _input.weight.y; 
+//	animationMat += bonesMatrices[_input.indice.y] * _input.weight.y; // _input.weight.y; 
+//	animationMat += bonesMatrices[_input.indice.z] * _input.weight.z; // _input.weight.y;
+//	animationMat += bonesMatrices[_input.indice.w] * _input.weight.w; // _input.weight.y; 
+	animationMat = bonesMatrices[0];
 
 	output.position = mul(_input.position, animationMat);
 	output.position = mul(output.position, viewMatrix);
