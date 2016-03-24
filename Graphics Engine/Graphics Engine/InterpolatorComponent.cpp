@@ -18,8 +18,6 @@ InterpolatorComponent::~InterpolatorComponent()
 // ===== Interface ===== //
 bool InterpolatorComponent::Update(float _deltaTime)
 {
-	return true;
-
 	if (animation == nullptr)
 		return false;
 
@@ -83,15 +81,15 @@ bool InterpolatorComponent::Update(float _deltaTime)
 //		scale.z = (keyFrames[nextKey]->keys[i]->scale.z - keyFrames[prevKey]->keys[i]->scale.z) * ratio + keyFrames[prevKey]->keys[i]->scale.z;
 
 		// === DEBUG : Render @ a Certain Frame === //
-		translation.x = keyFrames[1]->keys[i]->translation.x;
-		translation.y = keyFrames[1]->keys[i]->translation.y;
-		translation.z = keyFrames[1]->keys[i]->translation.z;
-		rotation.x = keyFrames[1]->keys[i]->rotation.x;
-		rotation.y = keyFrames[1]->keys[i]->rotation.y;
-		rotation.z = keyFrames[1]->keys[i]->rotation.z;
-		scale.x = keyFrames[1]->keys[i]->scale.x;
-		scale.y = keyFrames[1]->keys[i]->scale.y;
-		scale.z = keyFrames[1]->keys[i]->scale.z;
+//		translation.x = keyFrames[1]->keys[i]->translation.x;
+//		translation.y = keyFrames[1]->keys[i]->translation.y;
+//		translation.z = keyFrames[1]->keys[i]->translation.z;
+//		rotation.x = keyFrames[1]->keys[i]->rotation.x;
+//		rotation.y = keyFrames[1]->keys[i]->rotation.y;
+//		rotation.z = keyFrames[1]->keys[i]->rotation.z;
+//		scale.x = keyFrames[1]->keys[i]->scale.x;
+//		scale.y = keyFrames[1]->keys[i]->scale.y;
+//		scale.z = keyFrames[1]->keys[i]->scale.z;
 		// ======================================== //
 
 		DirectX::XMMATRIX matrix = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
