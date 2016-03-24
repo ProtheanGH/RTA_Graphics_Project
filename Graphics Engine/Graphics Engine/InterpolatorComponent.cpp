@@ -21,7 +21,7 @@ bool InterpolatorComponent::Update(float _deltaTime)
 	if (animation == nullptr)
 		return false;
 
-	AddTime(_deltaTime);
+	AddTime(_deltaTime / 100);
 
 	unsigned int prevKey = 0;
 	unsigned int nextKey = 1;

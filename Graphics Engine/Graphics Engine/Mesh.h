@@ -32,24 +32,4 @@ public:
 			indices[i] = _rhs->GetIndices()[i];
 		}
 	}
-
-	void CalculateWeights(){
-		int maxIndex = -1;
-		for (unsigned int i = 0; i < vertices.size(); ++i){
-			if (vertices[i].weights[0] == 0){
-				maxIndex = i;
-				break;
-			}
-		}
-
-		if (maxIndex == -1) return;
-
-		for (unsigned int i = 0; i < maxIndex; ++i){
-			for (unsigned int j = maxIndex; j < vertices.size(); ++j){
-				if (vertices[i].controlpointIndex == vertices[j].controlpointIndex){
-					vertices[j].copyweights(vertices[i]);
-				}
-			}
-		}
-	}
 };
