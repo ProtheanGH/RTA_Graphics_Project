@@ -68,17 +68,17 @@ PixelInput main(Bone _input)
 
 	// Animations
 	float4x4 animationMat;
-	animationMat = bonesMatrices[_input.indice.x] * _input.weight.x;
-	animationMat += bonesMatrices[_input.indice.y] * _input.weight.y;
-	animationMat += bonesMatrices[_input.indice.z] * _input.weight.z;
-	animationMat += bonesMatrices[_input.indice.w] * _input.weight.w;
+	animationMat =  bonesMatrices[_input.indice.x] * _input.weight.x; // _input.weight.y; 
+	animationMat += bonesMatrices[_input.indice.y] * _input.weight.y; // _input.weight.y; 
+	animationMat += bonesMatrices[_input.indice.z] * _input.weight.z; // _input.weight.y;
+	animationMat += bonesMatrices[_input.indice.w] * _input.weight.w; // _input.weight.y; 
 //	animationMat = bonesMatrices[0];
 
 	output.position = mul(_input.position, animationMat);
 	output.position = mul(output.position, viewMatrix);
 	output.position = mul(output.position, projMatrix);
-	output.normal   = mul( _input.normal, animationMat );
 
+//	output.normal   = mul( _input.normal, animationMat );
 
 	// World Position
 	output.worldPosition = mul(_input.position, worldMatrix);
@@ -87,11 +87,11 @@ PixelInput main(Bone _input)
 	output.texCoords = _input.texCoords;
 
 	// Normal Mapping
-	output.normal = mul(_input.normal, worldMatrix);
+	output.normal = mul(_input.normal, animationMat);
 	output.normal = normalize(output.normal);
-	output.tangent = mul(_input.tangent, worldMatrix);
+	output.tangent = mul(_input.tangent, animationMat);
 	output.tangent = normalize(output.tangent);
-	output.binormal = mul(_input.binormal, worldMatrix);
+	output.binormal = mul(_input.binormal, animationMat);
 	output.binormal = normalize(output.binormal);
 
 	return output;
