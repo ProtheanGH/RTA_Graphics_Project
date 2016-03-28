@@ -506,9 +506,9 @@ void FBXConverter::ProcessJoints(FbxNode* _node, Bone* _rootBone, Mesh* _mesh){
 						FbxMatrix globalInverseBindPose = currCluster->GetLink()->EvaluateGlobalTransform().Inverse();
 						FbxVector4 vertexPosition = FbxVector4(vert.pos[0], vert.pos[1], vert.pos[2]);
 						vertexPosition = globalInverseBindPose.MultNormalize(vertexPosition);
-						vert.pos[0] = vertexPosition.mData[0];	
-						vert.pos[1] = vertexPosition.mData[1];
-						vert.pos[2] = vertexPosition.mData[2];	
+						vert.pos[0] = (float)vertexPosition.mData[0] + weight;	
+						vert.pos[1] = (float)vertexPosition.mData[1] + weight;
+						vert.pos[2] = (float)vertexPosition.mData[2] + weight;	
 						vert.pos[3] = 1;
 					}
 				}
@@ -584,9 +584,9 @@ void FBXConverter::LoadAnimation(FbxNode* _node, FbxTakeInfo* _takeInfo, Animati
 			}
 		}
 
-		key->translation = DirectX::XMFLOAT4(translation.mData[0], translation.mData[1], translation.mData[2], 1.0f);
-		key->rotation = DirectX::XMFLOAT4(rotation.mData[0], rotation.mData[1], rotation.mData[2], 1.0f);
-		key->scale = DirectX::XMFLOAT4(scale.mData[0], scale.mData[1], scale.mData[2], 1.0f);
+		key->translation = DirectX::XMFLOAT4((float)translation.mData[0], (float)translation.mData[1], (float)translation.mData[2], 1.0f);
+		key->rotation = DirectX::XMFLOAT4((float)rotation.mData[0], (float)rotation.mData[1], (float)rotation.mData[2], 1.0f);
+		key->scale = DirectX::XMFLOAT4((float)scale.mData[0], (float)scale.mData[1], (float)scale.mData[2], 1.0f);
 	}
 
 	int child_count = _node->GetChildCount();

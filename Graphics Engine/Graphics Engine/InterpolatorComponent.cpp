@@ -28,20 +28,23 @@ bool InterpolatorComponent::Update(float _deltaTime)
 
 	std::vector<Animation::KeyFrame*>& keyFrames = animation->GetKeyFrames();
 	while (true){
-		if (keyFrames[prevKey]->time <= curTime && keyFrames[nextKey]->time > curTime)
+		// if (keyFrames[prevKey]->time <= curTime && keyFrames[nextKey]->time > curTime)
+		if (keyFrames[prevKey]->time > curTime)
 			break;
 
-		float prevTime = keyFrames[prevKey]->time;
-		if (keyFrames[prevKey]->time >= curTime || curTime >= animation->GetDuration()){
-			prevKey = (unsigned int)keyFrames.size() - 1;
-			nextKey = 0;
-			break;
-		}
+		// float prevTime = keyFrames[prevKey]->time;
+		// if (keyFrames[prevKey]->time >= curTime || curTime >= animation->GetDuration()){
+		// 	prevKey = (unsigned int)keyFrames.size() - 1;
+		// 	nextKey = 0;
+		// 	break;
+		// }
 
 		++prevKey;
-		++nextKey;
+		// ++nextKey;
 	}
 
+	nextKey = prevKey % keyFrames.size();
+	--prevKey;
 	float totalTime = 0.0f;
 	float ratio = 0.0f;
 
@@ -55,18 +58,24 @@ bool InterpolatorComponent::Update(float _deltaTime)
 
 	unsigned int bone_count = (unsigned int)animation->GetKeyFrames()[prevKey]->keys.size();
 
+	static int temp = 1;
 	for (unsigned int i = 0; i < bone_count; ++i){
 
+#if 1
+		DirectX::XMFLOAT4 translation = keyFrames[temp]->keys[i]->translation;
+		DirectX::XMFLOAT4 rotation = keyFrames[temp]->keys[i]->rotation;
+		DirectX::XMFLOAT4 scale = keyFrames[temp]->keys[i]->scale;
+#elif
 		DirectX::XMFLOAT4 translation = interpolate(keyFrames[prevKey]->keys[i]->translation, keyFrames[nextKey]->keys[i]->translation, ratio);
-
 		DirectX::XMFLOAT4 rotation = interpolate(keyFrames[prevKey]->keys[i]->rotation, keyFrames[nextKey]->keys[i]->rotation, ratio);
-
 		DirectX::XMFLOAT4 scale = interpolate(keyFrames[prevKey]->keys[i]->scale, keyFrames[nextKey]->keys[i]->scale, ratio);
-
-		/*int keyFrameIndex = 0;
+#endif
+		/*
+		int keyFrameIndex = 0;
 		DirectX::XMFLOAT4 translation = keyFrames[keyFrameIndex]->keys[i]->translation;
 		DirectX::XMFLOAT4 rotation = keyFrames[keyFrameIndex]->keys[i]->rotation;
-		DirectX::XMFLOAT4 scale = keyFrames[keyFrameIndex]->keys[i]->scale;*/
+		DirectX::XMFLOAT4 scale = keyFrames[keyFrameIndex]->keys[i]->scale;
+		*/
 		
 		DirectX::XMMATRIX matrix = DirectX::XMMatrixScaling(scale.x,scale.y,scale.z);
 		matrix = matrix * DirectX::XMMatrixRotationRollPitchYaw(rotation.x, rotation.y, rotation.z);
